@@ -8,7 +8,7 @@
 | Date | 2026-05-23 |
 | Designer | Yijin |
 | Seat Time | 15–20 min |
-| Screens | 19 |
+| Screens | 22 |
 | Output | Storyline 360 (SCORM 2004) |
 | SME Status | Pending |
 
@@ -22,7 +22,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.1 of 16** | **On-Screen Text:** | **Visual:** |
+| **Screen 1.1 of 22** | **On-Screen Text:** | **Visual:** |
 | Welcome / Introduction | • Course title: "Foundations of Disability, Inclusion, and Accessible Design" | Warm, welcoming hero photo — diverse UHN staff at hospital entrance. Natural lighting. Include person using wheelchair, staff with hearing aid, hijab-wearing clinician. |
 | Interaction: Click "Begin" | • Series badge: Guide 01 of 18 | |
 | Time: ~1 min | • UHN logo + Accessibility First branding | **Image:** g01-hero-welcome-01.png |
@@ -39,7 +39,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.2 of 16** | **On-Screen Text:** | **Visual:** |
+| **Screen 1.2 of 22** | **On-Screen Text:** | **Visual:** |
 | Objectives Overview | Numbered list of 4 CLOs: | Clean layout, white background. 2x2 grid of objective cards with navy top border, large number + title + description (matching mockup). |
 | Interaction: Static + audio | 1. Define disability through multiple lenses — distinguish between the medical, social, and human-rights models of disability | Cards use navy accent on white. |
 | Time: ~1 min | 2. Identify visible and invisible barriers — recognize the physical, sensory, attitudinal, communication, and systemic barriers a person may encounter at UHN | |
@@ -53,20 +53,68 @@
 
 ---
 
-## Screen 1.3 — Why This Matters in Healthcare
+## Screen 1.3A — Why This Matters: The Stat
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.3 of 16** | **On-Screen Text:** | **Visual:** |
-| Context / Statistics | • Pull quote: "27% of Canadians aged 15+ have one or more disabilities" — Statistics Canada, 2022 | Large "27%" statistic prominent at top. Three impact vignettes below: missed care, communication gap, avoidance. |
-| Interaction: Scroll reveal | • Three impact statements: Missed care · Misdiagnosis · Avoidance | Distinct callout box for Indigenous context (earth tones, respectful). |
-| Time: ~1.5 min | • Indigenous context note | |
-| SME: **High** — verify stats, Indigenous content | | **Image:** g01-stats-barriers-01.png |
-| | **Narration (162 words, ~65s):** | Alt: "Infographic showing 27% disability statistic with three healthcare barrier examples" |
-| | Here's a number worth knowing. According to Statistics Canada, more than 27 percent of Canadians aged 15 and older have at least one disability. In Ontario, that number is even higher. That means more than one in four people who come to UHN for care may experience barriers related to disability. And many disabilities are non-visible — you may not know someone has a disability unless they tell you. Healthcare systems were often designed without disability in mind. Narrow doorways, small print on intake forms, booking systems that require phone calls, waiting rooms with no seating options — these are everyday barriers. When we remove these barriers, we don't just help people with disabilities. We create a better experience for everyone. Accessibility benefits all of us. And it starts with understanding. | **Accessibility:** |
+| **Screen 1.3A of 22** | **On-Screen Text:** | **Visual:** |
+| Context / Statistics | • Pull quote: "27% of Canadians aged 15+ have one or more disabilities" — Statistics Canada, 2022 | Large "27%" statistic prominent, centred. Animated counter rising to 27. Supporting text below stat block. |
+| Interaction: Static + audio | • "That's more than one in four." | Clean white background with navy stat block. |
+| Time: ~45s | • "Many disabilities are non-visible — you may not know unless someone tells you." | |
+| SME: **High** — verify stats | | **Image:** g01-stats-onein4-01.png |
+| | **Narration (82 words, ~33s):** | Alt: "Large 27% statistic with supporting text: more than one in four Canadians have a disability" |
+| | Here is a number worth knowing. According to Statistics Canada, more than 27 percent of Canadians aged 15 and older have at least one disability. In Ontario, that number is even higher. That means more than one in four people who come to UHN for care may experience barriers related to disability. And many of those disabilities are non-visible — you may not know someone has a disability unless they tell you. | **Accessibility:** |
 | | | • Stat coded as text, not image |
-| | **Refs:** Statistics Canada (2023). *Canadian Survey on Disability, 2022*. | • Scroll animations respect prefers-reduced-motion |
-| | **Audio:** voiceover_1.3.mp3 | • Captions: voiceover_1.3.srt |
+| | **Refs:** Statistics Canada (2023). *Canadian Survey on Disability, 2022*. | • Animation respects prefers-reduced-motion |
+| | **Audio:** voiceover_1.3A.mp3 | • Captions: voiceover_1.3A.srt |
+
+---
+
+## Screen 1.3B — Impact: Missed Care
+
+| Step | Activities | Design Guide |
+|---|---|---|
+| **Screen 1.3B of 22** | **On-Screen Text:** | **Visual:** |
+| Impact — Missed Care | • H2: "Missed Care" | Two-column layout. Left: photo placeholder (540px height). Right: accent bar (red) + title + body text + key takeaway box. |
+| Interaction: Static + audio | • "Patients avoid or delay appointments because the system was not designed for them." | |
+| Time: ~45s | • "Narrow doorways, small print on intake forms, phone-only booking — these are structural barriers." | **Image:** g01-impact-missedcare-01.png |
+| SME: Medium | | Alt: "Patient looking frustrated at inaccessible hospital entrance with narrow doorway" |
+| | **Narration (78 words, ~31s):** | |
+| | Healthcare systems were often designed without disability in mind. Narrow doorways make it impossible for some wheelchair users to enter exam rooms. Small print on intake forms excludes people with low vision. Booking systems that require phone calls shut out people who are Deaf or hard of hearing. These are not edge cases — they are structural barriers that affect thousands of patients at UHN every year. When these barriers exist, patients avoid or delay the care they need. | **Accessibility:** |
+| | | • Red accent bar for visual emphasis |
+| | **Audio:** voiceover_1.3B.mp3 | • Captions: voiceover_1.3B.srt |
+
+---
+
+## Screen 1.3C — Impact: Communication Gap
+
+| Step | Activities | Design Guide |
+|---|---|---|
+| **Screen 1.3C of 22** | **On-Screen Text:** | **Visual:** |
+| Impact — Communication Gap | • H2: "Communication Gap" | Two-column layout. Left: photo placeholder (540px height). Right: accent bar (cobalt) + title + body text + key takeaway box. |
+| Interaction: Static + audio | • "When communication methods are not adapted, misdiagnosis can follow." | |
+| Time: ~45s | • "Wrong assumptions about what a patient can or cannot understand lead to wrong care decisions." | **Image:** g01-impact-commgap-01.png |
+| SME: Medium | | Alt: "Healthcare worker and patient struggling to communicate across a desk" |
+| | **Narration (79 words, ~32s):** | |
+| | Communication barriers are among the most common — and the most dangerous — in healthcare. When a clinician assumes a patient understands verbal instructions, but the patient has a cognitive or language-related disability, critical information gets lost. Misdiagnosis can follow. Wrong assumptions about what a person can or cannot understand lead to wrong care decisions. Adapting your communication — using plain language, visual aids, or simply asking how someone prefers to receive information — can change the outcome of a visit entirely. | **Accessibility:** |
+| | | • Cobalt accent bar for visual emphasis |
+| | **Audio:** voiceover_1.3C.mp3 | • Captions: voiceover_1.3C.srt |
+
+---
+
+## Screen 1.3D — Impact: Avoidance
+
+| Step | Activities | Design Guide |
+|---|---|---|
+| **Screen 1.3D of 22** | **On-Screen Text:** | **Visual:** |
+| Impact — Avoidance | • H2: "Avoidance" | Two-column layout. Left: photo placeholder (540px height). Right: accent bar (navy) + title + body text + Indigenous context box (earth tones). |
+| Interaction: Static + audio | • "Patients delay or abandon care when barriers compound." | |
+| Time: ~45s | • "Indigenous peoples face compounded barriers — systemic racism, geographic isolation, culturally unsafe environments." | **Image:** g01-impact-avoidance-01.png |
+| SME: **High** — Indigenous content | | Alt: "Empty hospital waiting room with accessibility barriers visible" |
+| | **Narration (81 words, ~32s):** | |
+| | When barriers go unaddressed, patients do not just have a bad experience — they stop coming. They delay care, miss follow-ups, or abandon treatment altogether. These barriers compound for people who face intersecting forms of marginalization. Indigenous peoples in Ontario, for example, navigate not only disability-related barriers but also systemic racism, geographic isolation, and culturally unsafe healthcare environments. Removing barriers is not just about compliance. It is about making sure no one is excluded from the care they need and deserve. | **Accessibility:** |
+| | | • Navy accent bar + Indigenous context box in earth tones |
+| | **Audio:** voiceover_1.3D.mp3 | • Captions: voiceover_1.3D.srt |
 
 ---
 
@@ -74,7 +122,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.4 of 16** | **On-Screen Text:** | **Visual:** |
+| **Screen 1.4 of 22** | **On-Screen Text:** | **Visual:** |
 | Core Concept | Three models comparison: | Three-panel infographic comparing models side by side. Medical (red), Social (teal), Rights (navy). |
 | Interaction: Tabbed panels (3 tabs) | **Medical Model:** Focuses on individual deficit; "What's wrong with this person?" | |
 | Time: ~2 min | **Social Model:** Focuses on environmental barriers; "What barriers exist in our systems?" | **Image:** g01-infographic-models-01.png (flat vector) |
@@ -91,7 +139,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.5 of 16** | **On-Screen Text:** | **Visual:** |
+| **Screen 1.5 of 22** | **On-Screen Text:** | **Visual:** |
 | Framework — 4 Quadrants | Four interconnected areas: | Four-quadrant diagram (matching approved Canva reference style). Each quadrant has icon + label + brief description. |
 | Interaction: Click each quadrant to reveal detail | **Awareness:** Recognize needs may not be visible. Be mindful of bias and systemic barriers. | |
 | Time: ~2 min | **Communication:** Listen, ask, adapt to individual needs and cultural context. | **Image:** g01-infographic-quadrant-01.png (flat vector) |
@@ -109,7 +157,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.6 of 16** | **On-Screen Text:** | **Visual:** |
+| **Screen 1.6 of 22** | **On-Screen Text:** | **Visual:** |
 | Framework — 5 Steps | Five-step horizontal pathway: | Horizontal step diagram (matching approved Canva infographic). Each step has distinct icon. Identical treatment across all 18 guides. |
 | Interaction: Step-through (click each step to reveal) | **1. Pause and Assess** — Recognize when accessibility needs may be present. | |
 | Time: ~2 min | **2. Listen and Ask** — Engage respectfully to understand needs. | **Image:** shared-framework-decision-path-01.png (flat vector, REUSE) |
@@ -128,7 +176,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.7 of 16** | **Setup Text:** | **Visual:** |
+| **Screen 1.7 of 22** | **Setup Text:** | **Visual:** |
 | Scenario — Branching | You're working at the front desk when Mrs. Okafor, a 68-year-old patient, arrives looking frustrated. She explains that she tried to use the new online booking system but couldn't navigate it. The system meets accessibility standards, but she has limited digital literacy and finds it confusing. She's been trying for three days and finally came in person. | Realistic photo — older Black woman at hospital reception desk speaking to staff member. Clean, well-lit UHN-style reception area. Empathetic interaction. |
 | Interaction: 3-choice branch | | |
 | Time: ~3 min | **What do you do?** | **Image:** g01-scenario-booking-01.png |
@@ -151,7 +199,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.8 of 16** | **Setup Text:** | **Visual:** |
+| **Screen 1.8 of 22** | **Setup Text:** | **Visual:** |
 | Scenario — Branching | You notice a patient with low vision squinting at a directional sign in the outpatient clinic. The sign was recently installed and meets Ontario Building Code standards, but the font is small and it's mounted high on the wall. The patient asks you for directions to the lab. | Realistic photo — patient squinting at small, high-mounted sign in clinic corridor. Clean modern hospital setting. |
 | Interaction: 3-choice branch | | |
 | Time: ~3 min | **What do you do?** | **Image:** g01-scenario-signage-01.png |
@@ -174,7 +222,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.9 of 16** | **Setup Text:** | **Visual:** |
+| **Screen 1.9 of 22** | **Setup Text:** | **Visual:** |
 | Scenario — Branching | Your team uses an accessibility checklist when supporting patients. A colleague mentions that a patient who speaks Cantonese and has a cognitive disability seemed confused during intake, even though the checklist was completed. Your colleague says, "We followed the checklist — I'm not sure what else we can do." | Realistic photo — two healthcare workers in discussion near a nursing station, one holding a clipboard. Concerned expressions. |
 | Interaction: 3-choice branch | | |
 | Time: ~3 min | **What do you do?** | **Image:** g01-scenario-checklist-01.png |
@@ -197,7 +245,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.10 of 16** | **Question 1 (MC):** | **Visual:** |
+| **Screen 1.10 of 22** | **Question 1 (MC):** | **Visual:** |
 | Assessment — Formative | Which model of disability focuses on removing barriers in the environment rather than fixing the individual? | Clean quiz layout. Question stem + 4 options. Branded submit button. |
 | Interaction: MC quiz (2 questions) | a) Medical model | |
 | Time: ~2 min | b) Social model ✓ | **Feedback:** |
@@ -219,7 +267,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.11 of 16** | **Question 3 (Scenario-based MC):** | **Visual:** |
+| **Screen 1.11 of 22** | **Question 3 (Scenario-based MC):** | **Visual:** |
 | Assessment — Formative | A patient arrives at your unit using a power wheelchair. You notice the examination room door is too narrow for the chair. What is the BEST first step? | Clean quiz layout. |
 | Interaction: MC quiz | a) Ask the patient to transfer to a standard chair | |
 | Time: ~1 min | b) Find an accessible room and apologize for the inconvenience ✓ | **Feedback:** |
@@ -234,7 +282,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.12 of 16** | **Tips (card carousel — 5 cards):** | **Visual:** |
+| **Screen 1.12 of 22** | **Tips (card carousel — 5 cards):** | **Visual:** |
 | Practice Tips | **Tip 1:** Ask before helping. Offer assistance but respect the person's choice. | Card carousel — click through 5 cards. Each card has tip text + small icon. UHN teal accent. |
 | Interaction: Card carousel (prev/next) | **Tip 2:** Use people-first language unless the person prefers identity-first. Ask. | |
 | Time: ~2 min | **Tip 3:** Don't assume what someone can or can't do based on visible cues. | **Image:** g01-tips-cards-01.png (flat vector icon set for tips) |
@@ -251,7 +299,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.13 of 16** | **Prompt:** | **Visual:** |
+| **Screen 1.13 of 22** | **Prompt:** | **Visual:** |
 | Reflection | "Think about a recent interaction at work. Was there a moment where accessibility could have been handled differently? What would you change?" | Calm, contemplative mood. Soft-focus healthcare setting photo. Open text field for learner response. |
 | Interaction: Text entry (ungraded) | | |
 | Time: ~2 min | *This reflection is private — it is not submitted or reviewed.* | **Image:** g01-reflection-calm-01.png |
@@ -267,7 +315,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.14 of 16** | **My Action Planning (MAP):** | **Visual:** |
+| **Screen 1.14 of 22** | **My Action Planning (MAP):** | **Visual:** |
 | Action Planning | Three prompts: | Interactive template with three text fields. Clean layout, branded. Download button for PDF version. |
 | Interaction: Text entry (3 fields) + PDF download | **Stop:** One thing I will stop doing | |
 | Time: ~3 min | **Start:** One thing I will start doing | **Download:** MAP-Template-Guide-01.pdf |
@@ -285,7 +333,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.15 of 16** | **Summary (4 points):** | **Visual:** |
+| **Screen 1.15 of 22** | **Summary (4 points):** | **Visual:** |
 | Summary | 1. Accessibility goes beyond physical barriers — it includes attitudes, systems, communication, digital tools, and policies. | Clean summary layout. Four takeaway points with icons. |
 | Interaction: Static + audio | 2. The social and rights-based models focus on removing barriers, not fixing people. | |
 | Time: ~1.5 min | 3. The Accessibility Decision Path (Pause → Listen → Apply → Adapt → Seek Support) gives you a practical tool for any situation. | |
@@ -301,7 +349,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.16 of 19** | **On-Screen Text:** | **Visual:** |
+| **Screen 1.16 of 22** | **On-Screen Text:** | **Visual:** |
 | Audio / Podcast | • Episode title: "Accessibility in Everyday Care" | Audio player with play/pause, progress bar, captions toggle, transcript toggle. |
 | Interaction: Audio player + transcript toggle | • Episode label: "Episode 01 of 18 · Foundations" | |
 | Time: ~2.5 min | • A short patient-advisor reflection on what good accessibility actually feels like at the front desk. | **Audio:** podcast_1.16.mp3 |
@@ -322,7 +370,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.17 of 19** | **Setup Text:** | **Visual:** |
+| **Screen 1.17 of 22** | **Setup Text:** | **Visual:** |
 | Decision Tree — Branching | The patient is frustrated trying to complete the intake form. You don't yet know whether the barrier is vision, language, digital access, cognitive load, or something else. The lobby is busy and three people are waiting behind them. | Branching decision layout with 3 option panels. Each choice opens a consequence panel that loops back to the Decision Path. |
 | Interaction: 3-choice branch | | |
 | Time: ~3 min | **What do you do next, before assuming the cause?** | |
@@ -345,7 +393,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.18 of 19** | **On-Screen Text:** | **Visual:** |
+| **Screen 1.18 of 22** | **On-Screen Text:** | **Visual:** |
 | Series Progress | • "Accessibility First · A three-stage journey" | 3-stage journey map showing all 18 guides with progress dots. |
 | Interaction: Visual progress display | • Stage 1: Foundations (Guides 01–04) — Required first | Guides unlock by stage. Current guide highlighted. |
 | Time: ~1 min | • Stage 2: Understanding Disability Experiences (Guides 05–09) — Builds on Foundations | |
@@ -361,7 +409,7 @@
 
 | Step | Activities | Design Guide |
 |---|---|---|
-| **Screen 1.19 of 19** | **Resources:** | **Visual:** |
+| **Screen 1.19 of 22** | **Resources:** | **Visual:** |
 | Completion | • AODA: ontario.ca/laws/statute/05a11 | Resource list with download icons. Completion message. Badge display. |
 | Interaction: Resource links + completion | • OHRC: ohrc.on.ca | |
 | Time: ~1 min | • UHN Accessibility Policy: [internal link] | **Badge:** "Accessibility First: Foundations" |
@@ -382,9 +430,9 @@
 
 | Metric | Value |
 |---|---|
-| Total screens | 19 |
-| Total narration | ~2,500 words |
-| Estimated audio | ~16 min 40 sec |
+| Total screens | 22 |
+| Total narration | ~2,660 words |
+| Estimated audio | ~17 min 44 sec |
 | Branching scenarios | 3 (Screens 1.7, 1.8, 1.9) |
 | Decision tree | 1 (Screen 1.17) |
 | Knowledge checks | 3 questions (Screens 1.10, 1.11) |

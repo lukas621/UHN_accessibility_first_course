@@ -10,7 +10,9 @@ const px = (x) => (x / 1920) * W;
 const py = (y) => (y / 1080) * H;
 
 const slidesDir = path.resolve(__dirname, 'slides');
+const imagesDir = path.resolve(__dirname, 'images');
 const bgPath = (n) => path.join(slidesDir, `slide-${String(n).padStart(2,'0')}.png`);
+const imgPath = (name) => path.join(imagesDir, name);
 
 // Colors (NO # prefix)
 const NAVY    = '192858';
@@ -125,6 +127,14 @@ function rect(slide, opts) {
   txt(slide, 'Continue\nModule  \u203A', {
     x: px(1140), y: py(678), w: px(200), h: py(60),
     fontSize: 14, bold: true, color: WHITE, align: 'center', valign: 'middle',
+  });
+
+  // Hero photo (replaces hatched placeholder)
+  slide.addImage({
+    path: imgPath('g01-hero-welcome-01.png'),
+    x: px(740), y: py(65), w: px(640), h: py(575),
+    sizing: { type: 'cover', w: px(640), h: py(575) },
+    altText: 'A diverse group of healthcare workers in scrubs walking together toward a modern hospital entrance, including a person using a power wheelchair and a person carrying a white cane.',
   });
 
   slide.addNotes('Slide 1: Welcome - static cover slide. Storyline: Static layer, no interactions. Auto-advance disabled. Learner clicks "Continue Module" to begin or resume.');
@@ -272,6 +282,14 @@ function rect(slide, opts) {
   });
   txt(slide, 'SLIDE\n03 / 14', { x: px(1310), y: py(1010), w: px(100), h: py(35), fontSize: 9, color: NAVY, align: 'center' });
 
+  // Context photo — barriers in healthcare (replaces hatched placeholder)
+  slide.addImage({
+    path: imgPath('g01-context-barriers-01.png'),
+    x: px(60), y: py(275), w: px(660), h: py(400),
+    sizing: { type: 'cover', w: px(660), h: py(400) },
+    altText: 'A young woman in a wheelchair reaching toward directional signs in a hospital corridor while a volunteer assists, illustrating common environmental barriers.',
+  });
+
   slide.addNotes('Slide 3: Why This Matters - static content with quote callout. Storyline: Static layout with 1-in-4 stat callout. Key Takeaway quote displayed. No interactions required.');
 }
 
@@ -353,6 +371,14 @@ function rect(slide, opts) {
     x: px(140), y: py(1020), w: px(600), h: py(20), fontSize: 8, color: LTGRAY, charSpacing: 1,
   });
   txt(slide, 'SLIDE\n04 / 14', { x: px(1310), y: py(1010), w: px(100), h: py(35), fontSize: 9, color: NAVY, align: 'center' });
+
+  // Detail photo — reception/booking scene (replaces hatched placeholder)
+  slide.addImage({
+    path: imgPath('g01-scenario-booking-01.png'),
+    x: px(735), y: py(315), w: px(610), h: py(210),
+    sizing: { type: 'cover', w: px(610), h: py(210) },
+    altText: 'An older woman at a hospital reception desk speaking with a receptionist about booking difficulties, illustrating communication and systemic barriers.',
+  });
 
   slide.addNotes('Slide 4: Beyond Ramps - click-reveal barrier cards. Storyline: Four barrier-type cards (Physical, Communication, Attitudinal, Systemic) use click-to-reveal layers. Healthcare Example panel on right is static. Learner clicks each barrier type to expand details.');
 }
@@ -633,6 +659,14 @@ function rect(slide, opts) {
     x: px(140), y: py(1020), w: px(600), h: py(20), fontSize: 8, color: LTGRAY, charSpacing: 1,
   });
   txt(slide, 'SLIDE\n07 / 14', { x: px(1310), y: py(1010), w: px(100), h: py(35), fontSize: 9, color: NAVY, align: 'center' });
+
+  // Scenario photo (replaces hatched placeholder on left side)
+  slide.addImage({
+    path: imgPath('g01-scenario-signage-01.png'),
+    x: px(60), y: py(240), w: px(640), h: py(440),
+    sizing: { type: 'cover', w: px(640), h: py(440) },
+    altText: 'An elderly woman using a magnifying glass to read a small directional sign on a hospital corridor wall, illustrating wayfinding barriers.',
+  });
 
   slide.addNotes('Slide 7: Scenario - decision branch with 3 choices and feedback layers. Storyline: Branching scenario with 3 choice buttons (A, B, C). Each choice triggers a unique feedback layer. Choice B is the recommended/correct response. Feedback panel shows realistic outcome, chart impact, and Decision Path step reinforced.');
 }

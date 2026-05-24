@@ -294,12 +294,40 @@ def _add_lede(slide, text, y=None):
 
 
 def _add_notes(slide, screen):
-    """Add narration + audio info to slide notes."""
+    """Add narration + audio info to slide notes.
+
+    For scenario/decision_tree screens, also includes setup text and
+    debrief text for all choices so the full narration context is
+    available in the notes of the setup slide.
+    """
     notes_text = ""
     if screen.get('narration'):
         notes_text = f"NARRATION:\n{screen['narration']}"
     if screen.get('audio'):
         notes_text += f"\n\nAudio: {screen['audio']}"
+
+    # Enrich notes for scenario / decision_tree slides
+    if screen.get('type') in ('scenario', 'decision_tree'):
+        if screen.get('setup_text'):
+            notes_text += f"\n\nSETUP TEXT:\n{screen['setup_text']}"
+        for choice in screen.get('choices', []):
+            notes_text += f"\n\nCHOICE {choice['letter']} ({choice['quality']}):\n{choice['text']}"
+            notes_text += f"\nCONSEQUENCE: {choice['consequence']}"
+        if screen.get('debrief'):
+            notes_text += f"\n\nDEBRIEF:\n{screen['debrief']}"
+
+    # Enrich notes for question slides
+    if screen.get('type') == 'question':
+        for qi, q in enumerate(screen.get('questions', []), 1):
+            notes_text += f"\n\nQUESTION {qi}: {q.get('stem', '')}"
+            for opt in q.get('options', []):
+                marker = " [CORRECT]" if opt.get('correct') else ""
+                notes_text += f"\n  {opt['letter']}) {opt['text']}{marker}"
+        if screen.get('feedback_correct'):
+            notes_text += f"\n\nCORRECT FEEDBACK: {screen['feedback_correct']}"
+        if screen.get('feedback_incorrect'):
+            notes_text += f"\nINCORRECT FEEDBACK: {screen['feedback_incorrect']}"
+
     if notes_text:
         notes_slide = slide.notes_slide
         notes_slide.notes_text_frame.text = notes_text
@@ -395,7 +423,7 @@ def parse_screen(section: str) -> dict:
     screen = {}
 
     # Screen number and title
-    header_match = re.search(r'## Screen ([\d.]+)\s*[—–-]\s*(.+)', section)
+    header_match = re.search(r'## Screen ([\d.]+[A-Da-d]?)\s*[—–-]\s*(.+)', section)
     if header_match:
         screen['number'] = header_match.group(1).strip()
         screen['title'] = header_match.group(2).strip()
@@ -430,6 +458,8 @@ def parse_screen(section: str) -> dict:
         screen['type'] = 'completion'
     elif 'Key Takeaways' in title or 'Summary' in title:
         screen['type'] = 'summary'
+    elif 'Impact' in title:
+        screen['type'] = 'impact'
     elif 'Inclusive Practice' in title or 'Tips' in title:
         screen['type'] = 'tips'
 
@@ -994,6 +1024,104 @@ def create_why_slide(prs, screen, guide_num, slide_idx, total_slides):
         narration = screen['narration']
         first_sentence = narration.split('.')[0] + '.' if '.' in narration else narration[:80]
         _add_paragraph(tf_tk, first_sentence, size=10, color=INK, space_before=4)
+
+    _add_footer(slide, slide_idx, total_slides)
+    _add_notes(slide, screen)
+    return slide
+
+
+def create_impact_slide(prs, screen, guide_num, slide_idx, total_slides):
+    """Impact slide (s-impact) — two-column: photo left, accent bar + content right.
+    Accent colour varies by topic: red for Missed Care, cobalt for Communication Gap, navy for Avoidance."""
+    slide = _add_blank_slide(prs)
+    section = _extract_section_name(screen)
+    _add_topbar(slide, guide_num, section)
+
+    title = screen.get('title', 'Impact')
+
+    # Determine accent colour based on title keywords
+    if 'Missed Care' in title:
+        accent_color = RED
+        accent_bg = RED_BG
+    elif 'Communication' in title:
+        accent_color = COBALT
+        accent_bg = COBALT_BG
+    else:
+        # Avoidance or default
+        accent_color = NAVY
+        accent_bg = RGBColor(0xE8, 0xEB, 0xF2)  # light navy background
+
+    section_num = screen.get('number', '').split('.')[0]
+    y = _add_eyebrow(slide, f"Section {section_num} \u00b7 Why this matters")
+    y = _add_slide_title(slide, title, y)
+
+    # --- LEFT COLUMN: photo placeholder ---
+    photo_x = CONTENT_PAD_X
+    photo_y = Inches(2.8)
+    photo_w = Inches(5.0)
+    photo_h = Inches(3.75)  # 540px equivalent
+    _add_rounded_rect(slide, photo_x, photo_y, photo_w, photo_h,
+                       fill_color=NEUTRAL_2, border_color=NEUTRAL)
+    tf_ph, _ = _init_textbox(slide, photo_x + Inches(1.2), photo_y + Inches(1.6), Inches(3), Inches(0.5))
+    p_ph = tf_ph.paragraphs[0]
+    p_ph.alignment = PP_ALIGN.CENTER
+    run_ph = p_ph.add_run()
+    alt = screen.get('alt_text', '[Photo Placeholder]')
+    _set_run(run_ph, f"[{alt}]", font_name="Arial", size=10, italic=True, color=MUTED)
+
+    # --- RIGHT COLUMN: accent bar + H2 title + body text ---
+    right_x = Inches(6.5)
+    right_w = Inches(6.0)
+
+    # Accent bar (vertical, left edge of right column)
+    _add_rect(slide, right_x, Inches(2.8), Inches(0.06), Inches(3.75), fill_color=accent_color)
+
+    # H2 title
+    tf_h2, _ = _init_textbox(slide, right_x + Inches(0.3), Inches(2.9), right_w - Inches(0.5), Inches(0.5))
+    run_h2 = tf_h2.paragraphs[0].add_run()
+    # Strip "Impact: " prefix for cleaner heading
+    display_title = re.sub(r'^Impact:\s*', '', title).strip()
+    _set_run(run_h2, display_title, font_name="Arial Black", size=24, bold=True, color=accent_color)
+
+    # Body text from text_items
+    body_items = [item for item in screen.get('text_items', [])
+                  if not any(skip in item for skip in ['Audio:', 'Captions:', 'Image:', 'SME:', 'H2:'])]
+    text_y = Inches(3.6)
+    for item in body_items[:3]:
+        tf, _ = _init_textbox(slide, right_x + Inches(0.3), text_y, right_w - Inches(0.5), Inches(0.5))
+        run = tf.paragraphs[0].add_run()
+        _set_run(run, f"\u2022  {item}", font_name="Arial", size=11, color=INK)
+        text_y += Inches(0.5)
+
+    # Key takeaway / Indigenous context box
+    box_y = Inches(5.3)
+    is_indigenous = 'indigenous' in title.lower() or 'avoidance' in title.lower()
+    if is_indigenous:
+        # Earth-toned Indigenous context box
+        earth_color = RGBColor(0x8B, 0x6F, 0x47)
+        earth_bg = RGBColor(0xF5, 0xF0, 0xE6)
+        _add_rect(slide, right_x + Inches(0.3), box_y, Inches(0.06), Inches(1.0), fill_color=earth_color)
+        _add_rect(slide, right_x + Inches(0.36), box_y, right_w - Inches(0.86), Inches(1.0), fill_color=earth_bg)
+        tf_ctx, _ = _init_textbox(slide, right_x + Inches(0.55), box_y + Inches(0.1),
+                                   right_w - Inches(1.1), Inches(0.3))
+        run_ctx_label = tf_ctx.paragraphs[0].add_run()
+        _set_run(run_ctx_label, "Indigenous Context", font_name="Arial Black", size=9, bold=True, color=earth_color)
+        # Use last bullet or narration excerpt
+        indigenous_text = "Indigenous peoples face compounded barriers \u2014 systemic racism, geographic isolation, and culturally unsafe healthcare environments."
+        _add_paragraph(tf_ctx, indigenous_text, size=10, color=INK, space_before=4)
+    else:
+        # Standard key takeaway box
+        _add_rect(slide, right_x + Inches(0.3), box_y, Inches(0.06), Inches(0.8), fill_color=accent_color)
+        _add_rect(slide, right_x + Inches(0.36), box_y, right_w - Inches(0.86), Inches(0.8), fill_color=accent_bg)
+        tf_tk, _ = _init_textbox(slide, right_x + Inches(0.55), box_y + Inches(0.1),
+                                  right_w - Inches(1.1), Inches(0.6))
+        run_tk_label = tf_tk.paragraphs[0].add_run()
+        _set_run(run_tk_label, "Key Takeaway", font_name="Arial Black", size=9, bold=True, color=accent_color)
+        # Use first sentence of narration
+        if screen.get('narration'):
+            narration = screen['narration']
+            first_sentence = narration.split('.')[0] + '.' if '.' in narration else narration[:80]
+            _add_paragraph(tf_tk, first_sentence, size=10, color=INK, space_before=4)
 
     _add_footer(slide, slide_idx, total_slides)
     _add_notes(slide, screen)
@@ -1860,6 +1988,11 @@ def generate_ppt(guide_num: int, dry_run: bool = False):
         elif stype == 'objectives':
             create_objectives_slide(prs, screen, guide_num, slide_idx, total_slides)
             print(f"  [ok] {label} (objectives)")
+            slide_idx += 1
+
+        elif stype == 'impact':
+            create_impact_slide(prs, screen, guide_num, slide_idx, total_slides)
+            print(f"  [ok] {label} (impact)")
             slide_idx += 1
 
         elif stype == 'scenario':

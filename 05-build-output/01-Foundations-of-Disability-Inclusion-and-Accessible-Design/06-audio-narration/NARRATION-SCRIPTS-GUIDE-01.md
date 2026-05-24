@@ -54,7 +54,7 @@ These are not abstract concepts. Each objective ties directly to something you w
 
 ---
 
-## [SCREEN 1.3 — Why This Matters in Healthcare]
+## [SCREEN 1.3A — Why This Matters: The Stat]
 
 (Beat — grounded, serious but not heavy)
 
@@ -62,17 +62,59 @@ Here is a number worth knowing. According to Statistics Canada, more than 27 per
 
 (Beat)
 
-That means more than one in four people who come to UHN for care may experience barriers related to disability. And many disabilities are non-visible — you may not know someone has a disability unless they tell you.
-
-The reality is that healthcare systems were often designed without disability in mind. Narrow doorways, small print on intake forms, appointment booking systems that require phone calls, waiting rooms with no seating options — these are everyday barriers that affect real people.
+That means more than one in four people who come to UHN for care may experience barriers related to disability. And many of those disabilities are non-visible — you may not know someone has a disability unless they tell you.
 
 (Beat)
 
-When we remove these barriers, we do not just help people with disabilities. We create a better experience for everyone — older adults, people recovering from surgery, caregivers with strollers, anyone navigating a stressful moment.
+Take a moment with that number. One in four. That is not a small group. That is your patients, your colleagues, and your community.
 
-Accessibility benefits all of us. And it starts with understanding.
+[WORD COUNT: 82 | ESTIMATED TIME: 33 seconds]
 
-[WORD COUNT: 162 | ESTIMATED TIME: 65 seconds]
+---
+
+## [SCREEN 1.3B — Impact: Missed Care]
+
+(Beat — measured, empathetic tone)
+
+Healthcare systems were often designed without disability in mind. Narrow doorways make it impossible for some wheelchair users to enter exam rooms. Small print on intake forms excludes people with low vision. Booking systems that require phone calls shut out people who are Deaf or hard of hearing.
+
+(Beat)
+
+These are not edge cases — they are structural barriers that affect thousands of patients at UHN every year. When these barriers exist, patients avoid or delay the care they need. Not because they do not want help, but because the system was not designed to include them.
+
+[WORD COUNT: 78 | ESTIMATED TIME: 31 seconds]
+
+---
+
+## [SCREEN 1.3C — Impact: Communication Gap]
+
+(Beat — thoughtful, deliberate tone)
+
+Communication barriers are among the most common — and the most dangerous — in healthcare. When a clinician assumes a patient understands verbal instructions, but the patient has a cognitive or language-related disability, critical information gets lost.
+
+(Beat)
+
+Misdiagnosis can follow. Wrong assumptions about what a person can or cannot understand lead to wrong care decisions. Adapting your communication — using plain language, visual aids, or simply asking how someone prefers to receive information — can change the outcome of a visit entirely.
+
+[WORD COUNT: 79 | ESTIMATED TIME: 32 seconds]
+
+---
+
+## [SCREEN 1.3D — Impact: Avoidance]
+
+(Beat — serious, respectful tone)
+
+When barriers go unaddressed, patients do not just have a bad experience — they stop coming. They delay care, miss follow-ups, or abandon treatment altogether.
+
+(Beat)
+
+These barriers compound for people who face intersecting forms of marginalization. Indigenous peoples in Ontario, for example, navigate not only disability-related barriers but also systemic racism, geographic isolation, and culturally unsafe healthcare environments.
+
+(Beat)
+
+Removing barriers is not just about compliance. It is about making sure no one is excluded from the care they need and deserve.
+
+[WORD COUNT: 81 | ESTIMATED TIME: 32 seconds]
 
 ---
 
@@ -352,7 +394,77 @@ You have completed Guide 1. Well done. Download the job aids linked on this scre
 
 ---
 
-## [SCREEN 1.16 — Resources and Course Completion]
+## [SCREEN 1.16 — Listen and Reflect (Podcast)]
+
+(Beat — calm, inviting tone)
+
+Before we close this guide, take a few minutes to listen. On this screen, you will find a short audio reflection — about two and a half minutes long — from a patient advisor at UHN.
+
+(Beat)
+
+They share what good accessibility actually feels like at the front desk. Not the policy version — the lived version. What it means when someone pauses, asks, and adjusts. What it feels like when that does not happen.
+
+As you listen, pay attention to three moments. The first is about tone of voice at intake — why it matters more than the form you are filling out. The second is about how a simple "ask, then confirm" approach prevented a wrong assumption. And the third is a single sentence that every staff member can use on a busy shift.
+
+(Beat)
+
+Captions are available. A full transcript is below the player. You can also download the audio as an MP3 if you would like to revisit it later.
+
+After listening, you will see a reflection prompt. Take a moment with it before moving on.
+
+[WORD COUNT: 165 | ESTIMATED TIME: 66 seconds]
+
+---
+
+## [SCREEN 1.17 — Decision Tree Activity]
+
+(Beat — engaging, scenario tone)
+
+Here is one more practice activity — a decision tree.
+
+(Beat)
+
+A patient is at the intake desk, visibly frustrated while trying to complete the intake form. You do not yet know the cause. It could be vision, language, digital access, cognitive load, or something else entirely. The lobby is busy and three people are waiting behind them.
+
+This is the moment where the Accessibility Decision Path matters most. What is your first move — before assuming anything about the barrier?
+
+(Beat)
+
+You will see three options on screen. One is recommended. Each opens a brief consequence panel showing what happens next — for the patient, for the chart, and for the team. After you see the consequence, the activity loops back to the Decision Path to show which step you were practising.
+
+(Beat)
+
+Choose the option that best reflects "Pause and Assess" — the first step of the path. Take your time.
+
+[WORD COUNT: 152 | ESTIMATED TIME: 61 seconds]
+
+---
+
+## [SCREEN 1.18 — Series Progress Map]
+
+(Beat — forward-looking, motivating tone)
+
+You have completed Guide 1 — and with it, you have unlocked the rest of the Accessibility First series.
+
+(Beat)
+
+On this screen, you can see the full 18-guide journey mapped across three stages.
+
+Stage 1 is Foundations — that is Guides 1 through 4. You have just completed the first guide. The remaining three Foundation guides cover perceptions and attitudes, vision disabilities, and hearing and communication.
+
+Stage 2 is Understanding Disability Experiences — Guides 5 through 9. These guides explore physical disabilities, mental health, intellectual and developmental disabilities, non-visible disabilities, and aging and intersectionality.
+
+Stage 3 is Applied Practice — Guides 10 through 18. These guides focus on specific skills and specialized contexts, from service animals and assistive devices to trauma-informed care and crisis de-escalation.
+
+(Beat)
+
+Guides unlock by stage. Completing all four Foundation guides opens Stage 2. You are on your way.
+
+[WORD COUNT: 150 | ESTIMATED TIME: 60 seconds]
+
+---
+
+## [SCREEN 1.19 — Resources and Course Completion]
 
 (Beat — warm, congratulatory tone)
 
@@ -386,7 +498,10 @@ See you in Guide 2.
 |--------|-------|------------|----------------|
 | 1.1 | Welcome and Course Purpose | 142 | 57s |
 | 1.2 | Learning Objectives | 117 | 47s |
-| 1.3 | Why This Matters in Healthcare | 162 | 65s |
+| 1.3A | Why This Matters: The Stat | 82 | 33s |
+| 1.3B | Impact: Missed Care | 78 | 31s |
+| 1.3C | Impact: Communication Gap | 79 | 32s |
+| 1.3D | Impact: Avoidance | 81 | 32s |
 | 1.4 | Core Concept: Models of Disability | 195 | 78s |
 | 1.5 | Accessibility in Practice Model | 189 | 76s |
 | 1.6 | Accessibility Decision Path | 190 | 76s |
@@ -399,8 +514,11 @@ See you in Guide 2.
 | 1.13 | Reflection Prompt | 140 | 56s |
 | 1.14 | MAP Action Planning | 160 | 64s |
 | 1.15 | Key Takeaways | 175 | 70s |
-| 1.16 | Resources and Course Completion | 178 | 71s |
-| **Total** | | **2,420** | **~16 min 8s** |
+| 1.16 | Listen and Reflect (Podcast) | 165 | 66s |
+| 1.17 | Decision Tree Activity | 152 | 61s |
+| 1.18 | Series Progress Map | 150 | 60s |
+| 1.19 | Resources and Course Completion | 178 | 71s |
+| **Total** | | **3,045** | **~20 min 18s** |
 
 ## Voice Direction Notes
 

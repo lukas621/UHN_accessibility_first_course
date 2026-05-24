@@ -319,6 +319,70 @@ The badge should feel professional — like a credential, not a game achievement
 
 ---
 
+## Image 14 — Impact: Missed Care (Screen 1.3B)
+
+**Screen:** 1.3B — Impact: Missed Care
+**Category:** Character Illustration (Realistic Photo Style)
+
+**Visual Description:**
+A medium shot of an empty hospital waiting area at UHN. The space is clean and modern, but the self-check-in kiosk is mounted too high for a wheelchair user to reach. A row of hard plastic chairs with no armrests lines the wall. A small-print paper sign on the wall explains the check-in process. The scene shows the space without people — the emptiness itself tells the story: someone didn't come because they couldn't navigate these barriers. Morning light through large windows. A visible wheelchair-accessible parking sign through the window suggests someone arrived but didn't make it inside.
+
+**Style:** Realistic photo. Clean hospital interior. Documentary feel — no staging, no dramatic lighting. The barriers should be visible but not exaggerated.
+
+**Character Details:** No people in this image — the absence is the point.
+
+**Alt Text:** "An empty hospital waiting area with accessibility barriers: a self-check-in kiosk mounted too high, hard chairs without armrests, and small-print instructions. The empty space conveys that patients may avoid care when barriers exist."
+
+**Suggested Filename:** `g01-impact-missed-care-01.png`
+
+**Negative Prompts:** No people. No dramatic lighting. No broken or dirty equipment. No American hospital aesthetics. No logos or text on signage. No cluttered or messy space — the barriers are structural, not neglect.
+
+---
+
+## Image 15 — Impact: Communication Gap (Screen 1.3C)
+
+**Screen:** 1.3C — Impact: Communication Gap
+**Category:** Character Illustration (Realistic Photo Style)
+
+**Visual Description:**
+A medium shot in a UHN exam room. A clinician in navy scrubs is speaking to a patient while looking at a computer screen, turned partially away. The patient — a middle-aged South Asian woman wearing a hearing aid — is leaning forward slightly, trying to follow the conversation. A printed discharge instruction sheet sits face-down on the exam table, too far for the patient to read. The scene captures the subtle moment where communication is happening but not landing. Natural fluorescent hospital lighting. Clean, modern UHN-style exam room.
+
+**Style:** Realistic photo. Candid, observational. Indoor hospital lighting. The communication gap should feel natural and everyday — not dramatic.
+
+**Character Details:**
+- Clinician: mid-30s, any ethnicity, navy scrubs, facing computer, speaking over shoulder
+- Patient: mid-50s, South Asian woman, behind-the-ear hearing aid visible, leaning forward, attentive but uncertain expression
+
+**Alt Text:** "A clinician speaks to a patient while facing a computer screen. The patient, a middle-aged woman with a visible hearing aid, leans forward trying to follow the conversation. A printed instruction sheet sits out of reach on the exam table, illustrating everyday communication barriers in healthcare."
+
+**Suggested Filename:** `g01-impact-communication-gap-01.png`
+
+**Negative Prompts:** No angry or frustrated expressions. No exaggerated body language. No pity framing. No one looking helpless. The gap should feel subtle and systemic, not personal. No American hospital aesthetics. No logos or text.
+
+---
+
+## Image 16 — Impact: Avoidance (Screen 1.3D)
+
+**Screen:** 1.3D — Impact: Avoidance
+**Category:** Character Illustration (Realistic Photo Style)
+
+**Visual Description:**
+A wide shot of the exterior entrance of a modern Canadian hospital (UHN-style). The automatic doors are open, the accessible ramp has handrails, and the entrance looks welcoming. But in the foreground, a person — an Indigenous man in his late 40s, using a manual wheelchair — has stopped on the sidewalk about 20 feet from the entrance. He is looking at the hospital entrance but has not moved toward it. His posture suggests hesitation, not inability. He has a small backpack on the back of his wheelchair. It's a grey, overcast Toronto morning. A few other people walk past him into the hospital without noticing.
+
+**Style:** Realistic photo. Documentary/photojournalistic. Natural overcast light. Wide angle to show the distance between the person and the entrance — the gap is emotional, not physical.
+
+**Character Details:**
+- Man: late 40s, Indigenous (Anishinaabe features), manual wheelchair, casual clothes (jacket, jeans), looking toward hospital entrance, hesitant posture
+- Background people: 2-3 others entering the hospital normally, not interacting with the man
+
+**Alt Text:** "A man in a manual wheelchair pauses on the sidewalk outside a hospital entrance. The doors are open and the ramp is accessible, but he hesitates — the barrier is not the building. Other people walk past into the hospital without noticing. The image illustrates how past negative experiences can prevent patients from seeking care."
+
+**Suggested Filename:** `g01-impact-avoidance-01.png`
+
+**Negative Prompts:** No pity framing. The man should look thoughtful and autonomous, not helpless or sad. No one staring at him. No American hospital aesthetics. No logos or text on the building. No dramatic weather. No stereotypical "inspiration" composition.
+
+---
+
 ## Production Notes
 
 ### File Specifications
