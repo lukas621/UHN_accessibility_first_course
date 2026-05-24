@@ -100,83 +100,59 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 
 /* ── Voiceover & Closed Captions ── */
 .vo-controls {
-  position:fixed; bottom:10px; left:50%; transform:translateX(-50%);
-  display:flex; align-items:center; gap:4px; z-index:9990;
-  background:rgba(25,40,88,0.92); border-radius:5px; overflow:hidden;
-  box-shadow:0 2px 12px rgba(0,0,0,0.3); padding:0 4px;
-  transition:transform 0.3s cubic-bezier(0.2,0.7,0.2,1), opacity 0.3s ease;
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%) translateY(100%);
+  display:flex; align-items:center; gap:0; z-index:9990;
+  background:rgba(25,40,88,0.92); border-radius:4px 4px 0 0; overflow:hidden;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.3);
+  transition:transform 0.3s cubic-bezier(0.2,0.7,0.2,1);
 }
-.vo-controls.hidden {
-  transform:translateX(-50%) translateY(calc(100% + 14px));
-  opacity:0; pointer-events:none;
+.vo-controls:hover, .vo-controls.pinned {
+  transform:translateX(-50%) translateY(0);
 }
+.vo-controls::before {
+  content:''; position:absolute; top:-18px; left:50%; transform:translateX(-50%);
+  width:36px; height:18px; pointer-events:auto;
+}
+.vo-trigger {
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  width:48px; height:6px; z-index:9991; cursor:pointer;
+  display:flex; justify-content:center; align-items:flex-end;
+}
+.vo-trigger::after {
+  content:''; width:32px; height:3px; background:rgba(255,255,255,0.35);
+  border-radius:2px 2px 0 0; transition:background 0.2s;
+}
+.vo-trigger:hover::after { background:rgba(255,255,255,0.7); }
+.vo-trigger:hover ~ .vo-controls,
+.vo-trigger:hover ~ #voControls { transform:translateX(-50%) translateY(0); }
 .vo-btn {
-  width:32px; height:32px; background:transparent; border:none; color:#fff;
-  cursor:pointer; display:grid; place-items:center; font-size:13px;
-  transition:background 0.15s; flex-shrink:0;
+  width:28px; height:28px; background:transparent; border:none; color:#fff;
+  cursor:pointer; display:grid; place-items:center; font-size:12px;
+  transition:background 0.15s;
 }
 .vo-btn:hover { background:rgba(255,255,255,0.12); }
 .vo-btn.active { background:var(--red); }
-.vo-btn svg { width:14px; height:14px; fill:#fff; }
+.vo-btn svg { width:13px; height:13px; fill:#fff; }
 .vo-progress-wrap {
-  width:120px; height:32px; display:flex; align-items:center; padding:0 6px;
+  width:100px; height:28px; display:flex; align-items:center; padding:0 6px;
   cursor:pointer;
 }
 .vo-progress-bg {
-  width:100%; height:3px; background:rgba(255,255,255,0.2); border-radius:2px; position:relative;
+  width:100%; height:2px; background:rgba(255,255,255,0.2); border-radius:1px; position:relative;
 }
 .vo-progress-fill {
-  height:100%; background:var(--chartreuse); border-radius:2px; width:0%; transition:width 0.1s linear;
+  height:100%; background:var(--chartreuse); border-radius:1px; width:0%; transition:width 0.1s linear;
 }
 .vo-time {
-  font-family:var(--font-body); font-size:10px; color:rgba(255,255,255,0.6);
-  padding:0 8px; white-space:nowrap; letter-spacing:0.5px;
+  font-family:var(--font-body); font-size:9px; color:rgba(255,255,255,0.55);
+  padding:0 6px; white-space:nowrap; letter-spacing:0.5px;
 }
-.vo-vol-wrap {
-  display:flex; align-items:center; gap:0; position:relative;
-}
-.vo-vol-btn {
-  width:32px; height:32px; background:transparent; border:none; color:#fff;
-  cursor:pointer; display:grid; place-items:center; transition:background 0.15s; flex-shrink:0;
-}
-.vo-vol-btn:hover { background:rgba(255,255,255,0.12); }
-.vo-vol-btn svg { width:14px; height:14px; fill:#fff; }
-.vo-vol-slider {
-  width:0; overflow:hidden; transition:width 0.2s ease;
-  display:flex; align-items:center;
-}
-.vo-vol-wrap:hover .vo-vol-slider { width:60px; }
-.vo-vol-slider input[type=range] {
-  -webkit-appearance:none; appearance:none; width:52px; height:3px;
-  background:rgba(255,255,255,0.2); border-radius:2px; outline:none; margin:0 4px;
-}
-.vo-vol-slider input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance:none; width:10px; height:10px; border-radius:50%;
-  background:#fff; cursor:pointer;
-}
-.vo-hide-btn {
-  width:24px; height:32px; background:transparent; border:none; color:rgba(255,255,255,0.4);
-  cursor:pointer; display:grid; place-items:center; font-size:16px; flex-shrink:0;
-  transition:color 0.15s; margin-left:2px;
-}
-.vo-hide-btn:hover { color:#fff; }
-.vo-show-btn {
-  position:fixed; bottom:6px; left:50%; transform:translateX(-50%);
-  width:36px; height:14px; z-index:9989; cursor:pointer; border:none;
-  background:rgba(25,40,88,0.7); border-radius:3px 3px 0 0;
-  display:none; align-items:center; justify-content:center;
-}
-.vo-show-btn::after {
-  content:''; width:18px; height:2px; background:rgba(255,255,255,0.5); border-radius:1px;
-}
-.vo-show-btn:hover { background:rgba(25,40,88,0.95); }
-.vo-show-btn.visible { display:flex; }
 .cc-bar {
-  position:fixed; bottom:54px; left:50%; transform:translateX(-50%);
+  position:fixed; bottom:42px; left:50%; transform:translateX(-50%);
   max-width:1100px; width:88%; z-index:9989;
-  background:rgba(0,0,0,0.8); color:#fff; padding:12px 22px;
-  font-family:var(--font-body); font-size:19px; line-height:1.45;
-  border-radius:5px; text-align:center;
+  background:rgba(0,0,0,0.8); color:#fff; padding:10px 20px;
+  font-family:var(--font-body); font-size:18px; line-height:1.45;
+  border-radius:4px; text-align:center;
   opacity:0; pointer-events:none; transition:opacity 0.25s ease;
 }
 .cc-bar.visible { opacity:1; pointer-events:auto; }
@@ -812,7 +788,10 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     </div>
   </div>
 <div class="slide-footer dark">
-  <div class="left"></div>
+  <div class="left">
+    <div class="tag">GUIDE 01</div>
+    <div class="guide-label">FOUNDATIONS OF DISABILITY, INCLUSION &amp; ACCESSIBLE DESIGN</div>
+  </div>
   <div class="slide-nav">
     <button class="sn-btn prev" onclick="goSlide(1 - 1)">‹</button>
     <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">1 / 23</span></div>
@@ -2480,25 +2459,17 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 </div>
 
 <!-- VO Controls & CC Bar -->
-<button class="vo-show-btn" id="voShowBtn" title="Show audio controls"></button>
+<div class="vo-trigger" id="voTrigger"></div>
 <div class="vo-controls" id="voControls">
   <button class="vo-btn" id="voPlayBtn" title="Play / Pause voiceover">
     <svg id="voPlayIcon" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
     <svg id="voPauseIcon" viewBox="0 0 24 24" style="display:none"><rect x="5" y="4" width="4" height="16"/><rect x="15" y="4" width="4" height="16"/></svg>
   </button>
-  <div class="vo-vol-wrap">
-    <button class="vo-vol-btn" id="voVolBtn" title="Mute / Unmute">
-      <svg id="voVolIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/><path d="M19 12c0 2.97-1.65 5.54-4 6.71v2.06c3.45-1.33 6-4.95 6-8.77s-2.55-7.44-6-8.77v2.06c2.35 1.17 4 3.74 4 6.71z"/></svg>
-      <svg id="voMuteIcon" viewBox="0 0 24 24" style="display:none"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="23" y1="9" x2="17" y2="15" stroke="#fff" stroke-width="2"/><line x1="17" y1="9" x2="23" y2="15" stroke="#fff" stroke-width="2"/></svg>
-    </button>
-    <div class="vo-vol-slider"><input type="range" id="voVolRange" min="0" max="100" value="80"></div>
-  </div>
   <div class="vo-progress-wrap" id="voProgressWrap">
     <div class="vo-progress-bg"><div class="vo-progress-fill" id="voProgressFill"></div></div>
   </div>
   <span class="vo-time" id="voTime">0:00 / 0:00</span>
-  <button class="vo-btn" id="voCCBtn" title="Toggle closed captions" style="font-family:var(--font-head);font-size:10px;letter-spacing:1px;color:#fff;width:auto;padding:0 8px;">CC</button>
-  <button class="vo-hide-btn" id="voHideBtn" title="Hide controls">&times;</button>
+  <button class="vo-btn" id="voCCBtn" title="Toggle closed captions" style="font-family:var(--font-head);font-size:11px;letter-spacing:1px;color:#fff;width:auto;padding:0 10px;">CC</button>
 </div>
 <div class="cc-bar" id="ccBar"></div>
 <audio id="voAudio" preload="auto"></audio>
@@ -2730,39 +2701,17 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     return m + ':' + (s < 10 ? '0' : '') + s;
   }
 
-  // Build word-weighted timing breakpoints per slide
-  var ccTimingCache = {};
-  function getCCTimings(slideNum) {
-    if (ccTimingCache[slideNum]) return ccTimingCache[slideNum];
-    var segs = ccData[slideNum];
-    if (!segs || !audio.duration) return null;
-    var wordCounts = segs.map(function(s){ return s.split(/\s+/).length; });
-    var totalWords = wordCounts.reduce(function(a,b){ return a+b; }, 0);
-    var breakpoints = [];
-    var cumulative = 0;
-    for (var i = 0; i < segs.length; i++) {
-      breakpoints.push(cumulative);
-      cumulative += (wordCounts[i] / totalWords) * audio.duration;
-    }
-    ccTimingCache[slideNum] = breakpoints;
-    return breakpoints;
-  }
-
   function updateProgress() {
     if (!audio.duration) return;
     var pct = (audio.currentTime / audio.duration) * 100;
     progressFill.style.width = pct + '%';
     timeLabel.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
 
-    // Update CC text with word-weighted timing
+    // Update CC text
     if (ccEnabled && ccData[currentSlide]) {
       var segs = ccData[currentSlide];
-      var bp = getCCTimings(currentSlide);
-      if (!bp) return;
-      var idx = 0;
-      for (var i = bp.length - 1; i >= 0; i--) {
-        if (audio.currentTime >= bp[i]) { idx = i; break; }
-      }
+      var segDur = audio.duration / segs.length;
+      var idx = Math.min(Math.floor(audio.currentTime / segDur), segs.length - 1);
       ccBar.textContent = segs[idx];
       ccBar.classList.add('visible');
     }
@@ -2770,7 +2719,6 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 
   function playSlideVO(slideNum) {
     currentSlide = slideNum;
-    delete ccTimingCache[slideNum]; // recalc with new audio duration
     audio.pause();
     audio.currentTime = 0;
     progressFill.style.width = '0%';
@@ -2834,47 +2782,6 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     playIcon.style.display = '';
     pauseIcon.style.display = 'none';
     ccBar.classList.remove('visible');
-  });
-
-  // Volume control
-  var volBtn = document.getElementById('voVolBtn');
-  var volRange = document.getElementById('voVolRange');
-  var volIcon = document.getElementById('voVolIcon');
-  var muteIcon = document.getElementById('voMuteIcon');
-  audio.volume = 0.8;
-  var savedVol = 0.8;
-  volRange.addEventListener('input', function(){
-    audio.volume = this.value / 100;
-    savedVol = audio.volume;
-    volIcon.style.display = audio.volume === 0 ? 'none' : '';
-    muteIcon.style.display = audio.volume === 0 ? '' : 'none';
-  });
-  volBtn.addEventListener('click', function(){
-    if (audio.volume > 0) {
-      savedVol = audio.volume;
-      audio.volume = 0;
-      volRange.value = 0;
-      volIcon.style.display = 'none';
-      muteIcon.style.display = '';
-    } else {
-      audio.volume = savedVol || 0.8;
-      volRange.value = Math.round(audio.volume * 100);
-      volIcon.style.display = '';
-      muteIcon.style.display = 'none';
-    }
-  });
-
-  // Show/hide controls bar
-  var controls = document.getElementById('voControls');
-  var hideBtn = document.getElementById('voHideBtn');
-  var showBtn = document.getElementById('voShowBtn');
-  hideBtn.addEventListener('click', function(){
-    controls.classList.add('hidden');
-    showBtn.classList.add('visible');
-  });
-  showBtn.addEventListener('click', function(){
-    controls.classList.remove('hidden');
-    showBtn.classList.remove('visible');
   });
 
   // Hook into goSlide

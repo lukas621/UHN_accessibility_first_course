@@ -2486,13 +2486,6 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     <svg id="voPlayIcon" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
     <svg id="voPauseIcon" viewBox="0 0 24 24" style="display:none"><rect x="5" y="4" width="4" height="16"/><rect x="15" y="4" width="4" height="16"/></svg>
   </button>
-  <div class="vo-vol-wrap">
-    <button class="vo-vol-btn" id="voVolBtn" title="Mute / Unmute">
-      <svg id="voVolIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/><path d="M19 12c0 2.97-1.65 5.54-4 6.71v2.06c3.45-1.33 6-4.95 6-8.77s-2.55-7.44-6-8.77v2.06c2.35 1.17 4 3.74 4 6.71z"/></svg>
-      <svg id="voMuteIcon" viewBox="0 0 24 24" style="display:none"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="23" y1="9" x2="17" y2="15" stroke="#fff" stroke-width="2"/><line x1="17" y1="9" x2="23" y2="15" stroke="#fff" stroke-width="2"/></svg>
-    </button>
-    <div class="vo-vol-slider"><input type="range" id="voVolRange" min="0" max="100" value="80"></div>
-  </div>
   <div class="vo-progress-wrap" id="voProgressWrap">
     <div class="vo-progress-bg"><div class="vo-progress-fill" id="voProgressFill"></div></div>
   </div>
@@ -2834,34 +2827,6 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     playIcon.style.display = '';
     pauseIcon.style.display = 'none';
     ccBar.classList.remove('visible');
-  });
-
-  // Volume control
-  var volBtn = document.getElementById('voVolBtn');
-  var volRange = document.getElementById('voVolRange');
-  var volIcon = document.getElementById('voVolIcon');
-  var muteIcon = document.getElementById('voMuteIcon');
-  audio.volume = 0.8;
-  var savedVol = 0.8;
-  volRange.addEventListener('input', function(){
-    audio.volume = this.value / 100;
-    savedVol = audio.volume;
-    volIcon.style.display = audio.volume === 0 ? 'none' : '';
-    muteIcon.style.display = audio.volume === 0 ? '' : 'none';
-  });
-  volBtn.addEventListener('click', function(){
-    if (audio.volume > 0) {
-      savedVol = audio.volume;
-      audio.volume = 0;
-      volRange.value = 0;
-      volIcon.style.display = 'none';
-      muteIcon.style.display = '';
-    } else {
-      audio.volume = savedVol || 0.8;
-      volRange.value = Math.round(audio.volume * 100);
-      volIcon.style.display = '';
-      muteIcon.style.display = 'none';
-    }
   });
 
   // Show/hide controls bar
