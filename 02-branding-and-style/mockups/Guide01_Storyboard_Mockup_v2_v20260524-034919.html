@@ -2112,18 +2112,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
   window.togglePod = function(){
     if(!audio){ init(); }
     if(!audio) return;
-    if(audio.paused){
-      // Pause VO if playing
-      var voAudio = document.getElementById('voAudio');
-      if(voAudio && !voAudio.paused){
-        voAudio.pause();
-        var pi = document.getElementById('voPlayIcon');
-        var pp = document.getElementById('voPauseIcon');
-        if(pi) pi.style.display = '';
-        if(pp) pp.style.display = 'none';
-      }
-      audio.play(); if(playBtn) playBtn.textContent='⏸';
-    }
+    if(audio.paused){ audio.play(); if(playBtn) playBtn.textContent='⏸'; }
     else { audio.pause(); if(playBtn) playBtn.textContent='▶'; }
   };
   window.seekPod = function(e){
@@ -2787,14 +2776,6 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     progressFill.style.width = '0%';
     ccBar.classList.remove('visible');
     ccBar.textContent = '';
-
-    // Stop podcast audio when leaving slide 20
-    var podAudio = document.getElementById('podAudio');
-    if (podAudio && !podAudio.paused) {
-      podAudio.pause();
-      var podBtn = document.getElementById('podPlayBtn');
-      if (podBtn) podBtn.textContent = '▶';
-    }
 
     var file = voMap[slideNum];
     if (!file) {

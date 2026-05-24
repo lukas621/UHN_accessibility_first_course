@@ -2788,14 +2788,6 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     ccBar.classList.remove('visible');
     ccBar.textContent = '';
 
-    // Stop podcast audio when leaving slide 20
-    var podAudio = document.getElementById('podAudio');
-    if (podAudio && !podAudio.paused) {
-      podAudio.pause();
-      var podBtn = document.getElementById('podPlayBtn');
-      if (podBtn) podBtn.textContent = '▶';
-    }
-
     var file = voMap[slideNum];
     if (!file) {
       playIcon.style.display = '';
