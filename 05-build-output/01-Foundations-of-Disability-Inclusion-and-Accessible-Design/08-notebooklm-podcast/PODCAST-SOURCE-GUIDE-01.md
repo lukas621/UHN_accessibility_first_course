@@ -16,7 +16,7 @@ This document is optimized for Google NotebookLM to generate a short (~3 minute)
 
 **Episode:** Guide 01
 
-**Target Length:** ~3 minutes (450-500 words max)
+**Actual Length:** ~18 minutes (full NotebookLM deep dive)
 
 **Voice:** D. K., UHN Patient & Family Advisor — someone who has lived experience navigating UHN as a patient with a disability. Calm, grounded, specific. Not performative. Not inspirational. Just honest.
 
@@ -61,11 +61,16 @@ Dignity starts before the appointment. It starts at the front desk. It starts wi
 
 ## Key Listening Points
 
-*Update these timestamps after the audio is generated — the moments below are estimated based on the source text flow.*
+*Timestamps from the full 18-minute podcast: Five_words_to_restore_patient_dignity.m4a*
 
-- **~00:18** — Why a tone of voice at intake matters more than the form
-- **~01:02** — How "ask, then confirm" prevented a wrong assumption
-- **~01:54** — One sentence every staff member can use on a busy shift
+- **0:00** — Hook: $50 million wing vs 30 seconds at intake — what actually determines a patient's visit
+- **2:36** — The 30-second intake test: what DK notices before any clinical data is exchanged
+- **3:06** — Good vs bad intake: tone, eye contact, and the physiological response to being seen
+- **4:10** — What happens when it goes wrong: talking past the patient, grabbing the wheelchair
+- **8:52** — The five words: "What works best for you?" — the nurse who changed everything
+- **10:25** — The confirmation: "Did I get that right?" — closing the loop with dignity
+- **14:02** — One sentence for a busy shift: "Is there anything I should know to make this easier for you?"
+- **16:40** — Final reflection: where are you defaulting to the fastest path?
 
 ## References
 

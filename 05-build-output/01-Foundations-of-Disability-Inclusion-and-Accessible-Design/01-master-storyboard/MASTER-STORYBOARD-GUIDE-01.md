@@ -28,8 +28,8 @@
 | Time: ~1 min | • UHN logo + Accessibility First branding | **Image:** g01-hero-welcome-01.png |
 | SME: Low | • "Begin" button | Alt: "Diverse group of UHN healthcare workers at accessible hospital entrance" |
 | | | |
-| | **Narration (143 words, ~57s):** | **Accessibility:** |
-| | Welcome to the Accessibility First series — Guide 1: Foundations of Disability, Inclusion, and Accessible Design. Over the next 15 to 20 minutes, you'll build the foundation for this 18-guide series. You'll explore what disability means, examine the models that shape how we think about it, and learn a practical framework you can use starting today. At UHN, accessibility isn't a checklist or a compliance exercise. It's a commitment to making sure every person who walks through our doors — as a patient, a visitor, or a colleague — can participate fully and with dignity. This guide is for everyone at UHN, regardless of your role. Whether you work at the bedside, at the front desk, in a lab, or in an office, accessibility is part of your practice. Let's get started. | • "Begin" button keyboard-accessible (Tab + Enter) |
+| | **Narration (142 words, ~57s):** | **Accessibility:** |
+| | Welcome to the Accessibility First series. This is Guide 1: Foundations of Disability Inclusion and Accessible Design. Over the next 15 to 20 minutes, you will build the foundation for everything that follows in this 18-guide series. You will explore what disability means, examine the models that shape how we think about it, and learn a practical framework you can use starting today. At UHN, accessibility is not a checklist or a compliance exercise. It is a commitment to making sure every person who walks through our doors — as a patient, a visitor, or a colleague — can participate fully and with dignity. This guide is for everyone at UHN, regardless of your role. Whether you work at the bedside, at the front desk, in a lab, or in an office, accessibility is part of your practice. Let us get started. | • "Begin" button keyboard-accessible (Tab + Enter) |
 | | | • Contrast: WCAG 2.1 AA (4.5:1) |
 | | **Audio:** voiceover_1.1.mp3 | • Captions: voiceover_1.1.srt |
 
@@ -47,7 +47,7 @@
 | | 4. Use the 5-step Decision Path — Pause and Assess, Listen, Apply, Adapt, and Seek Support when an accessibility need is identified | |
 | | | **Accessibility:** |
 | | **Narration (117 words, ~47s):** | • Ordered list markup (ol/li) |
-| | By the end of this guide, you'll be able to do four things. First, define disability using the human rights model and explain why it matters in healthcare. Second, identify common barriers people with disabilities face at UHN. Third, apply the Accessibility Decision Path — a five-step framework — to real workplace situations. And fourth, describe how the Accessibility in Practice model connects to your daily work. These aren't abstract concepts. Each objective ties directly to something you'll practise in a scenario later in this guide. | • Each icon has alt text |
+| | By the end of this guide, you will be able to do four things. First, you will be able to define disability using the human rights model and explain why this model matters in healthcare. Second, you will be able to identify common barriers that people with disabilities face when accessing healthcare at UHN. Third, you will be able to apply the Accessibility Decision Path — a five-step framework — to real workplace situations. And fourth, you will be able to describe how the four areas of the Accessibility in Practice model connect to your daily work. These are not abstract concepts. Each objective ties directly to something you will practise in a scenario later in this guide. | • Each icon has alt text |
 | | | • WCAG 2.1 AA contrast |
 | | **Audio:** voiceover_1.2.mp3 | • Captions: voiceover_1.2.srt |
 
@@ -63,7 +63,7 @@
 | Time: ~45s | • "Many disabilities are non-visible — you may not know unless someone tells you." | |
 | SME: **High** — verify stats | | **Image:** g01-stats-onein4-01.png |
 | | **Narration (82 words, ~33s):** | Alt: "Large 27% statistic with supporting text: more than one in four Canadians have a disability" |
-| | Here is a number worth knowing. According to Statistics Canada, more than 27 percent of Canadians aged 15 and older have at least one disability. In Ontario, that number is even higher. That means more than one in four people who come to UHN for care may experience barriers related to disability. And many of those disabilities are non-visible — you may not know someone has a disability unless they tell you. | **Accessibility:** |
+| | Here is a number worth knowing. According to Statistics Canada, more than 27 percent of Canadians aged 15 and older have at least one disability. In Ontario, that number is even higher. That means more than one in four people who come to UHN for care may experience barriers related to disability. And many of those disabilities are non-visible — you may not know someone has a disability unless they tell you. Take a moment with that number. One in four. That is not a small group. That is your patients, your colleagues, and your community. | **Accessibility:** |
 | | | • Stat coded as text, not image |
 | | **Refs:** Statistics Canada (2023). *Canadian Survey on Disability, 2022*. | • Animation respects prefers-reduced-motion |
 | | **Audio:** voiceover_1.3A.mp3 | • Captions: voiceover_1.3A.srt |
@@ -80,7 +80,7 @@
 | Time: ~45s | • "Narrow doorways, small print on intake forms, phone-only booking — these are structural barriers." | **Image:** g01-impact-missedcare-01.png |
 | SME: Medium | | Alt: "Patient looking frustrated at inaccessible hospital entrance with narrow doorway" |
 | | **Narration (78 words, ~31s):** | |
-| | Healthcare systems were often designed without disability in mind. Narrow doorways make it impossible for some wheelchair users to enter exam rooms. Small print on intake forms excludes people with low vision. Booking systems that require phone calls shut out people who are Deaf or hard of hearing. These are not edge cases — they are structural barriers that affect thousands of patients at UHN every year. When these barriers exist, patients avoid or delay the care they need. | **Accessibility:** |
+| | Healthcare systems were often designed without disability in mind. Narrow doorways make it impossible for some wheelchair users to enter exam rooms. Small print on intake forms excludes people with low vision. Booking systems that require phone calls shut out people who are Deaf or hard of hearing. These are not edge cases — they are structural barriers that affect thousands of patients at UHN every year. When these barriers exist, patients avoid or delay the care they need. Not because they do not want help, but because the system was not designed to include them. | **Accessibility:** |
 | | | • Red accent bar for visual emphasis |
 | | **Audio:** voiceover_1.3B.mp3 | • Captions: voiceover_1.3B.srt |
 
@@ -129,7 +129,7 @@
 | SME: Medium | **Rights Model:** Focuses on human rights and equal participation (UN CRPD) | Alt: "Three-panel comparison of medical, social, and rights-based models of disability" |
 | | | |
 | | **Narration (195 words, ~78s):** | **Accessibility:** |
-| | How we think about disability shapes how we respond to it. There are three main models. The medical model focuses on what's "wrong" with a person. It treats disability as a condition to be fixed. This model has its place in clinical care, but when it's the only lens, it puts all the responsibility on the individual. The social model shifts the focus to the environment. It says disability happens when barriers in our systems, spaces, and attitudes prevent someone from participating. A person who uses a wheelchair isn't disabled by the wheelchair — they're disabled by stairs. The rights-based model goes further. It says people with disabilities have a legal and moral right to full participation. This is the model behind the UN Convention on the Rights of Persons with Disabilities and Ontario's AODA. At UHN, we use rights-based and social model thinking — focusing on removing barriers rather than expecting individuals to adapt. | • Tab panels keyboard-navigable |
+| | How we think about disability shapes how we respond to it. So let us look at three models that have influenced healthcare and society. The first is the medical model. This model treats disability as a problem located in the individual — something to be diagnosed, treated, or cured. For decades, this was the dominant view in healthcare. Under this model, the focus is on fixing the person. The second is the social model. This model shifts the focus from the person to the environment. It says that people are disabled not by their bodies or minds, but by barriers in society — stairs instead of ramps, information only in print, attitudes that exclude. Under this model, the focus is on fixing the barriers. The third — and the one that guides this series — is the human rights model. This model builds on the social model but goes further. It says that people with disabilities have the right to full participation in every aspect of life. It is not enough to remove barriers. We must actively ensure inclusion, dignity, and equity. At UHN, we use the human rights model as our foundation. This means we do not just accommodate — we include. | • Tab panels keyboard-navigable |
 | | | • Each tab announced by screen reader |
 | | **Audio:** voiceover_1.4.mp3 | • Captions: voiceover_1.4.srt |
 
@@ -147,7 +147,7 @@
 | | **Response:** Take timely, respectful action to remove barriers. | |
 | | | **Accessibility:** |
 | | **Narration (189 words, ~76s):** | • Click-reveal is keyboard-accessible |
-| | Accessibility works best when it's part of everyday practice, not a separate task. The Accessibility in Practice model gives you four areas to focus on. Awareness — recognize that accessibility needs may not be immediately visible. Be mindful of your assumptions. Communication — listen first, then ask. Adapt how you communicate to meet the person's needs. Environment — look at the physical, sensory, and social environment around you. Is it accessible? Is it safe? Response — when you identify a barrier, act. Adjust, adapt, or seek support. These four areas work together. You might notice a barrier (awareness), ask the person how to help (communication), adjust the space (environment), and follow up (response). This model will appear in every guide in this series. It's a framework you can use in any situation — at a patient's bedside, at the front desk, in a team meeting, or when designing a new process. | • All four quadrants readable without hover |
+| | Now let us look at a framework you will use throughout this entire series. It is called the Accessibility in Practice model, and it has four areas. The first area is Awareness. This means recognizing barriers and biases — including your own unconscious assumptions about disability. Awareness is the starting point for every accessible interaction. The second area is Communication. This means adapting how you share and receive information. It could mean offering forms in large print, using plain language, providing a sign language interpreter, or simply asking someone how they prefer to communicate. The third area is Environment. This means shaping inclusive physical and digital spaces. Think about doorway widths, signage contrast, website navigation, and exam room layouts. The environment either enables or prevents access. The fourth area is Response. This means acting with dignity and flexibility when someone needs something different. It is about how you react in the moment — with respect, without judgment, and with a willingness to adapt. These four areas work together. Throughout this series, each guide will explore how awareness, communication, environment, and response apply to a specific disability context. | • All four quadrants readable without hover |
 | | | • Consistent with series template |
 | | **Audio:** voiceover_1.5.mp3 | • Captions: voiceover_1.5.srt |
 
@@ -166,7 +166,7 @@
 | | **5. Seek Support** — Consult manager, IDEAA, or accessibility resources. | **Accessibility:** |
 | | | • Step interaction keyboard-navigable |
 | | **Narration (190 words, ~76s):** | • Focus indicator visible on each step |
-| | When an accessibility question comes up — and it will — you need a practical approach. The Accessibility Decision Path gives you five steps. Step one: Pause and Assess. Before you act, take a moment. Is there an accessibility need here? Don't assume — observe. Step two: Listen and Ask. Engage respectfully. Ask how you can help. Listen to what the person tells you, not what you think they need. Step three: Apply. Use the principles you're learning in this series. Think about the Accessibility in Practice model. Step four: Adapt. Adjust your communication, the environment, or the process. Accessibility often means flexibility, not perfection. Step five: Seek Support. If you're unsure, reach out. Talk to your manager, contact IDEAA, or connect with accessibility resources at UHN. This path isn't a one-time checklist. It's a way of thinking. You'll see it in every guide in this series, applied to different situations and different types of disability. | • Consistent across all 18 guides |
+| | When you encounter a situation involving accessibility, what do you actually do? That is where the Accessibility Decision Path comes in. This is a five-step framework you can use in any moment. Step one is Pause. Before you act, take a breath and notice what is happening. Are you making assumptions? Is there a barrier you had not considered? Step two is Listen. Hear the person in front of you. Ask how they would like to be supported. Do not assume you know what someone needs. Step three is Apply. Use what you have learned — from this series, from your training, from your experience — to respond appropriately. Step four is Adapt. If your first approach does not work, adjust. Flexibility is not a sign of failure. It is a sign of competence. And step five is Seek Support. If you are unsure, ask for help. Contact your manager, reach out to Patient Relations, or consult with accessibility resources at UHN. You do not have to have all the answers. These five steps — Pause, Listen, Apply, Adapt, Seek Support — will come back in every guide. They are your anchor. | • Consistent across all 18 guides |
 | | | |
 | | **Audio:** voiceover_1.6.mp3 | • Captions: voiceover_1.6.srt |
 
@@ -283,14 +283,14 @@
 | Step | Activities | Design Guide |
 |---|---|---|
 | **Screen 1.12 of 22** | **Tips (card carousel — 5 cards):** | **Visual:** |
-| Practice Tips | **Tip 1:** Ask before helping. Offer assistance but respect the person's choice. | Card carousel — click through 5 cards. Each card has tip text + small icon. UHN teal accent. |
-| Interaction: Card carousel (prev/next) | **Tip 2:** Use people-first language unless the person prefers identity-first. Ask. | |
-| Time: ~2 min | **Tip 3:** Don't assume what someone can or can't do based on visible cues. | **Image:** g01-tips-cards-01.png (flat vector icon set for tips) |
-| SME: Low | **Tip 4:** Offer multiple ways to access services — phone, in-person, online. | |
-| | **Tip 5:** Report barriers. Don't just work around them — flag them for systemic improvement. | **Accessibility:** |
+| Practice Tips | **Tip 1:** Always ask — never assume. Ask how to assist; respect their expertise about their own needs. | Card carousel — click through 5 cards. Each card has tip text + small icon. UHN teal accent. |
+| Interaction: Card carousel (prev/next) | **Tip 2:** Make your space scan a habit. Check wheelchair reach, signage readability, clear paths. | |
+| Time: ~2 min | **Tip 3:** Speak to the person, not their companion. Direct conversation and eye contact to the patient. | **Image:** g01-tips-cards-01.png (flat vector icon set for tips) |
+| SME: Low | **Tip 4:** Offer information in more than one format — large print, electronic, or verbal. | |
+| | **Tip 5:** Report barriers — do not just work around them. Flag for team lead or facilities. | **Accessibility:** |
 | | | • Carousel keyboard-navigable (arrow keys) |
-| | **Narration (196 words, ~78s):** | • All card content accessible without hover |
-| | Before we move to reflection, here are five practices you can start using right away... [full script in narration file] | |
+| | **Narration (228 words, ~91s):** | • All card content accessible without hover |
+| | Before we wrap up the core content, here are five inclusive practice tips you can start using today... [full script in narration file] | |
 | | **Audio:** voiceover_1.12.mp3 | • Captions: voiceover_1.12.srt |
 
 ---
@@ -352,12 +352,14 @@
 | **Screen 1.16 of 22** | **On-Screen Text:** | **Visual:** |
 | Audio / Podcast | • Episode title: "Accessibility in Everyday Care" | Audio player with play/pause, progress bar, captions toggle, transcript toggle. |
 | Interaction: Audio player + transcript toggle | • Episode label: "Episode 01 of 18 · Foundations" | |
-| Time: ~2.5 min | • A short patient-advisor reflection on what good accessibility actually feels like at the front desk. | **Audio:** podcast_1.16.mp3 |
+| Time: ~18 min (full) | • A deep dive into what good accessibility actually feels like from the patient side. Full transcript and captions available. | **Audio:** Five_words_to_restore_patient_dignity.m4a |
 | SME: Low | | |
 | | **Key Listening Points:** | **Accessibility:** |
-| | • 00:18 — Why a tone of voice at intake matters more than the form. | • Captions always available (CC toggle) |
-| | • 01:02 — How "ask, then confirm" prevented a wrong assumption. | • Full transcript expandable |
-| | • 01:54 — One sentence every staff member can use on a busy shift. | • Downloadable MP3 |
+| | • 0:00 — Hook: $50M wing vs 30 seconds at intake | • Captions always available (CC toggle) |
+| | • 2:36 — The 30-second intake test | • Full transcript expandable |
+| | • 8:52 — The five words: "What works best for you?" | • Downloadable MP3 |
+| | • 14:02 — One sentence for a busy shift | |
+| | • 16:40 — Final reflection: defaulting to the fastest path | |
 | | | |
 | | **Reflection prompt (after listening):** | |
 | | "Think of one patient interaction this week. Which moment would have shifted if you had paused to ask, before you acted?" | |
@@ -420,8 +422,8 @@
 | | | **Accessibility:** |
 | | **Next in series:** Guide 02 — Perceptions, Attitudes, and Barriers | • All links keyboard-accessible |
 | | | • Badge has alt text |
-| | **Narration (111 words, ~44s):** | • SCORM completion status sent |
-| | Congratulations — you've completed Guide 01... [full script in narration file] | |
+| | **Narration (178 words, ~71s):** | • SCORM completion status sent |
+| | Congratulations — you have completed Guide 1: Foundations of Disability Inclusion and Accessible Design... [full script in narration file] | |
 | | **Audio:** voiceover_1.19.mp3 | • Captions: voiceover_1.19.srt |
 
 ---
@@ -431,8 +433,8 @@
 | Metric | Value |
 |---|---|
 | Total screens | 22 |
-| Total narration | ~2,660 words |
-| Estimated audio | ~17 min 44 sec |
+| Total narration | ~3,077 words |
+| Estimated audio | ~20 min 31 sec |
 | Branching scenarios | 3 (Screens 1.7, 1.8, 1.9) |
 | Decision tree | 1 (Screen 1.17) |
 | Knowledge checks | 3 questions (Screens 1.10, 1.11) |

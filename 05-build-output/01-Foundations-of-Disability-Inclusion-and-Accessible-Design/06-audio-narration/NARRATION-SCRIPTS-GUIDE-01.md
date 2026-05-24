@@ -300,7 +300,7 @@ When you are ready, select your answer. Remember, you have two attempts.
 
 (Beat — warm, practical, encouraging)
 
-Before we wrap up the core content, here are some inclusive practice tips you can start using today. These are small, concrete actions that make a real difference.
+Before we wrap up the core content, here are five inclusive practice tips you can start using today. These are small, concrete actions that make a real difference.
 
 (Beat)
 
@@ -312,11 +312,13 @@ Tip number three: Speak to the person, not their companion. When a patient is ac
 
 Tip number four: Offer information in more than one format. If you are handing out a printed form, ask if the person would prefer large print, an electronic version, or verbal instructions.
 
+Tip number five: Report barriers — do not just work around them. If you notice a barrier, flag it for your team lead or facilities. Working around a problem helps one person. Reporting it helps everyone who comes after.
+
 (Beat)
 
-These four tips connect directly to the Accessibility in Practice model — awareness, communication, environment, and response.
+These five tips connect directly to the Accessibility in Practice model — awareness, communication, environment, and response.
 
-[WORD COUNT: 196 | ESTIMATED TIME: 78 seconds]
+[WORD COUNT: 228 | ESTIMATED TIME: 91 seconds]
 
 ---
 
@@ -398,21 +400,21 @@ You have completed Guide 1. Well done. Download the job aids linked on this scre
 
 (Beat — calm, inviting tone)
 
-Before we close this guide, take a few minutes to listen. On this screen, you will find a short audio reflection — about two and a half minutes long — from a patient advisor at UHN.
+Before we close this guide, take some time to listen. On this screen, you will find a deep dive conversation — about 18 minutes — exploring accessibility through the eyes of a patient advisor at UHN.
 
 (Beat)
 
-They share what good accessibility actually feels like at the front desk. Not the policy version — the lived version. What it means when someone pauses, asks, and adjusts. What it feels like when that does not happen.
+The conversation centres on one question: what does dignity actually feel like when you are a patient navigating a hospital with a disability? The answer, it turns out, has nothing to do with buildings or budgets. It comes down to 30 seconds at the front desk.
 
-As you listen, pay attention to three moments. The first is about tone of voice at intake — why it matters more than the form you are filling out. The second is about how a simple "ask, then confirm" approach prevented a wrong assumption. And the third is a single sentence that every staff member can use on a busy shift.
+Here are some moments to listen for. At the beginning, you will hear why a 50 million dollar diagnostic wing means nothing if the first human interaction fails. Around the nine-minute mark, you will hear about five words from a nurse that changed everything. And near the end, you will hear one sentence that every staff member can use on their next shift.
 
 (Beat)
 
-Captions are available. A full transcript is below the player. You can also download the audio as an MP3 if you would like to revisit it later.
+Captions and a full transcript are available. You can also download the audio if you would like to listen during a commute or a break.
 
-After listening, you will see a reflection prompt. Take a moment with it before moving on.
+After listening, consider this reflection: think of one patient interaction this week — which moment would have shifted if you had paused to ask, before you acted?
 
-[WORD COUNT: 165 | ESTIMATED TIME: 66 seconds]
+[WORD COUNT: 180 | ESTIMATED TIME: 72 seconds]
 
 ---
 
@@ -510,15 +512,15 @@ See you in Guide 2.
 | 1.9 | Scenario 3: Employee Awareness | 145 | 58s |
 | 1.10 | Knowledge Check 1 | 85 | 34s |
 | 1.11 | Knowledge Check 2 | 58 | 23s |
-| 1.12 | Inclusive Practice Tips | 196 | 78s |
+| 1.12 | Inclusive Practice Tips | 228 | 91s |
 | 1.13 | Reflection Prompt | 140 | 56s |
 | 1.14 | MAP Action Planning | 160 | 64s |
 | 1.15 | Key Takeaways | 175 | 70s |
-| 1.16 | Listen and Reflect (Podcast) | 165 | 66s |
+| 1.16 | Listen and Reflect (Podcast) | 180 | 72s |
 | 1.17 | Decision Tree Activity | 152 | 61s |
 | 1.18 | Series Progress Map | 150 | 60s |
 | 1.19 | Resources and Course Completion | 178 | 71s |
-| **Total** | | **3,045** | **~20 min 18s** |
+| **Total** | | **3,077** | **~20 min 31s** |
 
 ## Voice Direction Notes
 

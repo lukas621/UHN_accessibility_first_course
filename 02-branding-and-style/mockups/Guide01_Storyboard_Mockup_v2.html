@@ -30,7 +30,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
   width:1920px; height:1080px; background:#fff;
   position:fixed; top:0; left:0;
   transform-origin:top left;
-  overflow:hidden; font-size:24px; line-height:1.45;
+  overflow:hidden; font-size:26px; line-height:1.45;
   visibility:hidden; opacity:0; pointer-events:none;
   z-index:1;
 }
@@ -145,7 +145,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
 }
 .s-title .sub { font-size:22px; color:rgba(255,255,255,0.75); max-width:660px; line-height:1.4; }
 .s-title .meta-row {
-  display:flex; gap:36px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.2);
+  display:flex; justify-content:space-between; padding-top:16px; border-top:1px solid rgba(255,255,255,0.2);
 }
 .s-title .meta { font-size:24px; color:rgba(255,255,255,0.6); letter-spacing:1px; }
 .s-title .meta b { display:block; color:#fff; font-family:var(--font-head); font-size:24px; letter-spacing:1px; margin-top:6px; }
@@ -320,7 +320,31 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
 
 /* ── Scenario ── */
 .scen-grid { display:grid; grid-template-columns:1fr 1.05fr; gap:40px; padding:32px 96px 0; }
-.scen-grid .photo { height:600px; }
+.scen-grid .photo { height:600px; position:relative; }
+
+/* ── Feedback overlay on image ── */
+.feedback-overlay {
+  display:none; position:absolute; top:0; left:0; right:0; bottom:0;
+  background:rgba(25,40,88,0.9); color:#fff; padding:48px 52px;
+  font-size:20px; line-height:1.6; z-index:10;
+  flex-direction:column; justify-content:center; text-align:left;
+}
+.feedback-overlay.show { display:flex; }
+.feedback-overlay .close-btn {
+  position:absolute; bottom:18px; right:20px;
+  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.35); color:#fff;
+  font-size:13px; padding:8px 20px; border-radius:4px; cursor:pointer;
+  font-family:var(--font-head); letter-spacing:2px; text-transform:uppercase; transition:all 0.15s;
+}
+.feedback-overlay .close-btn:hover { background:rgba(255,255,255,0.25); border-color:#fff; }
+.feedback-overlay b { color:var(--chartreuse); }
+.feedback-overlay .debrief-section {
+  margin-top:20px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.25);
+}
+.feedback-overlay .debrief-section .lbl {
+  font-family:var(--font-head); font-size:13px; letter-spacing:3px; color:var(--chartreuse);
+  text-transform:uppercase; margin-bottom:8px;
+}
 .scenario-box {
   background:#fff; border:1px solid var(--neutral); border-left:6px solid var(--red); padding:24px 28px;
 }
@@ -419,7 +443,9 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
 .pod-meta .info .ttl { font-family:var(--font-head); font-size:18px; color:var(--navy); margin:0 0 4px; }
 .pod-meta .info .sub { font-size:14px; color:var(--muted); }
 .pod-progress { height:6px; background:var(--neutral); border-radius:3px; position:relative; }
-.pod-progress .fill { height:100%; width:35%; background:var(--cobalt); border-radius:3px; }
+.pod-progress .fill { height:100%; width:0%; background:var(--cobalt); border-radius:3px; transition:width 0.3s linear; }
+.transcript-p { transition:background 0.3s, border-color 0.3s; padding:8px 12px; margin:0 0 8px; border-left:3px solid transparent; border-radius:2px; }
+.transcript-p.active { background:rgba(36,91,170,0.2); border-left-color:var(--cobalt); }
 .pod-side { display:flex; flex-direction:column; gap:18px; }
 .pod-points { border:1px solid rgba(255,255,255,0.2); padding:24px 28px; }
 .pod-points .lbl { font-family:var(--font-head); font-size:14px; letter-spacing:3px; color:var(--lilac); text-transform:uppercase; margin-bottom:14px; }
@@ -638,16 +664,14 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
       <span>ACCESSIBILITY FIRST SERIES</span>
     </div>
     <div>
-      <div class="guide-num">GUIDE 01 OF 18 · FOUNDATIONS</div>
-      <h1>
-        <span class="series">ACCESSIBILITY FIRST SERIES · ADVANCING DIGNITY, INCLUSION &amp; EQUITABLE CARE</span>
+      <div class="guide-num" style="margin-bottom:32px;">GUIDE 01 OF 18 · FOUNDATIONS</div>
+      <h1 style="margin-bottom:28px;">
         Foundations of Disability, Inclusion &amp; <span style="color:var(--lilac)">Accessible Design</span>
       </h1>
       <div class="sub">Over the next 15 to 20 minutes, you'll build the foundation for this 18-guide series. You'll explore what disability means, examine the models that shape how we think about it, and learn a practical framework you can use starting today.</div>
     </div>
     <div class="meta-row">
       <div class="meta">Duration<b>15–20 min</b></div>
-      <div class="meta">Format<b>Self-paced · Storyline 360</b></div>
       <div class="meta">Audience<b>All UHN Staff</b></div>
       <div class="meta">Version<b>v1.0 · 2026</b></div>
     </div>
@@ -783,7 +807,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Impact: <span class="accent">Missed Care</span></h1>
   </div>
   <div class="why-grid">
-    <div class="photo" style="height:540px;" data-label="g01-impact-missed-care.png · Empty clinic waiting room with inaccessible kiosk"></div>
+    <div class="photo has-img" style="height:540px;"><img src="images/g01-impact-missed-care-01.png" alt="An empty hospital waiting area with a self-check-in kiosk mounted too high for wheelchair users, hard plastic chairs without armrests, and a small-print sign on the wall."></div>
     <div class="why-body">
       <p>Patients avoid appointments because booking systems are unusable, entrances are inaccessible, or intake forms create barriers before care even begins.</p>
       <p>Healthcare systems were often designed without disability in mind — narrow doorways, small print on forms, phone-only booking, waiting rooms with no seating options.</p>
@@ -820,7 +844,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Impact: <span style="color:var(--cobalt);">Communication Gap</span></h1>
   </div>
   <div class="why-grid">
-    <div class="photo" style="height:540px;" data-label="g01-impact-communication.png · Clinician speaking while patient looks confused"></div>
+    <div class="photo has-img" style="height:540px;"><img src="images/g01-impact-communication-gap-01.png" alt="A healthcare worker at a computer speaking over their shoulder while a patient with a hearing aid leans forward trying to follow the conversation."></div>
     <div class="why-body">
       <p>Misdiagnosis and inadequate treatment occur when communication barriers are not addressed — wrong assumptions about what a patient needs, speaking too quickly, or relying on written-only instructions.</p>
       <p>A patient who cannot access information in their preferred format cannot participate fully in their own care.</p>
@@ -857,7 +881,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Impact: <span style="color:var(--navy);">Avoidance</span></h1>
   </div>
   <div class="why-grid">
-    <div class="photo" style="height:540px;" data-label="g01-impact-avoidance.png · Person hesitating outside a hospital entrance"></div>
+    <div class="photo has-img" style="height:540px;"><img src="images/g01-impact-avoidance-01.png" alt="A man in a wheelchair sitting on the sidewalk outside a hospital entrance, paused and looking toward the doors while others walk past without noticing."></div>
     <div class="why-body">
       <p>Patients delay or abandon care entirely because past experiences were inaccessible, dismissive, or dehumanizing. This is especially true for people who have experienced compounded barriers.</p>
       <div style="margin-top:18px; border:1px solid var(--neutral); border-left:4px solid var(--chartreuse); padding:18px 22px; background:var(--chartreuse-bg);">
@@ -1070,7 +1094,17 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Scenario 1: Hospital <span class="accent">Booking System</span></h1>
   </div>
   <div class="scen-grid">
-    <div class="photo has-img" style="height:560px;"><img src="images/g01-scenario-booking-01.png" alt="An older woman at a hospital reception desk speaking with a receptionist about booking difficulties."></div>
+    <div class="photo has-img" style="height:560px;">
+      <img src="images/g01-scenario-booking-01.png" alt="An older woman at a hospital reception desk speaking with a receptionist about booking difficulties.">
+      <div class="feedback-overlay" id="fb-s1">
+        <button class="close-btn" onclick="this.parentElement.classList.remove('show')">CLOSE</button>
+        <div class="fb-content"></div>
+        <div class="debrief-section">
+          <div class="lbl">DEBRIEF</div>
+          <p>Accessibility includes usability. Meeting technical standards is not enough. Offer multiple options and report barriers upstream.</p>
+        </div>
+      </div>
+    </div>
     <div>
       <div class="format-badge">Branching choice · 3 options · graded</div>
       <div class="scenario-box">
@@ -1079,32 +1113,19 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
         <p>You're working at the front desk when Mrs. Okafor, a 68-year-old patient, arrives looking frustrated. She explains that she tried to use the new online booking system but couldn't navigate it. The system meets accessibility standards, but she has limited digital literacy and finds it confusing. She's been trying for three days and finally came in person.</p>
       </div>
       <div class="scenario-q" style="margin-top:18px;">What do you do?</div>
-      <div class="options" data-correct="A">
-        <div class="option" data-choice="A">
+      <div class="options" data-correct="A" data-overlay="fb-s1">
+        <div class="option" data-choice="A" data-fb="<b>Best response: A.</b> Mrs. Okafor feels heard. She gets her appointment. The barrier is flagged for system improvement.">
           <div class="ltr">A</div>
           <div>You apologize for the difficulty, book her appointment right away, and let her know she can always call or come in person. You note the issue for your team lead.</div>
         </div>
-        <div class="option" data-choice="B">
+        <div class="option" data-choice="B" data-fb="<b>Acceptable, but not best.</b> She gets her appointment but feels the problem is hers to solve. The systemic issue goes unreported.">
           <div class="ltr">B</div>
           <div>You book her appointment and suggest she ask a family member to help next time.</div>
         </div>
-        <div class="option" data-choice="C">
+        <div class="option" data-choice="C" data-fb="<b>Poor response.</b> She feels dismissed. &quot;Accessible&quot; and &quot;usable&quot; are not the same. The barrier remains.">
           <div class="ltr">C</div>
           <div>You tell her the system is accessible and offer to walk her through it on your computer.</div>
         </div>
-      </div>
-      <div class="feedback-box hidden" data-feedback="correct">
-        <b>Best response: A.</b> Mrs. Okafor feels heard. She gets her appointment. The barrier is flagged for system improvement.
-      </div>
-      <div class="feedback-box hidden" data-feedback="B" style="border-left-color:var(--muted);">
-        <b>Acceptable, but not best.</b> She gets her appointment but feels the problem is hers to solve. The systemic issue goes unreported.
-      </div>
-      <div class="feedback-box hidden" data-feedback="C" style="border-left-color:var(--red);">
-        <b>Poor response.</b> She feels dismissed. "Accessible" and "usable" are not the same. The barrier remains.
-      </div>
-      <div class="summary-bar hidden" data-feedback="principle" style="margin:18px 0 0; border-left-color:var(--chartreuse); background:var(--chartreuse-bg);">
-        <div class="lbl" style="color:var(--chartreuse);">DEBRIEF</div>
-        <p>Accessibility includes usability. Meeting technical standards is not enough. Offer multiple options and report barriers upstream.</p>
       </div>
     </div>
   </div>
@@ -1134,7 +1155,17 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Scenario 2: Clinic <span class="accent">Signage</span></h1>
   </div>
   <div class="scen-grid">
-    <div class="photo has-img" style="height:560px;"><img src="images/g01-scenario-signage-01.png" alt="An elderly woman using a magnifying glass to read a small directional sign on a hospital corridor wall."></div>
+    <div class="photo has-img" style="height:560px;">
+      <img src="images/g01-scenario-signage-01.png" alt="An elderly woman using a magnifying glass to read a small directional sign on a hospital corridor wall.">
+      <div class="feedback-overlay" id="fb-s2">
+        <button class="close-btn" onclick="this.parentElement.classList.remove('show')">CLOSE</button>
+        <div class="fb-content"></div>
+        <div class="debrief-section">
+          <div class="lbl">DEBRIEF</div>
+          <p>Meeting technical standards doesn't guarantee practical accessibility. Consider accessibility from the user's perspective. Report barriers — don't just work around them.</p>
+        </div>
+      </div>
+    </div>
     <div>
       <div class="format-badge">Branching choice · 3 options · graded</div>
       <div class="scenario-box">
@@ -1143,32 +1174,19 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
         <p>You notice a patient with low vision squinting at a directional sign in the outpatient clinic. The sign was recently installed and meets Ontario Building Code standards, but the font is small and it's mounted high on the wall. The patient asks you for directions to the lab.</p>
       </div>
       <div class="scenario-q" style="margin-top:18px;">What do you do?</div>
-      <div class="options" data-correct="A">
-        <div class="option" data-choice="A">
+      <div class="options" data-correct="A" data-overlay="fb-s2">
+        <div class="option" data-choice="A" data-fb="<b>Best response: A.</b> The patient gets where they need to go. You've addressed the immediate need and the systemic barrier.">
           <div class="ltr">A</div>
           <div>You walk the patient to the lab, then report the signage issue to facilities with a suggestion to add larger, lower signs with high-contrast text.</div>
         </div>
-        <div class="option" data-choice="B">
+        <div class="option" data-choice="B" data-fb="<b>Acceptable, but not best.</b> The patient finds the lab, but the signage problem remains for the next person.">
           <div class="ltr">B</div>
           <div>You give clear verbal directions and offer to walk them partway.</div>
         </div>
-        <div class="option" data-choice="C">
+        <div class="option" data-choice="C" data-fb="<b>Poor response.</b> The patient feels singled out. The barrier isn't addressed.">
           <div class="ltr">C</div>
           <div>You point to the sign and read it aloud.</div>
         </div>
-      </div>
-      <div class="feedback-box hidden" data-feedback="correct">
-        <b>Best response: A.</b> The patient gets where they need to go. You've addressed the immediate need and the systemic barrier.
-      </div>
-      <div class="feedback-box hidden" data-feedback="B" style="border-left-color:var(--muted);">
-        <b>Acceptable, but not best.</b> The patient finds the lab, but the signage problem remains for the next person.
-      </div>
-      <div class="feedback-box hidden" data-feedback="C" style="border-left-color:var(--red);">
-        <b>Poor response.</b> The patient feels singled out. The barrier isn't addressed.
-      </div>
-      <div class="summary-bar hidden" data-feedback="principle" style="margin:18px 0 0; border-left-color:var(--chartreuse); background:var(--chartreuse-bg);">
-        <div class="lbl" style="color:var(--chartreuse);">DEBRIEF</div>
-        <p>Meeting technical standards doesn't guarantee practical accessibility. Consider accessibility from the user's perspective. Report barriers — don't just work around them.</p>
       </div>
     </div>
   </div>
@@ -1198,7 +1216,17 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Scenario 3: Employee <span class="accent">Awareness</span></h1>
   </div>
   <div class="scen-grid">
-    <div class="photo has-img" style="height:560px;"><img src="images/g01-scenario-checklist-01.png" alt="Three healthcare workers gathered around a tablet in a hospital break room, collaborating on a review."></div>
+    <div class="photo has-img" style="height:560px;">
+      <img src="images/g01-scenario-checklist-01.png" alt="Three healthcare workers gathered around a tablet in a hospital break room, collaborating on a review.">
+      <div class="feedback-overlay" id="fb-s3">
+        <button class="close-btn" onclick="this.parentElement.classList.remove('show')">CLOSE</button>
+        <div class="fb-content"></div>
+        <div class="debrief-section">
+          <div class="lbl">DEBRIEF</div>
+          <p>Accessibility requires awareness, curiosity, and flexibility beyond any checklist. Take time to listen, ask respectful questions, and adapt to individual needs.</p>
+        </div>
+      </div>
+    </div>
     <div>
       <div class="format-badge">Branching choice · 3 options · graded</div>
       <div class="scenario-box">
@@ -1207,32 +1235,19 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
         <p>Your team uses an accessibility checklist when supporting patients. A colleague mentions that a patient who speaks Cantonese and has a cognitive disability seemed confused during intake, even though the checklist was completed. Your colleague says, "We followed the checklist — I'm not sure what else we can do."</p>
       </div>
       <div class="scenario-q" style="margin-top:18px;">What do you do?</div>
-      <div class="options" data-correct="A">
-        <div class="option" data-choice="A">
+      <div class="options" data-correct="A" data-overlay="fb-s3">
+        <div class="option" data-choice="A" data-fb="<b>Best response: A.</b> The team begins to see accessibility as more than a checklist. They plan to involve interpretation services and simplify intake materials.">
           <div class="ltr">A</div>
           <div>You acknowledge the checklist is a starting point but suggest the team explore what barriers the patient actually experienced — language support, cognitive load, cultural context — and adapt the process.</div>
         </div>
-        <div class="option" data-choice="B">
+        <div class="option" data-choice="B" data-fb="<b>Acceptable, but not best.</b> One barrier is addressed, but the cognitive and cultural dimensions are still missed.">
           <div class="ltr">B</div>
           <div>You suggest requesting an interpreter for next time.</div>
         </div>
-        <div class="option" data-choice="C">
+        <div class="option" data-choice="C" data-fb="<b>Poor response.</b> The patient's experience doesn't improve. The team misses a learning opportunity.">
           <div class="ltr">C</div>
           <div>You agree the checklist was completed and move on.</div>
         </div>
-      </div>
-      <div class="feedback-box hidden" data-feedback="correct">
-        <b>Best response: A.</b> The team begins to see accessibility as more than a checklist. They plan to involve interpretation services and simplify intake materials.
-      </div>
-      <div class="feedback-box hidden" data-feedback="B" style="border-left-color:var(--muted);">
-        <b>Acceptable, but not best.</b> One barrier is addressed, but the cognitive and cultural dimensions are still missed.
-      </div>
-      <div class="feedback-box hidden" data-feedback="C" style="border-left-color:var(--red);">
-        <b>Poor response.</b> The patient's experience doesn't improve. The team misses a learning opportunity.
-      </div>
-      <div class="summary-bar hidden" data-feedback="principle" style="margin:18px 0 0; border-left-color:var(--chartreuse); background:var(--chartreuse-bg);">
-        <div class="lbl" style="color:var(--chartreuse);">DEBRIEF</div>
-        <p>Accessibility requires awareness, curiosity, and flexibility beyond any checklist. Take time to listen, ask respectful questions, and adapt to individual needs.</p>
       </div>
     </div>
   </div>
@@ -1476,6 +1491,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
       <div style="margin-top:18px; padding:14px 18px; background:var(--neutral-2); border:1px solid var(--neutral); font-size:16px; color:var(--muted); font-style:italic;">
         This reflection is private — it is not submitted or reviewed.
       </div>
+      <button style="margin-top:18px; background:var(--red); color:#fff; font-family:var(--font-head); font-size:18px; padding:14px 28px; border:0; letter-spacing:2px; cursor:pointer; display:inline-flex; align-items:center; gap:10px;">SUBMIT REFLECTION<span style="font-size:24px;">›</span></button>
     </div>
     <div>
       <div class="scenario-box" style="border-left-color:var(--lilac);">
@@ -1537,6 +1553,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
         <div class="lbl" style="color:var(--lilac);">DOWNLOAD</div>
         <p>MAP-Template-Guide-01.pdf — download and keep your action plan.</p>
       </div>
+      <button style="margin-top:24px; background:var(--red); color:#fff; font-family:var(--font-head); font-size:18px; padding:14px 28px; border:0; letter-spacing:2px; cursor:pointer; display:inline-flex; align-items:center; gap:10px;">SAVE MY MAP<span style="font-size:24px;">›</span></button>
     </div>
   </div>
 <div class="slide-footer">
@@ -1612,20 +1629,22 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <div class="pod-player">
       <div class="pod-cover">
         <div class="ep">EPISODE 01 OF 18 · FOUNDATIONS</div>
-        <div class="show">Accessibility in Everyday Care</div>
+        <div class="show">Five Words to Restore Patient Dignity</div>
       </div>
       <div class="pod-controls">
         <div class="pod-meta">
-          <button class="pod-play">▶</button>
+          <audio id="podAudio" preload="metadata"><source src="Five_words_to_restore_patient_dignity.m4a" type="audio/mp4"></audio>
+          <button class="pod-play" id="podPlayBtn" onclick="togglePod()">▶</button>
           <div class="info">
-            <div class="ttl">Accessibility in Everyday Care</div>
-            <div class="sub">Patient-advisor reflection · ~2.5 minutes</div>
+            <div class="ttl">Five Words to Restore Patient Dignity</div>
+            <div class="sub">Deep dive · 17:51 · Patient-advisor reflection</div>
           </div>
         </div>
-        <div class="pod-progress"><div class="fill"></div></div>
-        <div style="display:flex; gap:10px;">
-          <span style="font-size:14px; color:var(--cobalt); font-family:var(--font-head);">SHOW TRANSCRIPT</span>
-          <span style="font-size:14px; color:var(--muted); margin-left:auto;">CC TOGGLE</span>
+        <div class="pod-progress" onclick="seekPod(event)" style="cursor:pointer;"><div class="fill" id="podFill"></div></div>
+        <div style="display:flex; gap:18px; align-items:center;">
+          <span id="podTime" style="font-size:14px; color:#666; font-family:var(--font-body);">0:00 / 17:51</span>
+          <span style="font-size:14px; color:var(--cobalt); font-family:var(--font-head); cursor:pointer;" onclick="document.getElementById('podTranscript').style.display = document.getElementById('podTranscript').style.display === 'none' ? 'block' : 'none'">TRANSCRIPT ▾</span>
+          <span style="font-size:14px; color:var(--muted); margin-left:auto;">SRT captions available</span>
         </div>
       </div>
     </div>
@@ -1634,15 +1653,37 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
         <div class="lbl">KEY LISTENING POINTS</div>
         <h3>What to listen for</h3>
         <ul>
-          <li><span class="tc">00:18</span> Why a tone of voice at intake matters more than the form.</li>
-          <li><span class="tc">01:02</span> How "ask, then confirm" prevented a wrong assumption.</li>
-          <li><span class="tc">01:54</span> One sentence every staff member can use on a busy shift.</li>
+          <li><span class="tc" style="cursor:pointer" onclick="seekTo(0)">0:00</span> $50M wing vs 30 seconds at the front desk</li>
+          <li><span class="tc" style="cursor:pointer" onclick="seekTo(156)">2:36</span> The 30-second intake test</li>
+          <li><span class="tc" style="cursor:pointer" onclick="seekTo(532)">8:52</span> Five words: "What works best for you?"</li>
+          <li><span class="tc" style="cursor:pointer" onclick="seekTo(842)">14:02</span> One sentence for a busy shift</li>
+          <li><span class="tc" style="cursor:pointer" onclick="seekTo(1000)">16:40</span> Where are you defaulting to the fastest path?</li>
         </ul>
       </div>
       <div class="pod-reflection">
         <div class="lbl">REFLECTION</div>
         <p>Think of one patient interaction this week. Which moment would have shifted if you had paused to ask, before you acted?</p>
       </div>
+    </div>
+  </div>
+  <!-- Transcript panel -->
+  <div id="podTranscript" style="display:none; position:absolute; left:64px; right:64px; top:520px; bottom:80px; background:rgba(15,26,61,0.97); border:1px solid rgba(255,255,255,0.15); border-radius:4px; padding:28px 32px; overflow-y:auto; z-index:30;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+      <span style="font-family:var(--font-head); font-size:16px; letter-spacing:3px; color:var(--cobalt); text-transform:uppercase;">Full Transcript</span>
+      <span style="font-size:14px; color:rgba(255,255,255,0.5); cursor:pointer;" onclick="this.parentElement.parentElement.style.display='none'">✕ CLOSE</span>
+    </div>
+    <div id="transcriptBody" style="font-size:15px; line-height:1.7; color:rgba(255,255,255,0.85);">
+      <p class="transcript-p" data-time="0" onclick="seekTo(0)"><b style="color:var(--lilac);">[0:00]</b> A hospital network can spend 50 million dollars on a new diagnostic wing. They can hire the absolute top specialists, deploy cutting-edge medical software. And yet — for a patient with a communication disability, the success or failure of their visit isn't determined by any of that. It's decided in the first 30 seconds at the front desk. And it costs absolutely zero dollars.</p>
+      <p class="transcript-p" data-time="61" onclick="seekTo(61)"><b style="color:var(--lilac);">[1:01]</b> Today, we're exploring a profound reflection on accessibility in healthcare, sourced directly from a patient named DK — a patient and family advisor at the University Health Network. DK has been coming to UHN for seven years, visiting four different sites for hundreds of appointments.</p>
+      <p class="transcript-p" data-time="120" onclick="seekTo(120)"><b style="color:var(--lilac);">[2:00]</b> DK uses a power chair and lives with a communication disability. Out of hundreds of visits, DK pinpoints their single best clinical experience in seven years — and it wasn't a groundbreaking therapy. It was a simple five-word question from a nurse.</p>
+      <p class="transcript-p" data-time="156" onclick="seekTo(156)"><b style="color:var(--lilac);">[2:36]</b> DK calls it the 30-second intake litmus test. The trajectory of the entire appointment is locked in during those first moments at the front desk. A successful intake: the desk staff looks up, makes eye contact, offers a calm "Hi, how can I help you?" When that happens, DK physically relaxes. A psychological safety net is instantly established.</p>
+      <p class="transcript-p" data-time="250" onclick="seekTo(250)"><b style="color:var(--lilac);">[4:10]</b> The bad intake: the staff member who doesn't look up, talks past DK to whoever they're with, or worst of all — reaches for the wheelchair handles without asking. For someone who uses a power chair, that equipment is an extension of their physical autonomy. Reaching for it without consent strips the patient of their agency.</p>
+      <p class="transcript-p" data-time="376" onclick="seekTo(376)"><b style="color:var(--lilac);">[6:16]</b> Thousands of intake interactions happen at UHN every day. Each one is a potential access point or failure point. When you're busy, you default to the fastest path — assuming what the patient needs instead of asking. But assuming is where dignity breaks down.</p>
+      <p class="transcript-p" data-time="532" onclick="seekTo(532)"><b style="color:var(--lilac);">[8:52]</b> The five-word antidote: One nurse, before adjusting anything — the bed, the gown, the blood pressure cuff — just said: "What works best for you?" Five words. Then she listened. She confirmed: "So you prefer the cuff on your left arm, and you'd rather stay in your chair for vitals — did I get that right?" That was the best clinical experience DK has ever had at UHN.</p>
+      <p class="transcript-p" data-time="687" onclick="seekTo(687)"><b style="color:var(--lilac);">[11:27]</b> The procedure was seamless because she established exactly what DK needed. The entire vitals process ran without a single moment of friction, confusion, or wasted energy.</p>
+      <p class="transcript-p" data-time="842" onclick="seekTo(842)"><b style="color:var(--lilac);">[14:02]</b> DK argues you don't need specialized training. You just need one sentence: "Is there anything I should know to make this easier for you?" That question actively dismantles the biggest assumption of all — that you already know what the patient needs.</p>
+      <p class="transcript-p" data-time="936" onclick="seekTo(936)"><b style="color:var(--lilac);">[15:36]</b> True accessibility and dignity do not begin when the medical procedure starts. They begin the second the patient crosses the threshold. The "fastest path" is a false efficiency — assuming what someone needs almost always takes longer when the assumption is wrong.</p>
+      <p class="transcript-p" data-time="1000" onclick="seekTo(1000)"><b style="color:var(--lilac);">[16:40]</b> Think about your own professional routine. Where are you defaulting to the fastest path? Where might a single unhurried question change the entire trajectory for someone in your care? Dignity starts before the appointment. It starts at the front desk. It starts with your tone of voice. And sometimes, it just starts with five simple words.</p>
     </div>
   </div>
 <div class="slide-footer dark">
@@ -1671,7 +1712,17 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Decision Tree: Intake Form <span class="accent">Frustration</span></h1>
   </div>
   <div class="scen-grid">
-    <div class="photo has-img" style="height:560px;"><img src="images/g01-practice-tips-01.png" alt="A nurse at eye level beside a patient in a power wheelchair with a communication device, and a worker placing an accessible parking sign."></div>
+    <div class="photo has-img" style="height:560px;">
+      <img src="images/g01-practice-tips-01.png" alt="A nurse at eye level beside a patient in a power wheelchair with a communication device, and a worker placing an accessible parking sign.">
+      <div class="feedback-overlay" id="fb-s4">
+        <button class="close-btn" onclick="this.parentElement.classList.remove('show')">CLOSE</button>
+        <div class="fb-content"></div>
+        <div class="debrief-section">
+          <div class="lbl">DEBRIEF</div>
+          <p>Pausing and asking, before assuming, is the single behaviour that distinguishes accessible care from "trying our best."</p>
+        </div>
+      </div>
+    </div>
     <div>
       <div class="format-badge">Decision tree · 3 choices · loops back to Decision Path</div>
       <div class="scenario-box">
@@ -1680,32 +1731,19 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
         <p>The patient is frustrated trying to complete the intake form. You don't yet know whether the barrier is vision, language, digital access, cognitive load, or something else. The lobby is busy and three people are waiting behind them.</p>
       </div>
       <div class="scenario-q" style="margin-top:18px;">What do you do next, before assuming the cause?</div>
-      <div class="options" data-correct="B">
-        <div class="option" data-choice="A">
+      <div class="options" data-correct="B" data-overlay="fb-s4">
+        <div class="option" data-choice="A" data-fb="<b>Poor response.</b> The patient becomes more frustrated. The barrier is never identified. The visit starts with a feeling of being rushed and unseen.">
           <div class="ltr">A</div>
           <div>Continue with the standard intake process. Keep working through the form so the line keeps moving.</div>
         </div>
-        <div class="option" data-choice="B">
+        <div class="option" data-choice="B" data-fb="<b>Best response: B.</b> The patient names the barrier. You act on what they actually need. This is Step 1 of the Decision Path — Pause and Assess.">
           <div class="ltr">B</div>
           <div>Pause and ask how to support the patient. "Is there anything I can do to make this form easier today?"</div>
         </div>
-        <div class="option" data-choice="C">
+        <div class="option" data-choice="C" data-fb="<b>Acceptable, but not best.</b> The patient gets help, but you miss the learning opportunity. The barrier is addressed but not reported upstream.">
           <div class="ltr">C</div>
           <div>Ask another staff member to take over. Hand off to a colleague while you keep the queue moving.</div>
         </div>
-      </div>
-      <div class="feedback-box hidden" data-feedback="correct">
-        <b>Best response: B.</b> The patient names the barrier. You act on what they actually need. This is Step 1 of the Decision Path — Pause and Assess.
-      </div>
-      <div class="feedback-box hidden" data-feedback="A" style="border-left-color:var(--red);">
-        <b>Poor response.</b> The patient becomes more frustrated. The barrier is never identified. The visit starts with a feeling of being rushed and unseen.
-      </div>
-      <div class="feedback-box hidden" data-feedback="C" style="border-left-color:var(--muted);">
-        <b>Acceptable, but not best.</b> The patient gets help, but you miss the learning opportunity. The barrier is addressed but not reported upstream.
-      </div>
-      <div class="summary-bar hidden" data-feedback="principle" style="margin:18px 0 0; border-left-color:var(--chartreuse); background:var(--chartreuse-bg);">
-        <div class="lbl" style="color:var(--chartreuse);">DEBRIEF</div>
-        <p>Pausing and asking, before assuming, is the single behaviour that distinguishes accessible care from "trying our best."</p>
       </div>
     </div>
   </div>
@@ -1735,43 +1773,59 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Accessibility First · A <span class="accent">Three-Stage Journey</span></h1>
     <div class="lede">18 guides organized in three stages. Guides unlock by stage. Foundations opens everything else.</div>
   </div>
-  <div class="card-grid" style="grid-template-columns:repeat(3,1fr); padding-top:32px;">
+  <div class="card-grid" style="grid-template-columns:repeat(3,1fr); padding-top:32px; align-items:start;">
     <div class="g-card red-top">
-      <div class="g-head" style="background:var(--red);"><h3>Stage 1: Foundations</h3></div>
+      <div class="g-head" style="background:var(--red); min-height:80px; display:flex; align-items:center;"><h3>Stage 1: Foundations</h3></div>
       <div class="g-body">
         <p><b>Guides 01–04</b> — Required first</p>
-        <ul>
-          <li><b style="color:var(--red);">● Guide 01</b> — Foundations (CURRENT)</li>
-          <li>○ Guide 02 — Perceptions, Attitudes &amp; Barriers</li>
-          <li>○ Guide 03 — Universal Design</li>
-          <li>○ Guide 04 — Communication</li>
-        </ul>
+        <div style="margin-top:14px; font-size:18px; line-height:2;">
+          <div><b style="color:var(--red);">● Guide 01</b> — Foundations (CURRENT)</div>
+          <div>○ <a href="#" style="color:var(--cobalt); text-decoration:underline;">Guide 02</a> — Perceptions, Attitudes &amp; Barriers</div>
+          <div style="color:var(--muted);">○ Guide 03 — Universal Design</div>
+          <div style="color:var(--muted);">○ Guide 04 — Communication</div>
+        </div>
       </div>
     </div>
-    <div class="g-card cobalt-top">
-      <div class="g-head" style="background:var(--cobalt);"><h3>Stage 2: Understanding Disability Experiences</h3></div>
+    <div class="g-card cobalt-top" style="position:relative;">
+      <div class="g-head" style="background:var(--cobalt); min-height:80px; display:flex; align-items:center;"><h3>Stage 2: Understanding Disability Experiences</h3></div>
       <div class="g-body">
         <p><b>Guides 05–09</b> — Builds on Foundations</p>
-        <ul>
-          <li>○ Guide 05 — Physical Disabilities</li>
-          <li>○ Guide 06 — Sensory Disabilities</li>
-          <li>○ Guide 07 — Cognitive &amp; Intellectual</li>
-          <li>○ Guide 08 — Mental Health</li>
-          <li>○ Guide 09 — Invisible Disabilities</li>
-        </ul>
+        <div style="margin-top:14px; font-size:18px; line-height:2; color:var(--muted);">
+          <div>○ Guide 05 — Physical Disabilities</div>
+          <div>○ Guide 06 — Sensory Disabilities</div>
+          <div>○ Guide 07 — Cognitive &amp; Intellectual</div>
+          <div>○ Guide 08 — Mental Health</div>
+          <div>○ Guide 09 — Invisible Disabilities</div>
+        </div>
+      </div>
+      <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(255,255,255,0.55); display:flex; align-items:center; justify-content:center; pointer-events:none;">
+        <svg width="40" height="52" viewBox="0 0 40 52" fill="none" style="opacity:0.35;">
+          <rect x="4" y="22" width="32" height="26" rx="3" fill="#192858"/>
+          <path d="M12 22V14a8 8 0 1 1 16 0v8" stroke="#192858" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <circle cx="20" cy="36" r="3" fill="#fff"/>
+          <rect x="19" y="37" width="2" height="6" rx="1" fill="#fff"/>
+        </svg>
       </div>
     </div>
-    <div class="g-card chart-top">
-      <div class="g-head" style="background:var(--chartreuse);"><h3>Stage 3: Applied Practice</h3></div>
+    <div class="g-card chart-top" style="position:relative;">
+      <div class="g-head" style="background:var(--chartreuse); min-height:80px; display:flex; align-items:center;"><h3>Stage 3: Applied Practice</h3></div>
       <div class="g-body">
         <p><b>Guides 10–18</b> — Unlock after Stages 1+2</p>
-        <ul>
-          <li>○ Guide 10 — Assistive Technology</li>
-          <li>○ Guide 11 — Digital Accessibility</li>
-          <li>○ Guide 12 — Employment &amp; Workplace</li>
-          <li>○ Guide 13 — Emergency Preparedness</li>
-          <li>○ Guides 14–18 — Specialized Contexts</li>
-        </ul>
+        <div style="margin-top:14px; font-size:18px; line-height:2; color:var(--muted);">
+          <div>○ Guide 10 — Assistive Technology</div>
+          <div>○ Guide 11 — Digital Accessibility</div>
+          <div>○ Guide 12 — Employment &amp; Workplace</div>
+          <div>○ Guide 13 — Emergency Preparedness</div>
+          <div>○ Guides 14–18 — Specialized Contexts</div>
+        </div>
+      </div>
+      <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(255,255,255,0.55); display:flex; align-items:center; justify-content:center; pointer-events:none;">
+        <svg width="40" height="52" viewBox="0 0 40 52" fill="none" style="opacity:0.35;">
+          <rect x="4" y="22" width="32" height="26" rx="3" fill="#192858"/>
+          <path d="M12 22V14a8 8 0 1 1 16 0v8" stroke="#192858" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <circle cx="20" cy="36" r="3" fill="#fff"/>
+          <rect x="19" y="37" width="2" height="6" rx="1" fill="#fff"/>
+        </svg>
       </div>
     </div>
   </div>
@@ -1846,6 +1900,68 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
 </section>
 
 <script>
+/* ── Podcast Player ── */
+(function(){
+  var audio, playBtn, fill, timeEl;
+  function init(){
+    audio = document.getElementById('podAudio');
+    playBtn = document.getElementById('podPlayBtn');
+    fill = document.getElementById('podFill');
+    timeEl = document.getElementById('podTime');
+    if(audio) audio.addEventListener('timeupdate', updateProgress);
+    if(audio) audio.addEventListener('ended', function(){ if(playBtn) playBtn.textContent = '▶'; });
+  }
+  function fmt(s){ var m=Math.floor(s/60); var sec=Math.floor(s%60); return m+':'+(sec<10?'0':'')+sec; }
+  function highlightTranscript(currentTime){
+    var paras = document.querySelectorAll('.transcript-p');
+    var activeIdx = -1;
+    for(var i = paras.length - 1; i >= 0; i--){
+      var t = parseFloat(paras[i].getAttribute('data-time'));
+      if(currentTime >= t){ activeIdx = i; break; }
+    }
+    paras.forEach(function(p, i){
+      if(i === activeIdx){
+        if(!p.classList.contains('active')){
+          p.classList.add('active');
+          var panel = document.getElementById('podTranscript');
+          if(panel && panel.style.display !== 'none'){
+            p.scrollIntoView({behavior:'smooth', block:'center'});
+          }
+        }
+      } else {
+        p.classList.remove('active');
+      }
+    });
+  }
+  function updateProgress(){
+    if(!audio||!fill||!timeEl) return;
+    var pct = audio.duration ? (audio.currentTime/audio.duration)*100 : 0;
+    fill.style.width = pct+'%';
+    timeEl.textContent = fmt(audio.currentTime)+' / '+fmt(audio.duration||0);
+    highlightTranscript(audio.currentTime);
+  }
+  window.togglePod = function(){
+    if(!audio){ init(); }
+    if(!audio) return;
+    if(audio.paused){ audio.play(); if(playBtn) playBtn.textContent='⏸'; }
+    else { audio.pause(); if(playBtn) playBtn.textContent='▶'; }
+  };
+  window.seekPod = function(e){
+    if(!audio) init();
+    if(!audio||!audio.duration) return;
+    var rect = e.currentTarget.getBoundingClientRect();
+    var pct = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = pct * audio.duration;
+  };
+  window.seekTo = function(sec){
+    if(!audio) init();
+    if(!audio) return;
+    audio.currentTime = sec;
+    if(audio.paused){ audio.play(); if(playBtn) playBtn.textContent='⏸'; }
+  };
+  document.addEventListener('DOMContentLoaded', init);
+})();
+
 /* ── Impact Carousel ── */
 (function(){
   let carouselIdx = 0;
@@ -1966,8 +2082,8 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
   /* ── Branching scenario choices ── */
   document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer) {
     var correctAnswer = optionsContainer.getAttribute('data-correct');
+    var overlayId = optionsContainer.getAttribute('data-overlay');
     var options = optionsContainer.querySelectorAll('.option');
-    var feedbackArea = optionsContainer.closest('.slide');
 
     options.forEach(function(opt) {
       opt.addEventListener('click', function() {
@@ -1987,19 +2103,15 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
           });
         }
 
-        if (feedbackArea) {
-          var allFeedback = feedbackArea.querySelectorAll('.feedback-box, .summary-bar[data-feedback]');
-          allFeedback.forEach(function(fb) { fb.classList.add('hidden'); });
-
-          if (choice === correctAnswer) {
-            var correctFb = feedbackArea.querySelector('[data-feedback="correct"]');
-            if (correctFb) correctFb.classList.remove('hidden');
-          } else {
-            var wrongFb = feedbackArea.querySelector('[data-feedback="' + choice + '"]');
-            if (wrongFb) wrongFb.classList.remove('hidden');
+        // Show feedback in overlay on top of image
+        if (overlayId) {
+          var overlay = document.getElementById(overlayId);
+          if (overlay) {
+            var fbContent = overlay.querySelector('.fb-content');
+            var fbText = opt.getAttribute('data-fb') || '';
+            if (fbContent) fbContent.innerHTML = fbText;
+            overlay.classList.add('show');
           }
-          var principle = feedbackArea.querySelector('[data-feedback="principle"]');
-          if (principle) principle.classList.remove('hidden');
         }
       });
     });
