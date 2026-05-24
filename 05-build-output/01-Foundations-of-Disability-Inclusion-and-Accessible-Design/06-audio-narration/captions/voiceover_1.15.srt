@@ -1,0 +1,19 @@
+1
+00:00:00,000 --> 00:00:07,600
+On this screen, you will find a list of resources and references that support the content in this guide.
+
+2
+00:00:07,600 --> 00:00:17,600
+These include links to UHN accessibility policies, the Accessibility for Ontarians with Disabilities Act — also known as the AODA — and key research articles.
+
+3
+00:00:17,600 --> 00:00:26,800
+You do not need to review all of these now, but they are here if you want to go deeper on any topic.
+
+4
+00:00:26,800 --> 00:00:29,600
+Each resource opens in a new tab.
+
+5
+00:00:29,600 --> 00:00:39,600
+If you have questions about accessibility at UHN that were not covered in this guide, reach out to Patient Relations or your unit's accessibility lead.
