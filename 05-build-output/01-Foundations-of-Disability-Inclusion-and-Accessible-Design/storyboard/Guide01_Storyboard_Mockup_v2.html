@@ -108,8 +108,11 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
 /* ── Photo placeholder ── */
 .photo {
   background:repeating-linear-gradient(135deg,#EAEAEA 0 14px,#F4F4F4 14px 28px);
-  border:1px solid #DCDCDC; position:relative;
+  border:1px solid #DCDCDC; position:relative; overflow:hidden;
 }
+.photo img { width:100%; height:100%; object-fit:cover; display:block; }
+.photo.has-img { background:none; }
+.photo.has-img::after { content:none; }
 .photo::after {
   content:attr(data-label); position:absolute; left:16px; bottom:14px;
   font-family:"Courier New",monospace; font-size:14px; color:#555;
@@ -149,14 +152,10 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
 .s-title .right { display:flex; flex-direction:column; justify-content:space-between; gap:32px; }
 .hero-photo {
   flex:1; border-radius:4px; overflow:hidden;
-  background:repeating-linear-gradient(135deg,rgba(255,255,255,0.06) 0 14px,rgba(255,255,255,0.12) 14px 28px);
   border:1px solid rgba(255,255,255,0.2); position:relative;
 }
-.hero-photo::after {
-  content:attr(data-label); position:absolute; left:20px; bottom:18px;
-  font-family:"Courier New",monospace; font-size:16px; color:rgba(255,255,255,0.8);
-  background:rgba(0,0,0,0.4); padding:8px 12px; letter-spacing:1px;
-}
+.hero-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+.hero-photo::after { content:none; }
 .start-bar {
   display:flex; align-items:center; justify-content:space-between;
   background:#fff; color:var(--navy); padding:22px 28px;
@@ -654,7 +653,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     </div>
   </div>
   <div class="right">
-    <div class="hero-photo" data-label="g01-hero-welcome-01.png · Diverse UHN staff at accessible hospital entrance"></div>
+    <div class="hero-photo"><img src="images/g01-hero-welcome-01.png" alt="A diverse group of healthcare workers walking toward a hospital entrance, including a person using a power wheelchair and a person carrying a white cane."></div>
     <div class="start-bar">
       <div class="status">GUIDE 01 OF 18</div>
       <button class="cta" onclick="goSlide(2)">Begin</button>
@@ -743,7 +742,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>1 in 4 Canadians live with a <span class="accent">disability</span></h1>
   </div>
   <div class="why-grid">
-    <div class="photo" style="height:540px;" data-label="g01-why-stat-01.png · Diverse patients in a busy UHN waiting area"></div>
+    <div class="photo has-img" style="height:540px;"><img src="images/g01-context-barriers-01.png" alt="A young woman in a wheelchair reaching toward directional signs in a hospital corridor while a volunteer assists."></div>
     <div class="why-body">
       <div class="stat-block">
         <div class="num">27%</div>
@@ -1071,7 +1070,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Scenario 1: Hospital <span class="accent">Booking System</span></h1>
   </div>
   <div class="scen-grid">
-    <div class="photo" style="height:560px;" data-label="g01-scenario-booking-01.png · Patient speaking with front desk staff"></div>
+    <div class="photo has-img" style="height:560px;"><img src="images/g01-scenario-booking-01.png" alt="An older woman at a hospital reception desk speaking with a receptionist about booking difficulties."></div>
     <div>
       <div class="format-badge">Branching choice · 3 options · graded</div>
       <div class="scenario-box">
@@ -1135,7 +1134,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Scenario 2: Clinic <span class="accent">Signage</span></h1>
   </div>
   <div class="scen-grid">
-    <div class="photo" style="height:560px;" data-label="g01-scenario-signage-01.png · Patient with low vision at directional sign"></div>
+    <div class="photo has-img" style="height:560px;"><img src="images/g01-scenario-signage-01.png" alt="An elderly woman using a magnifying glass to read a small directional sign on a hospital corridor wall."></div>
     <div>
       <div class="format-badge">Branching choice · 3 options · graded</div>
       <div class="scenario-box">
@@ -1199,7 +1198,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Scenario 3: Employee <span class="accent">Awareness</span></h1>
   </div>
   <div class="scen-grid">
-    <div class="photo" style="height:560px;" data-label="g01-scenario-checklist-01.png · Two healthcare workers discussing patient care"></div>
+    <div class="photo has-img" style="height:560px;"><img src="images/g01-scenario-checklist-01.png" alt="Three healthcare workers gathered around a tablet in a hospital break room, collaborating on a review."></div>
     <div>
       <div class="format-badge">Branching choice · 3 options · graded</div>
       <div class="scenario-box">
@@ -1473,7 +1472,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
   </div>
   <div style="padding:24px 96px 0; display:grid; grid-template-columns:1.1fr 1fr; gap:48px;">
     <div>
-      <div class="photo" style="height:520px;" data-label="g01-reflection-calm-01.png · Calm hospital garden or quiet space"></div>
+      <div class="photo has-img" style="height:520px;"><img src="images/g01-reflection-01.png" alt="A healthcare worker sitting thoughtfully at a desk by a window during a break, looking at a laptop in a quiet moment of reflection."></div>
       <div style="margin-top:18px; padding:14px 18px; background:var(--neutral-2); border:1px solid var(--neutral); font-size:16px; color:var(--muted); font-style:italic;">
         This reflection is private — it is not submitted or reviewed.
       </div>
@@ -1672,7 +1671,7 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
     <h1>Decision Tree: Intake Form <span class="accent">Frustration</span></h1>
   </div>
   <div class="scen-grid">
-    <div class="photo" style="height:560px;" data-label="Branching decision layout · intake form frustration scenario"></div>
+    <div class="photo has-img" style="height:560px;"><img src="images/g01-practice-tips-01.png" alt="A nurse at eye level beside a patient in a power wheelchair with a communication device, and a worker placing an accessible parking sign."></div>
     <div>
       <div class="format-badge">Decision tree · 3 choices · loops back to Decision Path</div>
       <div class="scenario-box">
