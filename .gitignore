@@ -6,3 +6,5 @@ package-lock.json
 .env
 .gstack/
 .claude/
+.mcp.json
+.mcp*.json

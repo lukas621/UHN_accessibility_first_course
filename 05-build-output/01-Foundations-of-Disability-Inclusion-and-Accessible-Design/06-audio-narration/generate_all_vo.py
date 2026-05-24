@@ -4,7 +4,7 @@ import os
 import re
 import time
 
-API_KEY = "REDACTED_API_KEY"
+API_KEY = "REPLACE_WITH_ENV_VAR"
 VOICE_ID = "FVQMzxJGPUBtfz1Azdoy"
 OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))
 
