@@ -1,166 +1,130 @@
 # UHN Accessibility First — eLearning Course Series
 
-An 18-guide eLearning course on disability inclusion and accessible service for **University Health Network (UHN)** staff. Each guide is a ~15–20 minute self-paced module built as an interactive HTML storyboard (designed for eventual import into Articulate Storyline 360 or standalone SCORM delivery).
+An 18-guide eLearning course on disability inclusion and accessible service for **University Health Network (UHN)** staff. Built with an AI-native production pipeline — no Articulate Storyline needed.
 
 ## What This Project Is
 
-UHN is Ontario's largest research hospital network. This course trains staff to provide accessible, inclusive service to patients and visitors with disabilities — covering everything from vision and hearing disabilities to trauma-informed care and Indigenous accessibility.
+UHN is Ontario's largest research hospital network. This course trains all staff to provide accessible, inclusive service to patients and visitors with disabilities — covering vision, hearing, mobility, mental health, neurodiversity, trauma-informed care, Indigenous accessibility, and more.
 
-The course is being developed using an **AI-native production pipeline** — content authoring, voiceover generation, image prompting, quiz design, and interactive mockups are all orchestrated with AI tooling (Claude, ElevenLabs TTS, GPT Image, NotebookLM podcasts).
+Every part of production is AI-assisted: content structuring, voiceover generation, quiz design, scenario writing, image prompting, podcast creation, and interactive course building — all orchestrated through Claude Code.
+
+---
+
+## What's Been Done
+
+### Guide 01 — Foundations of Disability Inclusion (85% complete)
+
+A fully interactive HTML5 course, deployed and tested on UHN's LMS (SumTotal):
+
+- **23 interactive slides** with slide-by-slide navigation, side menu, and progress tracking
+- **22 voiceover narrations** — generated via ElevenLabs TTS (Danielle, Canadian English) with closed captions synced by word-weighted timing
+- **4 branching scenarios** — choose-your-path interactions with feedback overlays (select → submit → lock)
+- **3 knowledge checks** — 2-attempt quizzes with scoring, feedback panels, and retry from completion slide
+- **Background music** — auto-plays on course start, ducks during voiceover, toggle in control bar
+- **Podcast player** — 18-min NotebookLM episode with transcript and listening points
+- **My Accessibility Plan (MAP)** — editable action planning activity with branded PDF download
+- **Completion certificate** — personalized with learner name, printable
+- **SCORM 1.2 package** — deployed to SumTotal MyLearning, all tracking confirmed working (score, completion, bookmark/resume)
+- **Welcome dialog** — name + role entry, localStorage resume across sessions
+- **WCAG 2.1 AA accessible** — keyboard navigation, ARIA labels, focus management, reduced motion support
+
+### Production Infrastructure
+
+- **7-folder project structure** for organized asset management
+- **19 automation scripts** — Word conversion, image generation, audio, PPT, captions, podcast packaging
+- **10 AI prompt templates** — storyboard, image briefs, audio, video, QA, scenarios
+- **SCORM packaging workflow** — versioned zips with SumTotal-specific manifest handling
+- **Version control** — full Git history, automated cleanup of old versions
+- **Notion project tracker** — databases for modules, tasks, and assets
+
+### Modules 02–18 Scaffolded
+
+All 17 remaining guides have folder structures created and source content extracted. Ready for production using the same template as Guide 01.
+
+---
+
+## What's Remaining (Short-Term)
+
+### Guide 01 — Final 15%
+- [ ] Generate custom illustrations (16 image prompts ready for GPT Image 2 / NanoBanana)
+- [ ] Embed images into course HTML and PPT storyboard
+- [ ] QA voiceover files — manual review for pronunciation accuracy
+- [ ] Final cross-reference check (storyboard ↔ mockup ↔ narration)
+- [ ] SME review and sign-off
+
+### Guides 02 & 03 — Next Up
+- [ ] Build Guide 02 (Perceptions, Attitudes, and Barriers) using Guide 01 template
+- [ ] Build Guide 03 (Vision Disabilities) using Guide 01 template
+- [ ] Validate that the pipeline works repeatably across guides
+
+---
 
 ## The 18 Guides
 
 | # | Guide | Status |
 |---|-------|--------|
-| 00 | Series Overview | Draft |
-| 01 | Foundations of Disability Inclusion and Accessible Design | **85%** — SCORM v5 on LMS, VO + quizzes + scenarios working, images pending |
-| 02 | Perceptions, Attitudes, and Barriers | Draft |
-| 03 | Vision Disabilities | Draft |
-| 04 | Sensory, Hearing, and Communication Disabilities | Draft |
-| 05 | Physical Disabilities and Mobility | Draft |
-| 06 | Mental Health Disabilities | Draft |
-| 07 | Intellectual, Developmental, and Learning Disabilities | Draft |
-| 08 | Non-Visible Disabilities | Draft |
-| 09 | Aging, Disability, and Intersectionality | Draft |
-| 10 | Engaging with Confidence and Respect | Draft |
-| 11 | Service Animals, Guide Dogs, and Non-Service Animals | Draft |
-| 12 | Support Persons | Draft |
-| 13 | Assistive Devices | Draft |
-| 14 | Communication and Information Accessibility | Draft |
-| 15 | Neurodiversity and Sensory Regulation | Draft |
-| 16 | Trauma-Informed Accessibility | Draft |
-| 17 | Accessibility in Crisis Situations and De-escalation | Draft |
-| 18 | Indigenous Peoples and Accessibility | Draft |
+| 01 | Foundations of Disability Inclusion and Accessible Design | **85%** — on LMS, images pending |
+| 02 | Perceptions, Attitudes, and Barriers | Scaffolded |
+| 03 | Vision Disabilities | Scaffolded |
+| 04 | Sensory, Hearing, and Communication Disabilities | Scaffolded |
+| 05 | Physical Disabilities and Mobility | Scaffolded |
+| 06 | Mental Health Disabilities | Scaffolded |
+| 07 | Intellectual, Developmental, and Learning Disabilities | Scaffolded |
+| 08 | Non-Visible Disabilities | Scaffolded |
+| 09 | Aging, Disability, and Intersectionality | Scaffolded |
+| 10 | Engaging with Confidence and Respect | Scaffolded |
+| 11 | Service Animals, Guide Dogs, and Non-Service Animals | Scaffolded |
+| 12 | Support Persons | Scaffolded |
+| 13 | Assistive Devices | Scaffolded |
+| 14 | Communication and Information Accessibility | Scaffolded |
+| 15 | Neurodiversity and Sensory Regulation | Scaffolded |
+| 16 | Trauma-Informed Accessibility | Scaffolded |
+| 17 | Accessibility in Crisis Situations and De-escalation | Scaffolded |
+| 18 | Indigenous Peoples and Accessibility | Scaffolded |
 
-Guide 01 is the most complete and serves as the template for all other guides.
+Each guide targets ~15–20 minutes of seat time.
 
-## Folder Structure
+---
 
-```
-01-source-content/          → Raw source documents (Word drafts from subject matter experts)
-02-branding-and-style/      → UHN logos, brand templates, and the canonical mockup HTML
-   mockups/                 → Interactive HTML storyboard mockups (the design source of truth)
-   mockups/vo/              → Voiceover MP3 files
-   logos/                   → UHN brand logos
-   uhn-templates/           → Official UHN Word/PPT templates
-03-supporting-documents/    → Research, references, supporting materials
-04-project-starter/         → Production tooling
-   prompts/                 → AI skill prompts (audio production, VO QA, etc.)
-   scripts/                 → Build scripts (PPT generation, image generation, cleanup)
-   templates/               → Storyboard and document templates
-05-build-output/            → Per-guide output folders (this is where finished assets live)
-   01-Foundations-.../       → Guide 01's full asset package:
-      01-source/                Raw source content for this guide
-      02-production/            Production assets:
-         master-storyboard/       Master Word storyboard (internal)
-         assessment-bank/         Quiz questions and knowledge checks
-         scenario-branches/       Branching scenario scripts
-         image-briefs/            AI image generation prompts + generated images
-         narration-scripts/       VO scripts, per-screen text, captions, transcripts
-         podcast/                 NotebookLM podcast episode + transcript
-         sme-review/              Subject matter expert review materials
-         qa-checklist/            Quality assurance checklists
-         references/              APA 7 reference lists
-         job-aids/                Downloadable job aids / handouts
-      03-media/                 All media assets (vo/, images/, bgm/, podcast/)
-      04-course/                SCORM course package:
-         current/                 LIVE course files (index.html + JS + CSS + media)
-         template/                Clean template for new guides
-      05-releases/              Versioned SCORM zips (v3.0, v4.0, v5.0)
-06-exports/                 → Exported deliverables
-07-archive/                 → Archived old versions and reference samples
-```
+## Roadmap
 
-## How to View the Course
+### Short-Term: Finish UHN Course
 
-The quickest way to see the course in action:
-
-1. Open `05-build-output/01-Foundations-of-Disability-Inclusion-and-Accessible-Design/storyboard/Guide01_Storyboard_Mockup_v2.html` in any web browser
-2. Or open the canonical design file at `02-branding-and-style/mockups/Guide01_Storyboard_Mockup_v2.html`
-
-These are self-contained HTML files with embedded CSS/JS — no server needed. They include:
-- Slide-by-slide navigation with progress tracking
-- Voiceover audio playback with closed captions
-- Interactive knowledge check quizzes (select-then-submit, 2 attempts, feedback overlays)
-- Downloadable My Accessibility Plan (MAP)
-- Podcast player
-- Completion certificate
-
-## Key Design Decisions
-
-- **Two-document system**: A Master Word doc (internal, full detail) generates both the PPT storyboard (for SME review) and the HTML mockup (for design/development)
-- **All PPT storyboards are 16:9** for Storyline import compatibility
-- **No open-ended questions** — all assessments are selected-response (no reviewer available in self-paced format)
-- **Canadian/Ontario/UHN context** throughout — references AODA, Ontario Human Rights Code, UHN policies
-- **APA 7 citations** in every guide's reference list
-- **Voiceovers** generated via ElevenLabs TTS (Danielle voice, Canadian English)
-
-## The Vision — Where This Is Going
-
-This project started as a single UHN training course, but the bigger idea is to build an **AI-native course authoring platform** that replaces traditional tools like Articulate Storyline entirely.
-
-### The Core Insight
-
-The traditional eLearning pipeline is slow and expensive: SME writes content → instructional designer restructures it → graphic designer makes visuals → developer builds it in Storyline → QA → publish. Each guide takes weeks.
-
-With AI, the entire pipeline can be collapsed: raw SME content goes in, and a structured interactive SCORM course comes out — with voiceover, quizzes, scenarios, illustrations, and a podcast episode. Guide 01 already proves this works end to end.
-
-### Phase 1 — Finish the UHN Course (Now)
-
-Complete 3 guides (Guide 01, 02, 03) to full production quality using the current AI-assisted workflow. This validates the template and proves the pipeline works repeatably. Guide 01 is nearly done — SCORM package, voiceovers, quizzes, scenarios, podcast all working. Each remaining guide follows the same 13-folder asset structure.
+Complete Guides 01–03 to full production quality. Validate that the template and pipeline are repeatable, then build all remaining 15 guides.
 
 **What each guide produces:**
-- Interactive HTML5 course (23 slides, ~15-20 min)
+- Interactive HTML5 course (23 slides, ~15–20 min)
 - 22 voiceover narrations with closed captions
 - Branching scenario interactions with custom illustrations
 - Knowledge check quizzes with feedback
 - NotebookLM podcast episode
 - My Accessibility Plan (MAP) activity
 - Completion certificate
-- SCORM 1.2 package ready for LMS upload
+- SCORM 1.2 package for LMS
 
-### Phase 2 — CLI Pipeline (After 3 Guides)
+### Mid-Term: Course Factory CLI
 
-Turn the collection of scripts and prompts into an **orchestrator CLI** that chains them together. One command to go from source document to finished SCORM package:
+After 3 guides are proven, wire the existing scripts into an **orchestrator CLI**:
 
 ```
 course-factory build --source "Guide 03 Draft.docx" --guide 03
 ```
 
-This means scripting the steps that are currently manual: content extraction → storyboard structuring → quiz generation → image prompt generation → voiceover generation → SCORM packaging. The individual scripts already exist in `04-project-starter/scripts/` — they just need to be wired together.
+One command: source doc in → structured interactive SCORM course out. The individual scripts already exist — content extraction, storyboard structuring, quiz generation, image prompting, voiceover generation, SCORM packaging.
 
-### Phase 3 — Service-Ready Workflow
+### Long-Term: Course Factory OS (SaaS Platform)
 
-Wrap the CLI in an automation layer (n8n or Make.com) with:
-- A **brand kit system** so other organizations (not just UHN) can use their own logos, colors, and templates
-- A **client intake form** — upload your source docs, pick your brand, get a course
-- Webhook-triggered builds
+The bigger vision — an AI-native eLearning authoring platform that replaces Storyline/Rise:
 
-This is where it stops being "my tool" and starts being "a service I can offer."
+1. **Service layer** — brand kit system, client intake, automated builds (n8n/Make.com)
+2. **Web app** — Next.js + Supabase dashboard, one-click generation, live preview, SME review portal
+3. **Full SaaS** — multi-tenant platform where any organization uploads content and gets a polished interactive course with their own branding
 
-### Phase 4 — Web Application
+The key insight: **the entire traditional pipeline (SME → ID → designer → developer → QA) collapses into one AI-assisted flow.** No Storyline license, no Rise subscription, no months of development per course.
 
-Build a lightweight web app (Next.js + Supabase) with:
-- Dashboard to manage multiple courses across multiple clients
-- One-click course generation from uploaded content
-- Live preview of the interactive HTML5 output
-- SME review portal where subject matter experts can leave per-screen comments
-- Project management module for tracking multi-course programs
+### 10 Reusable Interaction Templates
 
-### Phase 5 — Full Course Factory OS (SaaS)
-
-The endgame: a multi-tenant SaaS platform where any organization can:
-- Upload messy source content and get a polished interactive course
-- Customize with their own branding
-- Collaborate with SMEs through a built-in review workflow
-- Manage entire course libraries
-- Export to any LMS via SCORM
-
-The key differentiator: **no Storyline, no Rise, no expensive authoring tools.** The AI does the instructional design, the HTML5 engine delivers the interactivity, and SCORM handles the LMS integration. The entire $3B+ eLearning authoring market is ripe for this.
-
-### 10 Interaction Templates
-
-The entire course series (and future courses) is built from just 10 reusable interaction types:
+The entire course engine is built from 10 interaction types that generalize to any eLearning course:
 
 1. **Title slide** — guide title, number, branding
 2. **Objectives** — learning outcomes list
@@ -173,33 +137,57 @@ The entire course series (and future courses) is built from just 10 reusable int
 9. **Process Steps** — sequential procedures
 10. **Summary + Badge** — completion, certificate, MAP download
 
-These 10 templates cover every screen in the 18-guide accessibility series and generalize to any eLearning course.
+---
+
+## Folder Structure
+
+```
+01-source-content/          → Raw source documents (Word drafts from SMEs)
+02-branding-and-style/      → UHN logos, brand templates, canonical mockup HTML
+03-supporting-documents/    → Research, references, supporting materials
+04-project-starter/         → Production tooling (prompts, scripts, templates)
+05-build-output/            → Per-guide output folders
+   01-Foundations-.../
+      01-source/              Raw source content
+      02-production/          Storyboard, assessments, scenarios, narration, podcast, refs
+      03-media/               All media (vo/, images/, bgm/, podcast/)
+      04-course/current/      LIVE SCORM course (index.html + JS + CSS + media)
+      05-releases/            Versioned SCORM zips (v3.0 → v5.0)
+06-exports/                 → Exported deliverables
+07-archive/                 → Old versions and reference samples
+```
+
+## How to View the Course
+
+Open any of these in a browser — no server needed:
+
+- `05-build-output/01-.../04-course/current/index.html` — the SCORM course
+- `02-branding-and-style/mockups/Guide01_Storyboard_Mockup_v2.html` — the design mockup
 
 ## SCORM & LMS Deployment
 
-The course is deployed to **UHN MyLearning (SumTotal LMS)** as a SCORM 1.2 package.
+Deployed to **UHN MyLearning (SumTotal LMS)** as SCORM 1.2.
 
-**Packaging workflow:**
-1. Edit course files in `04-course/current/`
-2. Bump manifest version + item/resource identifiers in `imsmanifest.xml`
-3. Zip from inside `current/` → output to `05-releases/v{VERSION}.zip`
-4. Upload to SumTotal → "Replace the Structure" → "Re-Register"
-
-**Key SCORM features working:**
-- Completion status reports to LMS
-- Quiz score (0–100%) reports to LMS
-- Bookmarking / resume across sessions via `cmi.suspend_data`
+- Completion status, quiz scores, and bookmarks all report to LMS
 - Auto-sync every 30 seconds + save on page close
+- To trigger SumTotal's learner reset prompt: bump `item` and `resource` identifiers in the manifest each release
 
-**SumTotal-specific:** Changing `item` and `resource` identifiers in the manifest is required to trigger the "Manifest Change" dialog. Without this, SumTotal silently replaces content with no learner reset prompt.
+## Key Design Decisions
+
+- **No Storyline** — pure HTML5/CSS/JS with SCORM wrapper replaces Articulate entirely
+- **Two-document system** — Master Word doc (internal) generates both PPT storyboard (SME review) and HTML course (production)
+- **No open-ended questions** — all assessments are selected-response (self-paced, no reviewer)
+- **Canadian/Ontario/UHN context** — AODA, Ontario Human Rights Code, UHN policies
+- **APA 7 citations** in every guide
+- **AI-generated voiceovers** — ElevenLabs TTS, Danielle voice, Canadian English
 
 ## Tech Stack
 
-- HTML/CSS/JS — interactive storyboard mockups
-- pptxgenjs — PowerPoint generation from storyboard data
-- ElevenLabs — text-to-speech voiceover generation
-- NotebookLM — podcast episode generation
-- Claude — content authoring, code generation, production orchestration
-- GPT Image 2 — illustration generation
-- SCORM 1.2 — LMS packaging standard
-- SumTotal — LMS (UHN MyLearning)
+- **Course engine:** HTML/CSS/JS (vanilla, no frameworks)
+- **LMS:** SCORM 1.2 on SumTotal MyLearning
+- **Voiceover:** ElevenLabs TTS API
+- **Images:** GPT Image 2 / NanoBanana / Midjourney
+- **Podcast:** Google NotebookLM
+- **PPT generation:** pptxgenjs
+- **AI orchestration:** Claude Code
+- **Project tracking:** Notion
