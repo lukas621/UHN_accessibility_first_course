@@ -6,6 +6,32 @@ Extract structured course data from the source material. If the document contain
 
 Return valid JSON only.
 
+## Output Paths
+
+Generated output goes to the guide's production folder:
+
+```
+05-build-output/Guide-XX-Title/
+  01-source/           — place raw SME materials here before running this prompt
+  02-production/       — all generated production documents land here
+    master-storyboard/
+    assessment-bank/
+    scenario-branches/
+    image-briefs/
+    narration-scripts/
+    video-production/
+    podcast/
+    sme-review/
+    qa-checklist/
+    references/
+    job-aids/
+    course-overview/
+    progress-tracking/
+  03-media/            — final media assets (images/, vo/, bgm/, podcast/)
+  04-course/           — built course (current/ + template/ from Guide 01)
+  05-releases/         — versioned SCORM 1.2 packages
+```
+
 Source text:
 
 {{source_text}}

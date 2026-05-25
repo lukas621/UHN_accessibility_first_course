@@ -78,22 +78,22 @@ def clean_for_tts(text):
 1. Parse narration markdown file → extract text per screen
 2. **Clean text for TTS** using rules above (keep original for CC)
 3. Generate audio per screen via ElevenLabs REST API
-4. Save with naming convention to `02-production/narration-scripts/`
-5. Copy to mockup `vo/` folder for HTML playback
+4. Save with naming convention to `Guide-XX/02-production/narration-scripts/`
+5. Copy final audio files to `Guide-XX/03-media/vo/` for course build and HTML playback
 6. Run VO QA check (see `voiceover-qa-skill.md`)
 
 ## Output Locations
 
 ```
-05-build-output/01-.../02-production/narration-scripts/
-├── voiceover_1.1.mp3 through voiceover_1.19.mp3   ← primary storage
+Guide-XX/02-production/narration-scripts/
+├── voiceover_X.1.mp3 through voiceover_X.19.mp3   ← narration scripts & TTS text
 ├── captions/
-│   └── voiceover_1.1.srt through voiceover_1.19.srt
+│   └── voiceover_X.1.srt through voiceover_X.19.srt
 └── transcript/
     └── TRANSCRIPT-GUIDE-XX.txt
 
-02-branding-and-style/mockups/vo/
-├── voiceover_1.1.mp3 through voiceover_1.19.mp3   ← for mockup playback
+Guide-XX/03-media/vo/
+├── voiceover_X.1.mp3 through voiceover_X.19.mp3   ← final VO audio files for course build
 ```
 
 ## API Call Template

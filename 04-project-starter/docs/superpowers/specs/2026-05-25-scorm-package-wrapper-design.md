@@ -1,58 +1,90 @@
 # SCORM Package Wrapper — Design Spec
 
+**Last updated:** 2026-05-25 (v4)
+
 ## Purpose
 
-A Claude Code skill (`/scorm-package`) that takes a finished HTML5 course folder and wraps it into a SCORM 1.2 compliant zip ready for LMS upload. A companion script (`package_scorm.py`) does the same thing from the command line.
+Package the course from `04-course/current/` into a versioned SCORM 1.2 zip for LMS upload. Handles manifest versioning, file exclusions, and output to `05-releases/`.
 
-## Trigger
+## Current Folder Structure
 
-User invokes `/scorm-package` or asks to "package for LMS", "create SCORM zip", "wrap for MyLearning".
+```
+05-build-output/01-.../
+  04-course/
+    current/                    ← LIVE course files (edit here)
+      index.html                ← Course shell (23 slides, 1920x1080)
+      imsmanifest.xml           ← SCORM 1.2 manifest
+      css/course.css            ← All styles
+      js/
+        welcome-dialog.js       ← Name/role entry, resume option
+        scormfunctions.js       ← SCORM API (LMS communication)
+        navigation.js           ← Slides, menu, interactions, keyboard, touch
+        voiceover.js            ← Audio player, CC engine, captions
+        course-tracker.js       ← Completion, quiz scoring, MAP, certificate
+        bgm.js                  ← Background music
+      media/
+        images/ (10 PNGs)
+        vo/ (22 MP3s)
+        bgm/Path_to_Wellness.mp3
+        podcast/Five_words_to_restore_patient_dignity.m4a
+      assets/
+        uhn-logo.png            ← White logo (dark backgrounds)
+        uhn-logo-dark.png       ← Dark logo (white backgrounds)
+        MAP-Template-Demo.html
+      lms/goodbye.html          ← Post-course exit page
+      *.xsd                     ← SCORM schema files (4 files)
+    template/                   ← Clean template for new guides
+  05-releases/
+    v3.0.zip                    ← Previous release
+    v4.0.zip                    ← Current release (2026-05-25)
+```
 
-## Inputs
+## Packaging Steps
 
-| Input | Required | Default |
-|---|---|---|
-| Course folder path | Yes (auto-detected if possible) | Most recent folder in `05-build-output/` |
-| Course title | Yes | Parsed from `<title>` in index.html |
-| Mastery score | No | 80 |
-| Guide number | No | Parsed from folder name |
+### 1. Bump manifest version
 
-## Validation
+Edit `04-course/current/imsmanifest.xml`:
+```xml
+<manifest identifier="UHN_AccessibilityFirst_Guide01"
+          version="{NEW_VERSION}"
+```
+Increment the major version number each release (v3 → v4 → v5). This forces the LMS to treat it as a new package instead of using cached content.
 
-The skill validates the course folder before packaging:
+### 2. Create zip
 
-**Required files (fail if missing):**
-- `index.html`
-- At least one `.css` file
-- At least one `.js` file
+```bash
+cd 04-course/current/
+zip -r "../../05-releases/v{VERSION}.zip" . -x ".*" -x "*_v202*"
+```
 
-**SCORM files (auto-added if missing):**
-- `imsmanifest.xml` — generated from inputs
-- `js/scormfunctions.js` — SCORM 1.2 API wrapper
-- `lms/goodbye.html` — post-course exit page
-- `adlcp_rootv1p2.xsd` — SCORM schema
-- `imscp_rootv1p1p2.xsd` — IMS Content Packaging schema
-- `imsmd_rootv1p2p1.xsd` — IMS Metadata schema
-- `ims_xml.xsd` — XML schema
+**Critical rules:**
+- Zip from INSIDE `current/` so `imsmanifest.xml` is at zip root (not nested)
+- Exclude `.DS_Store` and version backup files (`*_v202*`)
+- Output to `05-releases/v{VERSION}.zip`
 
-**Warnings (non-blocking):**
-- No media files found (images/audio/video)
-- Zip size > 100MB (LMS upload limits)
-- `imsmanifest.xml` already exists — prompt to skip or overwrite
+### 3. Verify
 
-## Packaging Rules
+```bash
+# Confirm manifest is at root (not in subfolder)
+unzip -l v{VERSION}.zip | grep imsmanifest
+# Should show: imsmanifest.xml (no path prefix)
 
-1. Zip from inside the course folder (`cd folder && zip -r ...`) so `imsmanifest.xml` is at the zip root — never nested in a subfolder
-2. Exclude `.DS_Store` and `*_v202*` version backup files
-3. Output zip named `{folder-name}.zip` in the parent directory
-4. Report: file count, zip size, confirmation that manifest is at root
+# Check file count and size
+unzip -l v{VERSION}.zip | tail -1
+```
 
-## imsmanifest.xml Generation
+## LMS Upload (UHN MyLearning)
+
+- **Cannot delete + re-upload** — must overwrite/replace the existing package
+- After uploading, **clear browser cache** (Cmd+Shift+R) or use incognito to verify
+- If LMS still shows old version, the manifest version bump should force a refresh
+
+## imsmanifest.xml Template
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest identifier="{identifier}"
-          version="1.0"
+<manifest identifier="UHN_AccessibilityFirst_Guide{NN}"
+          version="{VERSION}"
           xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
           xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -63,58 +95,72 @@ The skill validates the course folder before packaging:
     <schema>ADL SCORM</schema>
     <schemaversion>1.2</schemaversion>
   </metadata>
-  <organizations default="{identifier}_ORG">
-    <organization identifier="{identifier}_ORG">
+  <organizations default="UHN_AF_G{NN}_ORG">
+    <organization identifier="UHN_AF_G{NN}_ORG">
       <title>{course_title}</title>
-      <item identifier="{identifier}_ITEM"
-            identifierref="{identifier}_RES"
+      <item identifier="UHN_AF_G{NN}_ITEM"
+            identifierref="UHN_AF_G{NN}_RES"
             isvisible="true">
         <title>{course_title}</title>
-        <adlcp:masteryscore>{mastery_score}</adlcp:masteryscore>
+        <adlcp:masteryscore>80</adlcp:masteryscore>
       </item>
     </organization>
   </organizations>
   <resources>
-    <resource identifier="{identifier}_RES"
+    <resource identifier="UHN_AF_G{NN}_RES"
               type="webcontent"
               adlcp:scormtype="sco"
               href="index.html">
-      <!-- All files listed here -->
+      <file href="index.html"/>
+      <file href="css/course.css"/>
+      <file href="js/welcome-dialog.js"/>
+      <file href="js/navigation.js"/>
+      <file href="js/voiceover.js"/>
+      <file href="js/course-tracker.js"/>
+      <file href="js/bgm.js"/>
+      <file href="js/scormfunctions.js"/>
+      <file href="assets/uhn-logo.png"/>
+      <file href="assets/uhn-logo-dark.png"/>
+      <file href="assets/MAP-Template-Demo.html"/>
+      <file href="lms/goodbye.html"/>
     </resource>
   </resources>
 </manifest>
 ```
 
-The `<file href="..."/>` entries are auto-generated by scanning all files in the folder.
-
 ## SCORM API Wrapper (scormfunctions.js)
 
-Copied from the existing `Guide-01-SCORM-v3/js/scormfunctions.js`. Handles:
-- `LMSInitialize` / `LMSFinish`
-- `cmi.core.lesson_status` (complete/incomplete)
-- `cmi.core.score.raw` (quiz percentage)
-- `cmi.core.lesson_location` (bookmark)
-- `cmi.core.session_time`
-- `cmi.suspend_data` (full state JSON)
+Reference implementation at `04-course/current/js/scormfunctions.js`. Handles:
+- `LMSInitialize` / `LMSFinish` — session lifecycle
+- `cmi.core.lesson_status` — complete/incomplete
+- `cmi.core.score.raw` — quiz percentage (0–100)
+- `cmi.core.lesson_location` — bookmark (current slide number)
+- `cmi.core.session_time` — HHHH:MM:SS format
+- `cmi.suspend_data` — full state JSON (visitedSlides, quizScore, submissions, mapCompleted, timeSpent)
 - Auto-sync every 30 seconds
 - Auto-save on `beforeunload`
+- Standalone mode fallback (logs to console when no LMS detected)
 
-## Goodbye Page (goodbye.html)
+## File Ownership (parallel editing)
 
-UHN-branded "Course Complete — you may close this window" page. Copied from existing template.
+Each JS file has a single responsibility — only edit the file that owns the feature:
+- `welcome-dialog.js` — welcome dialog
+- `navigation.js` — slide nav, interactions, keyboard, touch, side menu
+- `voiceover.js` — audio player, closed captions
+- `course-tracker.js` — completion tracking, quiz scoring, MAP, certificate
+- `bgm.js` — background music
+- `scormfunctions.js` — SCORM/LMS communication
+- `css/course.css` — all styles
+- `index.html` — HTML structure (only edit when adding/changing screens)
 
-## Skill File Location
+Shared state lives in `window.courseData`. All JS files are IIFEs — no global pollution.
 
-`.claude/skills/scorm-package.md`
+## Release History
 
-## Script File Location (future)
-
-`04-project-starter/scripts/package_scorm.py`
-
-The script does the same validation + packaging as the skill but runs without AI:
-```
-python package_scorm.py ./Guide-01-SCORM-v3/ --title "Guide 01: Foundations..." --mastery 80
-```
+| Version | Date | Notes |
+|---------|------|-------|
+| v3.0 | 2026-05-25 | Initial SCORM package with all features |
+| v4.0 | 2026-05-25 | Manifest version bump to force LMS cache refresh |
 
 ## Success Criteria
 
@@ -123,3 +169,4 @@ python package_scorm.py ./Guide-01-SCORM-v3/ --title "Guide 01: Foundations..." 
 3. Completion status reports back to LMS
 4. Quiz score reports back to LMS
 5. Bookmarking (resume) works across sessions
+6. Overwriting existing package picks up the new version (no stale cache)

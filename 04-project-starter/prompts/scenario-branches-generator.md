@@ -12,6 +12,11 @@ Generate branching scenario maps from the source content scenarios. Each scenari
 - Legislative context: AODA, OHRC, UHN Accessibility Policy
 - Audience: All UHN employees
 
+## Output Path
+
+Save generated scenario branches to:
+`05-build-output/Guide-XX-Title/02-production/scenario-branches/`
+
 ## Design Principles
 
 1. **Consequence-based feedback** — show what happens next based on the choice, not "correct/incorrect" labels
@@ -20,6 +25,8 @@ Generate branching scenario maps from the source content scenarios. Each scenari
 4. **Realistic healthcare scenarios** — grounded in actual UHN settings and situations
 5. **Connect to guiding principles** — every debrief connects back to a specific guiding principle
 6. **Person-centred** — scenarios show impact on the patient/person, not just the process
+7. **2-attempt system** — learners get 2 attempts per scenario decision point before seeing the full debrief
+8. **Feedback for all choices** — provide specific feedback text for BOTH correct and incorrect selections (not just consequence narration — explicit learning feedback on each attempt)
 
 ## Input
 
@@ -68,6 +75,10 @@ For each scenario, generate:
           }
         ]
       },
+      "attempt_feedback": {
+        "attempt_1_incorrect": "Feedback shown after first incorrect choice — encouraging, hints toward better option without giving it away",
+        "attempt_2_incorrect": "Feedback shown after second incorrect choice — reveals the best choice and explains why"
+      },
       "debrief": {
         "key_learning": "The main takeaway from this scenario — 1-2 sentences",
         "principle_connection": "Which guiding principle(s) this scenario illustrates",
@@ -98,3 +109,7 @@ For each scenario, generate:
 8. Avoid scenarios where the "right answer" is obvious — good scenarios create genuine deliberation
 9. Include diverse characters (names, backgrounds, disabilities) across the series
 10. For sensitive topics (Indigenous content, mental health, trauma), flag for SME review at critical level
+11. All outputs must be UHN branded — no exceptions
+12. No logos in AI-generated images — AI cannot reliably render logos
+13. SCORM 1.2 compatible interactions — design within SCORM 1.2 constraints
+14. Reusable CSS/JS template at `04-course/template/` for consistent interaction patterns

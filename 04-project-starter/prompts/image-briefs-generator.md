@@ -11,6 +11,14 @@ Generate detailed image generation prompts for every screen that needs a visual 
 - Audience: UHN employees across clinical, administrative, operations, leadership roles
 - UHN sites: Toronto General, Toronto Western, Princess Margaret Cancer Centre, Toronto Rehabilitation Institute, The Michener Institute
 
+## Output Path
+
+Save generated image briefs to:
+`05-build-output/Guide-XX-Title/02-production/image-briefs/`
+
+Final generated images go to:
+`05-build-output/Guide-XX-Title/03-media/images/`
+
 ## Style Direction
 
 Use a hybrid approach:
@@ -36,6 +44,8 @@ Use a hybrid approach:
 - Include non-visible disabilities where relevant
 - For Indigenous content (Guide 18): do NOT use AI-generated images — use only approved stock or custom photography reviewed by Indigenous advisors
 - Never show disability as the sole defining trait of a person
+- **NEVER include logos (UHN or otherwise) in AI-generated images** — AI tools cannot reliably render logos; logos must be added as separate overlay elements in the course build
+- **NEVER include text overlays in AI-generated images** — AI renders text poorly; all text must be added as editable elements in the course or PPT
 
 ## Input
 
@@ -97,3 +107,7 @@ For each screen requiring an image, generate:
 4. Clear, uncluttered compositions
 5. File specs: 1920×1080px (16:9), PNG, 72 DPI for screen
 6. Framework infographics must be identical across all 17 guides (variations can highlight relevant sections)
+7. All image brief documents must be UHN branded (header/footer, colours, fonts)
+8. Negative prompts must ALWAYS include: "no logos, no text overlays, no watermarks, no UHN branding in the image itself"
+9. Reference Guide 01 image briefs at `05-build-output/01-Foundations-of-Disability-Inclusion-and-Accessible-Design/02-production/image-briefs/` for style consistency
+10. Reusable CSS/JS template at `04-course/template/` handles image placement and accessibility attributes in the final build

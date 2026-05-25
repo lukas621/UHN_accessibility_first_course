@@ -131,3 +131,7 @@ For each planned video:
 - Guide 18 (Indigenous Peoples): flag all videos as CRITICAL — require Indigenous advisor review
 - Any video depicting a person with a disability: ensure accurate representation, consult with disability community members where possible
 - Never simulate disability (e.g., blindfold exercises, wheelchair simulations) — these are harmful
+
+## File Output
+
+Save video production plans to: `Guide-{{guide_number}}/02-production/video-production/`

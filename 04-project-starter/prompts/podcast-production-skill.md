@@ -16,7 +16,7 @@ Generate, transcribe, cut, and embed NotebookLM podcast audio into course mockup
 ## Workflow
 
 ### Step 1 — Write Source Document
-Create `02-production/podcast/PODCAST-SOURCE-GUIDE-XX.md` with:
+Create `Guide-XX/02-production/podcast/PODCAST-SOURCE-GUIDE-XX.md` with:
 - Episode title, series label, target length
 - Voice character description (patient advisor, warm, honest, specific)
 - Source text (~500 words, first person, lived experience perspective)
@@ -45,7 +45,8 @@ Create `02-production/podcast/PODCAST-SOURCE-GUIDE-XX.md` with:
 1. Upload source doc as single source to new NotebookLM notebook
 2. Open Studio panel → Generate Audio Overview
 3. Download .m4a file
-4. Save to `02-production/podcast/` folder
+4. Save to `Guide-XX/02-production/podcast/` folder
+5. Copy final audio to `Guide-XX/03-media/podcast/` for course build
 
 ### Step 3 — Transcribe
 **If file > 25MB**, compress first:
@@ -166,7 +167,8 @@ Add to the podcast slide:
 
 ## Quality Checklist
 - [ ] Source document written with clear voice character
-- [ ] Audio generated and saved to `02-production/podcast/`
+- [ ] Audio generated and saved to `Guide-XX/02-production/podcast/`
+- [ ] Final audio copied to `Guide-XX/03-media/podcast/`
 - [ ] Transcribed with timestamps
 - [ ] SRT captions generated
 - [ ] Key listening points identified with real timestamps

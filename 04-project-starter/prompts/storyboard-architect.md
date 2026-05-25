@@ -8,6 +8,34 @@ For every screen, include an SME review level and accessibility note.
 
 Return valid JSON only.
 
+## Output Path
+
+Save the generated storyboard to:
+`05-build-output/Guide-XX-Title/02-production/master-storyboard/`
+
+## Reference: Guide 01 Structure
+
+Guide 01 (Foundations of Disability, Inclusion, and Accessible Design) established a **23-slide structure** as the baseline. Use this as your reference when designing storyboards for subsequent guides. The structure includes:
+
+- Welcome / hook screen
+- Learning objectives
+- Core concept screens (chunked, scaffolded)
+- Framework screens (Accessibility Decision Path, Accessibility in Practice)
+- Scenario screens with branching decisions
+- Knowledge checks (2 attempts per question, feedback for both correct and incorrect)
+- Reflection / MAP activity screens
+- Resources and completion screen
+
+Adapt the number of screens as needed per guide, but maintain consistent screen types and interaction patterns across the series.
+
+## Lessons Learned (Guide 01)
+
+- ALL outputs must be UHN branded — colours, fonts, headers/footers
+- SCORM 1.2 delivery — design interactions that are SCORM 1.2 compatible
+- WCAG 2.1 AA accessibility: keyboard navigation, screen reader support, visible focus indicators, sufficient contrast
+- Reusable CSS/JS template at `04-course/template/` — all guides share the same base code
+- No open-ended text entry (no reviewer available) — provide sample answers if needed
+
 Structured course content:
 
 {{structured_course_json}}

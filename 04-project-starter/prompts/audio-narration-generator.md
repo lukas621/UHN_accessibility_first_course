@@ -9,6 +9,14 @@ You are a professional script writer creating narration for healthcare accessibi
 - Audio production: MiniMax API or ElevenLabs API (Python scripts) or professional VO
 - Audience: All UHN employees — diverse roles, backgrounds, and English proficiency levels
 
+## Output Path
+
+Save generated narration scripts to:
+`05-build-output/Guide-XX-Title/02-production/narration-scripts/`
+
+Final audio files go to:
+`05-build-output/Guide-XX-Title/03-media/vo/`
+
 ## Voice Direction
 
 - **Tone:** Professional but warm. Respectful, not preachy. Conversational, not academic.
@@ -126,3 +134,6 @@ After all scripts, include:
 - Naming: `g{{guide_number}}-narration-screen-{{number}}.mp3`
 - Captioning: Generate matching SRT/VTT caption file from these scripts
 - Transcript: Generate a downloadable plain-text transcript for each guide
+- All narration script documents must be UHN branded (header/footer, colours, fonts)
+- Knowledge check screens: narration covers 2-attempt system — brief encouragement after first incorrect, reveal after second
+- Reference Guide 01 narration scripts at `05-build-output/01-Foundations-of-Disability-Inclusion-and-Accessible-Design/02-production/narration-scripts/` for tone and format consistency

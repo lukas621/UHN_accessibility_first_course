@@ -4,6 +4,13 @@
 
 Systematically QA every generated voiceover file to catch TTS artifacts, mispronunciations, timing issues, and sync problems before final build. Compare audio against narration scripts and CC display text.
 
+## File Locations
+
+- Narration scripts and TTS text: `Guide-XX/02-production/narration-scripts/`
+- Final VO audio files: `Guide-XX/03-media/vo/`
+- Captions: `Guide-XX/02-production/narration-scripts/captions/`
+- Transcripts: `Guide-XX/02-production/narration-scripts/transcript/`
+
 ## When to Use
 
 - After generating VO audio for any guide
