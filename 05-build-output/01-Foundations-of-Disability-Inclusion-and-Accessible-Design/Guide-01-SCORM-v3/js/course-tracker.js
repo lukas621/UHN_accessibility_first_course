@@ -310,150 +310,80 @@
 
   // ── Results Page (Slide 23) ──
   function refreshResultsPage() {
-    var container = document.getElementById('resultsPageContainer');
-    if (!container) return;
-
     var d = window.courseData;
-    var lastVisited = d.visitedSlides.indexOf(LAST_SLIDE) !== -1;
     var quizOk = d.quizPassed;
     var mapOk = d.mapCompleted;
     var isComplete = d.courseCompleted;
 
     if (!isComplete) { checkCompletion(); isComplete = d.courseCompleted; }
 
-    // SVG icons
-    var iconCheck = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
-    var iconX = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-    var iconExit = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
-
-    var html = '';
-    var h = 'font-family:var(--font-head);';
-
-    // ── WRAPPER (fits 1920x1080, topbar 84px, footer 80px) ──
-    html += '<div style="padding:96px 72px 0; height:976px; box-sizing:border-box; overflow:hidden; display:flex; flex-direction:column; gap:18px;">';
-
-    // ── ROW 1: Title + Banner (side by side) ──
-    html += '<div style="display:grid; grid-template-columns:300px 1fr; gap:24px; ">';
-    html += '<div>' +
-      '<div style="' + h + 'font-size:16px; letter-spacing:4px; color:var(--lilac); text-transform:uppercase;">ACCESSIBILITY FIRST</div>' +
-      '<div style="' + h + 'font-size:44px; color:var(--navy); margin-top:6px; line-height:1.05;">Guide 01:<br>Results</div>' +
-    '</div>';
-
-    if (isComplete) {
-      html += '<div style="background:var(--chartreuse,#74AE54); color:#fff; padding:28px 36px; display:flex; align-items:center; gap:20px;">' +
-        '<div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.25); display:flex; align-items:center; justify-content:center; flex-shrink:0;">' + iconCheck + '</div>' +
-        '<div>' +
-          '<div style="' + h + 'font-size:30px; letter-spacing:3px;">COURSE COMPLETE</div>' +
-          '<div style="font-size:18px; opacity:0.9; margin-top:6px;">You have met all requirements for Guide 01.</div>' +
-        '</div></div>';
-    } else {
-      var remaining = [];
-      if (!quizOk) remaining.push('Pass the quiz (' + d.quizScore + '/' + d.quizTotal + ', need ' + PASS_THRESHOLD + '/' + d.quizTotal + ')');
-      if (!lastVisited) remaining.push('Reach the last slide');
-      html += '<div style="background:var(--red,#C0233B); color:#fff; padding:28px 36px;">' +
-        '<div style="display:flex; align-items:center; gap:20px; margin-bottom:10px;">' +
-          '<div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.25); display:flex; align-items:center; justify-content:center; flex-shrink:0;">' + iconX + '</div>' +
-          '<div style="' + h + 'font-size:30px; letter-spacing:3px;">COURSE INCOMPLETE</div>' +
-        '</div>' +
-        '<div style="font-size:18px; opacity:0.9; margin-left:76px;">Complete the following:</div>' +
-        '<ul style="list-style:none; padding:6px 0 0 76px; margin:0;">';
-      remaining.forEach(function(item) { html += '<li style="font-size:18px; padding:3px 0;">&bull; ' + item + '</li>'; });
-      html += '</ul></div>';
+    // Update completion status message
+    var statusEl = document.getElementById('completionStatus');
+    var msgEl = document.getElementById('completionMessage');
+    if (statusEl && msgEl) {
+      if (isComplete) {
+        statusEl.style.borderLeftColor = 'var(--chartreuse)';
+        statusEl.style.background = 'var(--chartreuse-bg)';
+        msgEl.innerHTML = "You've completed Guide 01. You've earned the <b>Accessibility First: Foundations</b> badge.";
+      } else {
+        statusEl.style.borderLeftColor = 'var(--red)';
+        statusEl.style.background = 'var(--red-bg)';
+        var remaining = [];
+        if (!quizOk) remaining.push('Pass the quiz (' + d.quizScore + '/' + d.quizTotal + ')');
+        msgEl.innerHTML = 'Course incomplete. ' + remaining.join(', ');
+      }
     }
-    html += '</div>';
 
-    // ── ROW 2: Score cards (3 large) ──
-    html += '<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:18px;">';
+    // Update badge container
+    var badgeContainer = document.getElementById('badgeContainer');
+    if (badgeContainer) {
+      if (isComplete) {
+        badgeContainer.style.borderColor = 'var(--chartreuse)';
+      } else {
+        badgeContainer.style.borderColor = '#ccc';
+        badgeContainer.style.opacity = '0.5';
+      }
+    }
 
-    html += '<div style="background:var(--navy,#192858); color:#fff; padding:28px 24px; text-align:center;">' +
-      '<div style="' + h + 'font-size:52px; line-height:1;">' + d.quizScore + '/' + d.quizTotal + '</div>' +
-      '<div style="' + h + 'font-size:16px; letter-spacing:3px; margin-top:12px; opacity:0.8;">QUIZ SCORE</div>' +
-      '<div style="font-size:18px; margin-top:6px; opacity:0.65;">' + (quizOk ? 'Passed' : 'Not passed') + '</div>' +
-    '</div>';
+    // Update download badge button
+    var badgeBtn = document.getElementById('downloadBadgeBtn');
+    if (badgeBtn) {
+      if (isComplete) {
+        badgeBtn.style.opacity = '';
+        badgeBtn.style.pointerEvents = '';
+        badgeBtn.style.cursor = 'pointer';
+      } else {
+        badgeBtn.style.opacity = '0.35';
+        badgeBtn.style.pointerEvents = 'none';
+        badgeBtn.textContent = 'COMPLETE COURSE TO UNLOCK';
+        badgeBtn.style.background = '#ccc';
+      }
+    }
 
-    html += '<div style="background:var(--cobalt,#245BAA); color:#fff; padding:28px 24px; text-align:center;">' +
-      '<div style="' + h + 'font-size:52px; line-height:1;">' + formatTime(d.timeSpent) + '</div>' +
-      '<div style="' + h + 'font-size:16px; letter-spacing:3px; margin-top:12px; opacity:0.8;">TIME SPENT</div>' +
-      '<div style="font-size:18px; margin-top:6px; opacity:0.65;">Session duration</div>' +
-    '</div>';
-
-    html += '<div style="background:var(--navy-deep,#0F1A3D); color:#fff; padding:28px 24px; text-align:center;">' +
-      '<div style="' + h + 'font-size:52px; line-height:1;">' + d.visitedSlides.length + '/' + d.totalSlides + '</div>' +
-      '<div style="' + h + 'font-size:16px; letter-spacing:3px; margin-top:12px; opacity:0.8;">SLIDES VISITED</div>' +
-      '<div style="font-size:18px; margin-top:6px; opacity:0.65;">' + (d.visitedSlides.length >= d.totalSlides ? 'All visited' : (d.totalSlides - d.visitedSlides.length) + ' remaining') + '</div>' +
-    '</div>';
-    html += '</div>';
-
-    // ── ROW 3: Buttons (5 across — retry, action plan, badge, certificate, exit) ──
-    var btnBase = '' + h + 'font-size:18px; padding:20px 16px; border:0; letter-spacing:2px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; width:100%;';
-    var dis = 'opacity:0.3; cursor:not-allowed; pointer-events:none;';
-
-    html += '<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">';
-
-    html += '<button id="retryQuizBtn" style="' + btnBase + ' background:var(--red,#C0233B); color:#fff;">RETRY QUIZ</button>';
-    html += '<button id="downloadMapBtn" style="' + btnBase + ' background:var(--cobalt,#245BAA); color:#fff;' + (!mapOk ? dis : '') + '">ACTION PLAN</button>';
-    html += '<button id="downloadBadgeBtn" style="' + btnBase + ' background:var(--chartreuse,#74AE54); color:#fff;' + (!isComplete ? dis : '') + '">BADGE</button>';
-    html += '<button id="printCertBtn" style="' + btnBase + ' background:var(--navy,#192858); color:#fff;' + (!isComplete ? dis : '') + '">CERTIFICATE</button>';
-    html += '</div>';
-
-    // ── ROW 4: Resources + Up Next ──
-    html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; flex:1;">';
-    html += '<div style="background:#f4f4f4; padding:24px 28px;">' +
-      '<div style="' + h + 'font-size:16px; letter-spacing:3px; color:var(--navy); border-bottom:2px solid var(--navy); padding-bottom:6px; margin-bottom:10px;">RESOURCES</div>' +
-      '<div style="font-size:20px; line-height:1.8; color:#444;">AODA: ontario.ca/laws/statute/05a11 &nbsp;&bull;&nbsp; OHRC: ohrc.on.ca<br>UHN Accessibility Policy &nbsp;&bull;&nbsp; UHN IDEAA Office</div>' +
-    '</div>';
-    html += '<div style="padding:24px 28px; background:var(--navy,#192858); color:#fff; display:flex; flex-direction:column; justify-content:center;">' +
-      '<div style="' + h + 'font-size:16px; letter-spacing:3px; color:var(--lilac); margin-bottom:6px;">UP NEXT</div>' +
-      '<div style="' + h + 'font-size:26px; line-height:1.3;">Guide 02: Perceptions, Attitudes &amp; Barriers</div>' +
-    '</div>';
-    html += '</div>';
-
-    // ── ROW 5: EXIT button (centered) + footer ──
-    html += '<div style="text-align:center;">' +
-      '<button id="exitCourseBtn" style="' + h + 'font-size:16px; padding:14px 48px; border:2px solid var(--navy); background:transparent; color:var(--navy); letter-spacing:3px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:10px;">' + iconExit + ' EXIT COURSE</button>' +
-      '<div style="' + h + 'font-size:11px; letter-spacing:2px; color:#bbb; margin-top:8px;">UNIVERSITY HEALTH NETWORK &middot; TORONTO &middot; ACCESSIBILITY FIRST SERIES</div>' +
-    '</div>';
-
-    html += '</div>'; // close wrapper
-
-    container.innerHTML = html;
-    wireResultsButtons();
+    // Update action plan button
+    var mapBtn = document.getElementById('downloadMapBtn');
+    if (mapBtn) {
+      if (mapOk) {
+        mapBtn.style.opacity = '';
+        mapBtn.style.pointerEvents = '';
+      } else {
+        mapBtn.style.opacity = '0.35';
+        mapBtn.style.pointerEvents = 'none';
+      }
+    }
   }
 
+  // Wire up static buttons (run once on load)
   function wireResultsButtons() {
-    // RETRY QUIZ
     var retryBtn = document.getElementById('retryQuizBtn');
-    if (retryBtn) {
-      retryBtn.addEventListener('click', function() {
-        retryQuiz();
-      });
-    }
+    if (retryBtn) retryBtn.addEventListener('click', function() { retryQuiz(); });
 
-    // DOWNLOAD ACTION PLAN
-    var downloadMapBtn = document.getElementById('downloadMapBtn');
-    if (downloadMapBtn && window.courseData.mapCompleted) {
-      downloadMapBtn.addEventListener('click', function() {
-        openMapDownload();
-      });
-    }
+    var mapBtn = document.getElementById('downloadMapBtn');
+    if (mapBtn) mapBtn.addEventListener('click', function() { if (window.courseData.mapCompleted) openMapDownload(); });
 
-    // DOWNLOAD BADGE
-    var downloadBadgeBtn = document.getElementById('downloadBadgeBtn');
-    if (downloadBadgeBtn && window.courseData.courseCompleted) {
-      downloadBadgeBtn.addEventListener('click', function() {
-        openBadgeDownload();
-      });
-    }
+    var badgeBtn = document.getElementById('downloadBadgeBtn');
+    if (badgeBtn) badgeBtn.addEventListener('click', function() { if (window.courseData.courseCompleted) openBadgeDownload(); });
 
-    // PRINT CERTIFICATE
-    var printCertBtn = document.getElementById('printCertBtn');
-    if (printCertBtn && window.courseData.courseCompleted) {
-      printCertBtn.addEventListener('click', function() {
-        showCompletionOverlay();
-      });
-    }
-
-    // EXIT COURSE
     var exitBtn = document.getElementById('exitCourseBtn');
     if (exitBtn) {
       exitBtn.addEventListener('click', function() {
@@ -461,18 +391,35 @@
         if (window.SCORM && window.SCORM.terminate) window.SCORM.terminate();
         window.location.href = 'lms/goodbye.html';
       });
-      exitBtn.addEventListener('mouseenter', function() {
-        exitBtn.style.background = 'var(--red)';
-        exitBtn.style.color = '#fff';
-        exitBtn.style.borderColor = 'var(--red)';
-      });
-      exitBtn.addEventListener('mouseleave', function() {
-        exitBtn.style.background = 'transparent';
-        exitBtn.style.color = 'var(--navy)';
-        exitBtn.style.borderColor = 'var(--navy)';
+    }
+
+    // MAP save button (on slide 18) — wire immediately since it's in static HTML
+    var mapSaveBtn = document.querySelector('.map-save-btn');
+    if (mapSaveBtn) {
+      mapSaveBtn.addEventListener('click', function() {
+        var mapSlide = document.querySelector('[data-slide="' + MAP_SLIDE + '"]');
+        if (!mapSlide) return;
+        var fields = mapSlide.querySelectorAll('.map-field .input[contenteditable]');
+        var responses = {
+          mapStop: fields[0] ? fields[0].textContent.trim() : '',
+          mapStart: fields[1] ? fields[1].textContent.trim() : '',
+          mapContinue: fields[2] ? fields[2].textContent.trim() : ''
+        };
+        try { localStorage.setItem(MAP_STORAGE_KEY, JSON.stringify(responses)); } catch(e) {}
+        window.courseData.mapCompleted = true;
+        saveProgress();
+        checkCompletion();
+        mapSaveBtn.style.background = '#74AE54';
+        mapSaveBtn.textContent = '\u2713 SAVED';
+        setTimeout(function() {
+          mapSaveBtn.style.background = 'var(--red)';
+          mapSaveBtn.innerHTML = 'SAVE MY MAP<span style="font-size:24px;">\u203A</span>';
+        }, 2000);
       });
     }
   }
+  // Wire buttons immediately (they're in the static HTML now)
+  wireResultsButtons();
 
   // ── Retry Quiz ──
   function retryQuiz() {
@@ -641,7 +588,12 @@
       window.courseData.bookmarkSlide = saved.bookmarkSlide;
       window.courseData.currentSlide = saved.currentSlide || 1;
       window.courseData.totalSlides = totalSlides;
-      window.courseData.submissions = saved.submissions || {};
+      // Merge submissions (don't overwrite — closures in navigation.js depend on live keys)
+      var savedSubs = saved.submissions || {};
+      if (!window.courseData.submissions) window.courseData.submissions = {};
+      for (var subKey in savedSubs) {
+        window.courseData.submissions[subKey] = savedSubs[subKey];
+      }
 
       // Restore quiz answers
       if (saved.quizAnswers) quizAnswers = saved.quizAnswers;

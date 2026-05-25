@@ -140,7 +140,12 @@
       var saved = JSON.parse(raw);
       if (saved.visitedSlides) window.courseData.visitedSlides = saved.visitedSlides;
       if (saved.quizScore !== undefined) window.courseData.quizScore = saved.quizScore;
-      if (saved.submissions) window.courseData.submissions = saved.submissions;
+      if (saved.submissions) {
+        if (!window.courseData.submissions) window.courseData.submissions = {};
+        for (var sk in saved.submissions) {
+          window.courseData.submissions[sk] = saved.submissions[sk];
+        }
+      }
       if (saved.mapCompleted !== undefined) window.courseData.mapCompleted = saved.mapCompleted;
       if (saved.timeSpent !== undefined) window.courseData.timeSpent = saved.timeSpent;
       return true;

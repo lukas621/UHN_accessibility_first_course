@@ -722,12 +722,11 @@
     <div class="sep" aria-hidden="true"></div>
     <div class="ctx">ACCESSIBILITY FIRST</div>
   </div>
-  <div class="crumbs">Guide 01 · Foundations › <b>Knowledge Check 1 — Q2</b></div>
+  <div class="crumbs">Guide 01 · Foundations › <b>Knowledge Check 2</b></div>
 </div>
   <div class="title-block">
-    <div class="eyebrow">SCREEN 1.10 · ASSESSMENT · QUESTION 2</div>
-    <h1>Knowledge Check <span class="accent">1</span></h1>
-    <div class="lede">Question 2 of 2.</div>
+    <div class="eyebrow">SCREEN 1.11 · ASSESSMENT</div>
+    <h1>Knowledge Check <span class="accent">2</span></h1>
   </div>
   <div class="kc-grid" style="padding:24px 96px 0;">
     <div class="kc-question">
@@ -785,11 +784,11 @@
     <div class="sep" aria-hidden="true"></div>
     <div class="ctx">ACCESSIBILITY FIRST</div>
   </div>
-  <div class="crumbs">Guide 01 · Foundations › <b>Knowledge Check 2</b></div>
+  <div class="crumbs">Guide 01 · Foundations › <b>Knowledge Check 3</b></div>
 </div>
   <div class="title-block">
-    <div class="eyebrow">SCREEN 1.11 · ASSESSMENT</div>
-    <h1>Knowledge Check <span class="accent">2</span></h1>
+    <div class="eyebrow">SCREEN 1.12 · ASSESSMENT</div>
+    <h1>Knowledge Check <span class="accent">3</span></h1>
     <div class="lede">One scenario-based question.</div>
   </div>
   <div class="kc-grid" style="padding:24px 96px 0;">
@@ -1276,9 +1275,58 @@
   </div>
   <div class="crumbs">Guide 01 · Foundations › <b>Resources &amp; Completion</b></div>
 </div>
-  <div id="resultsPageContainer" style="padding:24px 96px 0;">
-    <!-- Dynamically populated by course-tracker.js refreshResultsPage() -->
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 1.19 · COMPLETION</div>
+    <h1>Resources & <span class="accent">Course Completion</span></h1>
   </div>
+  <div style="padding:24px 96px 0; display:grid; grid-template-columns:1.1fr 1fr; gap:48px;">
+    <!-- LEFT COLUMN -->
+    <div>
+      <!-- Completion status (dynamic) -->
+      <div id="completionStatus" style="border-left:6px solid var(--chartreuse); background:var(--chartreuse-bg); padding:22px 28px; margin-bottom:24px;">
+        <div style="font-family:var(--font-head); font-size:16px; letter-spacing:3px; color:var(--chartreuse); text-transform:uppercase; margin-bottom:8px;">COMPLETION</div>
+        <div id="completionMessage" style="font-size:22px; color:var(--ink); line-height:1.4; font-weight:bold;">Checking completion status...</div>
+      </div>
+
+      <!-- Resources -->
+      <div class="ref-list" style="margin-bottom:24px;">
+        <div class="rl">RESOURCES</div>
+        <ul>
+          <li>AODA: ontario.ca/laws/statute/05a11</li>
+          <li>OHRC: ohrc.on.ca</li>
+          <li>UHN Accessibility Policy: [internal link]</li>
+          <li>UHN IDEAA Office: [internal contact]</li>
+        </ul>
+      </div>
+
+      <!-- Up Next + Buttons -->
+      <div style="background:var(--navy); color:#fff; padding:22px 28px; display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+        <div>
+          <div style="font-family:var(--font-head); font-size:12px; letter-spacing:3px; color:var(--lilac); text-transform:uppercase; margin-bottom:4px;">UP NEXT</div>
+          <div style="font-family:var(--font-head); font-size:22px;">Guide 02: Perceptions, Attitudes, and Barriers</div>
+        </div>
+      </div>
+
+      <!-- Action buttons row -->
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <button id="retryQuizBtn" style="font-family:var(--font-head); font-size:16px; padding:14px 24px; border:0; letter-spacing:2px; cursor:pointer; background:var(--red); color:#fff;">RETRY QUIZ</button>
+        <button id="downloadMapBtn" style="font-family:var(--font-head); font-size:16px; padding:14px 24px; border:0; letter-spacing:2px; cursor:pointer; background:var(--cobalt); color:#fff;">ACTION PLAN</button>
+        <button id="exitCourseBtn" style="font-family:var(--font-head); font-size:16px; padding:14px 24px; border:2px solid var(--navy); letter-spacing:2px; cursor:pointer; background:transparent; color:var(--navy);">EXIT COURSE</button>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Badge -->
+    <div>
+      <div id="badgeContainer" style="border:2px solid var(--navy); padding:36px; text-align:center;">
+        <div style="font-family:var(--font-head); font-size:14px; letter-spacing:4px; color:var(--muted); text-transform:uppercase; margin-bottom:24px;">BADGE EARNED</div>
+        <div style="width:200px; height:200px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; margin:0 auto; font-family:var(--font-head); font-size:22px; text-align:center; line-height:1.3; padding:20px; box-sizing:border-box;">Accessibility<br>First:<br>Foundations</div>
+        <div style="font-family:var(--font-head); font-size:22px; color:var(--navy); margin-top:20px;">Guide 01 Complete</div>
+        <div style="font-size:16px; color:var(--muted); margin-top:6px;">Foundations of Disability, Inclusion & Accessible Design</div>
+        <button id="downloadBadgeBtn" style="font-family:var(--font-head); font-size:16px; padding:14px 32px; border:0; letter-spacing:2px; cursor:pointer; background:var(--chartreuse); color:#fff; margin-top:20px;">DOWNLOAD BADGE</button>
+      </div>
+    </div>
+  </div>
+  <div id="resultsPageContainer" style="display:none;"></div>
 <div class="slide-footer">
   <div class="left">
     <div class="tag">GUIDE 01</div>
@@ -1359,11 +1407,11 @@
 <!-- Screen reader announcements -->
 <div id="sr-announce" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-<script src="js/scormfunctions.js"></script>
-<script src="js/welcome-dialog.js"></script>
-<script src="js/navigation.js"></script>
-<script src="js/voiceover.js"></script>
-<script src="js/course-tracker.js"></script>
-<script src="js/bgm.js"></script>
+<script src="js/scormfunctions.js?v=3"></script>
+<script src="js/welcome-dialog.js?v=3"></script>
+<script src="js/navigation.js?v=3"></script>
+<script src="js/voiceover.js?v=3"></script>
+<script src="js/course-tracker.js?v=3"></script>
+<script src="js/bgm.js?v=3"></script>
 </body>
 </html>

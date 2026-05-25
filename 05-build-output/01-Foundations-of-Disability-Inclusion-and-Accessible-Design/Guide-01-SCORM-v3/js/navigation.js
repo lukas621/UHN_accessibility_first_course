@@ -387,7 +387,7 @@
      TASK 1 & 4: Branching scenario choices (2 attempts, full feedback)
      ══════════════════════════════════════════════════════════════ */
 
-  document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer) {
+  document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer, idx) {
     var correctAnswer = optionsContainer.getAttribute('data-correct');
     var overlayId = optionsContainer.getAttribute('data-overlay');
     var options = optionsContainer.querySelectorAll('.option');
@@ -401,8 +401,16 @@
       window.courseData.submissions[containerKey] = { attempts: 0, disabledChoices: [] };
     }
 
-    // Use a getter function so we always read the live object (supports retry reset)
-    function getState() { return window.courseData.submissions[containerKey]; }
+    // Defensive getter: always ensures a valid state object with all required fields
+    function getState() {
+      if (!window.courseData.submissions[containerKey]) {
+        window.courseData.submissions[containerKey] = {};
+      }
+      var s = window.courseData.submissions[containerKey];
+      if (typeof s.attempts !== 'number') s.attempts = 0;
+      if (!Array.isArray(s.disabledChoices)) s.disabledChoices = [];
+      return s;
+    }
 
     // Restore visual state if previously completed
     var initState = getState();
@@ -590,8 +598,16 @@
       window.courseData.submissions[containerKey] = { attempts: 0, disabledChoices: [] };
     }
 
-    // Use a getter function so we always read the live object (supports retry reset)
-    function getState() { return window.courseData.submissions[containerKey]; }
+    // Defensive getter: always ensures a valid state object with all required fields
+    function getState() {
+      if (!window.courseData.submissions[containerKey]) {
+        window.courseData.submissions[containerKey] = {};
+      }
+      var s = window.courseData.submissions[containerKey];
+      if (typeof s.attempts !== 'number') s.attempts = 0;
+      if (!Array.isArray(s.disabledChoices)) s.disabledChoices = [];
+      return s;
+    }
 
     // Restore visual state if previously completed
     var initState = getState();
@@ -1142,6 +1158,81 @@
       e.preventDefault();
       el.click();
     }
+  });
+
+  /* ══════════════════════════════════════════════════════════════
+     Deferred visual sync: re-apply visual state from submissions
+     after all scripts (welcome-dialog, course-tracker, SCORM) have
+     had a chance to restore state from localStorage / LMS.
+     This runs once on DOMContentLoaded + a short delay, and also
+     exposes syncVisualState() for external callers.
+     ══════════════════════════════════════════════════════════════ */
+  function syncVisualState() {
+    // Sync scenario containers
+    document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer) {
+      var correctAnswer = optionsContainer.getAttribute('data-correct');
+      var overlayId = optionsContainer.getAttribute('data-overlay');
+      var containerKey = overlayId || correctAnswer + '-' + Array.prototype.indexOf.call(document.querySelectorAll('.options[data-correct]'), optionsContainer);
+      var state = window.courseData.submissions[containerKey];
+      if (!state || !state.selected) return;
+      // Already visually locked — skip
+      if (optionsContainer.classList.contains('locked')) return;
+
+      var options = optionsContainer.querySelectorAll('.option');
+      var submitBtn = optionsContainer.parentElement.querySelector('.submit-btn');
+
+      options.forEach(function(o) {
+        var ch = o.getAttribute('data-choice');
+        if (ch === state.selected) {
+          if (ch === correctAnswer) { o.classList.add('correct'); }
+          else { o.classList.add('incorrect'); }
+        }
+        if (ch === correctAnswer && state.selected !== correctAnswer) { o.classList.add('correct'); }
+      });
+      optionsContainer.classList.add('locked');
+      if (submitBtn) {
+        submitBtn.classList.remove('ready');
+        submitBtn.classList.add('submitted');
+        submitBtn.textContent = state.selected === correctAnswer ? 'CORRECT \u2713' : 'SUBMITTED \u2713';
+        submitBtn.disabled = true;
+      }
+    });
+
+    // Sync KC containers
+    document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kcContainer) {
+      var correctAnswer = kcContainer.getAttribute('data-correct');
+      var qnum = kcContainer.getAttribute('data-qnum');
+      var containerKey = 'kc-' + qnum;
+      var state = window.courseData.submissions[containerKey];
+      if (!state || !state.selected) return;
+      if (kcContainer.classList.contains('locked')) return;
+
+      var opts = kcContainer.querySelectorAll('.kc-opt');
+      var submitBtn = kcContainer.parentElement.querySelector('.submit-btn');
+
+      opts.forEach(function(o) {
+        var ans = o.getAttribute('data-answer');
+        if (ans === state.selected) {
+          if (ans === correctAnswer) { o.classList.add('correct'); }
+          else { o.classList.add('incorrect'); }
+        }
+        if (ans === correctAnswer && state.selected !== correctAnswer) { o.classList.add('correct'); }
+      });
+      kcContainer.classList.add('locked');
+      if (submitBtn) {
+        submitBtn.classList.remove('ready');
+        submitBtn.classList.add('submitted');
+        submitBtn.textContent = state.selected === correctAnswer ? 'CORRECT \u2713' : 'SUBMITTED \u2713';
+        submitBtn.disabled = true;
+      }
+      showKcFeedback(kcContainer, state.selected, correctAnswer);
+    });
+  }
+  window.syncVisualState = syncVisualState;
+
+  // Run deferred sync after all scripts have loaded and state has been restored
+  window.addEventListener('load', function() {
+    setTimeout(syncVisualState, 200);
   });
 
 })();

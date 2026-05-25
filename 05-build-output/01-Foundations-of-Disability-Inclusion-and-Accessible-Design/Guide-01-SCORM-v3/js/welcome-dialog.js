@@ -85,7 +85,11 @@
     try {
       var subsRaw = localStorage.getItem('courseSubmissions');
       if (subsRaw && window.courseData) {
-        window.courseData.submissions = JSON.parse(subsRaw);
+        var restoredSubs = JSON.parse(subsRaw);
+        if (!window.courseData.submissions) window.courseData.submissions = {};
+        for (var sk in restoredSubs) {
+          window.courseData.submissions[sk] = restoredSubs[sk];
+        }
       }
     } catch (e) {}
   }
@@ -111,6 +115,7 @@
     document.getElementById('welcomeResumeBtn2').addEventListener('click', function() {
       restoreState();
       dismissDialog();
+      if (window.syncVisualState) window.syncVisualState();
       if (window.goSlide) window.goSlide(savedSlide);
     });
 
