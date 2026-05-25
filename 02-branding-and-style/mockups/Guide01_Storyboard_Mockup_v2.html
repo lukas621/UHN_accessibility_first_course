@@ -36,6 +36,65 @@ html, body { margin:0; padding:0; background:#000; font-family:var(--font-body);
 }
 .slide.active { visibility:visible; opacity:1; pointer-events:auto; z-index:10; }
 
+/* ── Welcome Dialog ── */
+.welcome-overlay {
+  position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh;
+  background:rgba(15,26,61,0.92);
+  z-index:999999; display:flex; align-items:center; justify-content:center;
+  opacity:1; transition:opacity 0.4s ease;
+}
+.welcome-overlay.hidden { opacity:0; pointer-events:none; }
+.welcome-dialog {
+  width:560px; max-height:90vh; background:#fff; box-shadow:0 20px 60px rgba(0,0,0,0.4); overflow-y:auto;
+  overflow:hidden; transform:scale(1); transition:transform 0.3s ease;
+}
+.welcome-overlay.hidden .welcome-dialog { transform:scale(0.95); }
+.welcome-dialog .wd-header {
+  background:var(--navy); padding:28px 36px; color:#fff;
+  display:flex; align-items:center; gap:16px;
+}
+.welcome-dialog .wd-logo { font-family:var(--font-head); font-size:24px; letter-spacing:2px; }
+.welcome-dialog .wd-sep { width:1px; height:28px; background:rgba(255,255,255,0.3); }
+.welcome-dialog .wd-series { font-family:var(--font-head); font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.8); }
+.wd-accent { height:4px; background:linear-gradient(to right, #C0233B 25%, #245BAA 25% 50%, #74AE54 50% 75%, #C48ABD 75%); }
+.welcome-dialog .wd-body { padding:32px 36px; }
+.welcome-dialog .wd-eyebrow {
+  font-family:var(--font-head); font-size:9px; letter-spacing:4px;
+  text-transform:uppercase; color:var(--red); margin-bottom:8px;
+}
+.welcome-dialog .wd-title {
+  font-family:var(--font-head); font-size:28px; color:var(--navy);
+  line-height:1.15; margin-bottom:8px;
+}
+.welcome-dialog .wd-subtitle {
+  font-size:14px; color:var(--muted); line-height:1.5; margin-bottom:24px;
+}
+.welcome-dialog .wd-field { margin-bottom:18px; }
+.welcome-dialog .wd-field label {
+  font-family:var(--font-head); font-size:10px; letter-spacing:2px;
+  text-transform:uppercase; color:var(--navy); display:block; margin-bottom:6px;
+}
+.welcome-dialog .wd-field input {
+  width:100%; padding:12px 14px; border:2px solid var(--neutral);
+  font-size:16px; font-family:var(--font-body); color:var(--ink);
+  outline:none; transition:border-color 0.2s;
+}
+.welcome-dialog .wd-field input:focus { border-color:var(--lilac); }
+.welcome-dialog .wd-field input::placeholder { color:#bbb; }
+.welcome-dialog .wd-begin {
+  width:100%; padding:16px; background:var(--red); color:#fff;
+  font-family:var(--font-head); font-size:18px; letter-spacing:2px;
+  border:0; cursor:pointer; display:flex; align-items:center;
+  justify-content:center; gap:10px; transition:background 0.2s;
+}
+.welcome-dialog .wd-begin:hover { background:#a01d32; }
+.welcome-dialog .wd-skip {
+  display:block; text-align:center; margin-top:12px;
+  font-size:12px; color:var(--muted); cursor:pointer; border:0; background:none;
+  font-family:var(--font-body); text-decoration:underline;
+}
+.welcome-dialog .wd-skip:hover { color:var(--navy); }
+
 /* ── Side Menu ── */
 .side-menu {
   position:fixed; top:0; left:0; bottom:0; width:340px;
@@ -160,6 +219,12 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
   transition:color 0.15s; margin-left:2px;
 }
 .vo-hide-btn:hover { color:#fff; }
+/* ── Background Music Toggle (inside vo-controls) ── */
+.bgm-toggle { position:relative; }
+.bgm-toggle.muted { opacity:0.5; }
+.bgm-toggle .bgm-off { display:none; }
+.bgm-toggle.muted .bgm-on { display:none; }
+.bgm-toggle.muted .bgm-off { display:block; }
 .vo-show-btn {
   position:fixed; bottom:6px; left:50%; transform:translateX(-50%);
   width:36px; height:14px; z-index:9989; cursor:pointer; border:none;
@@ -549,7 +614,31 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
   font-family:var(--font-head); font-size:14px; letter-spacing:2px; padding:6px 12px; text-transform:uppercase;
 }
 .map-field h3 { font-family:var(--font-head); font-size:24px; color:var(--navy); margin:0; }
-.map-field .input { border-bottom:1px dashed #999; padding:10px 4px; min-height:44px; color:#888; font-style:italic; font-size:18px; }
+.map-field .input { border-bottom:1px dashed #999; padding:10px 4px; min-height:44px; color:#888; font-style:italic; font-size:18px; outline:none; transition:all 0.2s; position:relative; }
+.map-field .input:focus { border-bottom-color:var(--lilac); background:var(--lilac-bg); color:var(--ink); font-style:normal; outline:2px solid var(--lilac); outline-offset:2px; }
+.map-field .input.has-content { color:var(--ink); font-style:normal; border-bottom-style:solid; border-bottom-color:var(--lilac); }
+.map-field .char-count { text-align:right; font-size:12px; color:var(--muted); margin-top:4px; font-family:var(--font-body); }
+.map-btn { background:var(--red); color:#fff; font-family:var(--font-head); font-size:16px; padding:14px 28px; border:0; letter-spacing:2px; cursor:pointer; display:inline-flex; align-items:center; gap:10px; transition:all 0.2s; }
+.map-btn:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(192,35,59,0.3); }
+.map-btn.saved { background:var(--chartreuse); }
+.map-btn-secondary { background:var(--navy); color:#fff; font-family:var(--font-head); font-size:14px; padding:12px 24px; border:0; letter-spacing:2px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:all 0.2s; }
+.map-btn-secondary:hover { background:var(--cobalt); }
+.map-save-status { font-size:13px; color:var(--chartreuse); font-family:var(--font-body); margin-top:8px; opacity:0; transition:opacity 0.3s; }
+.map-save-status.visible { opacity:1; }
+.map-validation { font-size:13px; color:var(--red); font-family:var(--font-body); margin-top:8px; opacity:0; transition:opacity 0.3s; }
+.map-validation.visible { opacity:1; }
+
+@media print {
+  body * { visibility:hidden !important; }
+  .map-print-area, .map-print-area * { visibility:visible !important; }
+  .map-print-area { position:fixed; top:0; left:0; width:100%; padding:40px; font-family:Arial,sans-serif; }
+  .map-print-area h1 { font-size:24px; margin-bottom:8px; }
+  .map-print-area h2 { font-size:14px; color:#666; margin-bottom:24px; }
+  .map-print-area .print-field { border:1px solid #ccc; padding:16px; margin-bottom:16px; }
+  .map-print-area .print-field h3 { font-size:16px; margin:0 0 8px; }
+  .map-print-area .print-field p { font-size:14px; margin:0; min-height:40px; }
+  .map-print-area .print-footer { margin-top:24px; font-size:11px; color:#999; }
+}
 
 /* ── Podcast/Audio slide ── */
 .s-podcast { background:var(--navy-deep); color:#fff; }
@@ -658,6 +747,30 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 .quiz-results h2 { font-family:var(--font-head); color:var(--navy); margin:0 0 12px; }
 .quiz-results .score { font-size:48px; font-family:var(--font-head); color:var(--cobalt); }
 .quiz-results .score-label { font-size:18px; color:var(--muted); margin-top:8px; }
+
+/* ── Submit button for quiz/scenario ── */
+.submit-answer-btn {
+  margin-top:14px; padding:12px 28px; border:2px solid var(--cobalt); background:var(--cobalt); color:#fff;
+  font-family:var(--font-head); font-size:16px; letter-spacing:1px; cursor:pointer;
+  display:inline-flex; align-items:center; gap:8px; transition:all 0.15s;
+}
+.submit-answer-btn:hover { background:var(--navy); border-color:var(--navy); }
+.submit-answer-btn:disabled { opacity:0.4; cursor:not-allowed; background:var(--muted); border-color:var(--muted); }
+.submit-answer-btn.submitted { background:var(--chartreuse); border-color:var(--chartreuse); cursor:default; }
+.submit-answer-btn.submitted:hover { background:var(--chartreuse); border-color:var(--chartreuse); }
+.quiz-score-badge {
+  display:inline-flex; align-items:center; gap:8px; padding:8px 16px;
+  background:var(--cobalt-bg); border:1px solid var(--cobalt); border-radius:4px;
+  font-family:var(--font-head); font-size:14px; color:var(--cobalt); letter-spacing:1px;
+  margin-top:12px;
+}
+.quiz-score-badge .score-num { font-size:20px; color:var(--navy); }
+.quiz-retry-btn {
+  margin-top:12px; padding:10px 22px; border:2px solid var(--red); background:#fff; color:var(--red);
+  font-family:var(--font-head); font-size:14px; letter-spacing:1px; cursor:pointer; transition:all 0.15s;
+}
+.quiz-retry-btn:hover { background:var(--red); color:#fff; }
+.option.locked, .kc-opt.locked { pointer-events:none; opacity:0.9; }
 .quiz-feedback-panel { margin-top:12px; padding:14px 18px; border-radius:8px; font-size:15px; line-height:1.5; display:none; }
 .quiz-feedback-panel.show { display:block; }
 .quiz-feedback-panel.correct-fb { background:var(--chartreuse-bg); border-left:4px solid var(--chartreuse); color:#222; }
@@ -1412,7 +1525,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
   <div class="title-block">
     <div class="eyebrow">SCREEN 1.10 · ASSESSMENT</div>
     <h1>Knowledge Check <span class="accent">1</span></h1>
-    <div class="lede">Two questions. Select the best answer for each.</div>
+    <div class="lede">Select the best answer.</div>
   </div>
   <div class="kc-grid" style="padding:24px 96px 0;">
     <div class="kc-question">
@@ -1460,7 +1573,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     <button class="sn-btn next" onclick="goSlide(13 + 1)">›</button>
   </div>
 </div>
-</section><!-- ═══════ SLIDE 14: 1.10b Knowledge Check 1 — Q2 ═══════ -->
+</section><!-- ═══════ SLIDE 14: 1.11 Knowledge Check 2 ═══════ -->
 <section class="slide" data-slide="14">
 <div class="topbar">
   <button class="menu-btn" onclick="openMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
@@ -1469,12 +1582,12 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     <div class="sep"></div>
     <div class="ctx">ACCESSIBILITY FIRST</div>
   </div>
-  <div class="crumbs">Guide 01 · Foundations › <b>Knowledge Check 1 — Q2</b></div>
+  <div class="crumbs">Guide 01 · Foundations › <b>Knowledge Check 2</b></div>
 </div>
   <div class="title-block">
-    <div class="eyebrow">SCREEN 1.10 · ASSESSMENT · QUESTION 2</div>
-    <h1>Knowledge Check <span class="accent">1</span></h1>
-    <div class="lede">Question 2 of 2.</div>
+    <div class="eyebrow">SCREEN 1.11 · ASSESSMENT</div>
+    <h1>Knowledge Check <span class="accent">2</span></h1>
+    <div class="lede">Select the best answer.</div>
   </div>
   <div class="kc-grid" style="padding:24px 96px 0;">
     <div class="kc-question">
@@ -1522,7 +1635,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     <button class="sn-btn next" onclick="goSlide(14 + 1)">›</button>
   </div>
 </div>
-</section><!-- ═══════ SLIDE 16: 1.11 Knowledge Check 2 ═══════ -->
+</section><!-- ═══════ SLIDE 16: 1.12 Knowledge Check 3 ═══════ -->
 <section class="slide" data-slide="15">
 <div class="topbar">
   <button class="menu-btn" onclick="openMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
@@ -1531,11 +1644,11 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     <div class="sep"></div>
     <div class="ctx">ACCESSIBILITY FIRST</div>
   </div>
-  <div class="crumbs">Guide 01 · Foundations › <b>Knowledge Check 2</b></div>
+  <div class="crumbs">Guide 01 · Foundations › <b>Knowledge Check 3</b></div>
 </div>
   <div class="title-block">
-    <div class="eyebrow">SCREEN 1.11 · ASSESSMENT</div>
-    <h1>Knowledge Check <span class="accent">2</span></h1>
+    <div class="eyebrow">SCREEN 1.12 · ASSESSMENT</div>
+    <h1>Knowledge Check <span class="accent">3</span></h1>
     <div class="lede">One scenario-based question.</div>
   </div>
   <div class="kc-grid" style="padding:24px 96px 0;">
@@ -1700,24 +1813,32 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
       <div class="map-fields">
         <div class="map-field">
           <div class="head"><div class="badge">STOP</div><h3>One thing I will stop doing</h3></div>
-          <div class="input" contenteditable="true">Type your response here...</div>
+          <div class="input" id="mapStop" contenteditable="true" data-placeholder="e.g. I will stop speaking to the companion when the patient is present."></div>
+          <div class="char-count" id="mapStopCount">0 characters</div>
         </div>
         <div class="map-field">
           <div class="head"><div class="badge">START</div><h3>One thing I will start doing</h3></div>
-          <div class="input" contenteditable="true">Type your response here...</div>
+          <div class="input" id="mapStart" contenteditable="true" data-placeholder="e.g. I will ask every patient at intake if there is anything I can do to make the visit easier."></div>
+          <div class="char-count" id="mapStartCount">0 characters</div>
         </div>
         <div class="map-field">
           <div class="head"><div class="badge" style="background:var(--chartreuse);">CONT.</div><h3>One thing I will continue doing</h3></div>
-          <div class="input" contenteditable="true">Type your response here... (optional)</div>
+          <div class="input" id="mapContinue" contenteditable="true" data-placeholder="e.g. I will continue using plain language in my communications. (optional)"></div>
+          <div class="char-count" id="mapContinueCount">0 characters</div>
         </div>
       </div>
     </div>
     <div>
       <div class="key-takeaway" style="border-left-color:var(--lilac); background:var(--lilac-bg);">
-        <div class="lbl" style="color:var(--lilac);">DOWNLOAD</div>
-        <p>MAP-Template-Guide-01.pdf — download and keep your action plan.</p>
+        <div class="lbl" style="color:var(--lilac);">PRIVATE</div>
+        <p>Your MAP is personal. It is not shared with your manager or anyone else. It saves locally in your browser.</p>
       </div>
-      <button style="margin-top:24px; background:var(--red); color:#fff; font-family:var(--font-head); font-size:18px; padding:14px 28px; border:0; letter-spacing:2px; cursor:pointer; display:inline-flex; align-items:center; gap:10px;">SAVE MY MAP<span style="font-size:24px;">›</span></button>
+      <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px;">
+        <button class="map-btn" id="mapSaveBtn" onclick="saveMAP()">SAVE MY PLAN <span style="font-size:20px;">✓</span></button>
+        <div class="map-save-status" id="mapSaveStatus"></div>
+        <div class="map-validation" id="mapValidation"></div>
+        <button class="map-btn-secondary" onclick="printMAP()">DOWNLOAD / PRINT <span style="font-size:16px;">↓</span></button>
+      </div>
     </div>
   </div>
 <div class="slide-footer">
@@ -2053,6 +2174,8 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
         <div style="font-family:var(--font-head); font-size:22px; color:var(--navy);">Guide 01 Complete</div>
         <div style="font-size:16px; color:var(--muted); margin-top:8px;">Foundations of Disability, Inclusion &amp; Accessible Design</div>
       </div>
+      <div id="quizResultsSummary" style="display:none; margin-top:18px;"></div>
+      <button class="quiz-retry-btn" onclick="retryQuiz()" style="margin-top:8px;">RETRY KNOWLEDGE CHECKS</button>
     </div>
   </div>
 <div class="slide-footer">
@@ -2069,6 +2192,232 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 </section>
 
 <script>
+/* ── User Info (Name/Role) + Welcome Dialog ── */
+(function(){
+  var USER_KEY = 'guide01_user';
+
+  window.saveUserInfo = function(){
+    var name = (document.getElementById('userName') || {}).value || '';
+    var role = (document.getElementById('userRole') || {}).value || '';
+    localStorage.setItem(USER_KEY, JSON.stringify({name:name, role:role}));
+  };
+
+  window.dismissWelcome = function(resume){
+    var nameEl = document.getElementById('userName');
+    var roleEl = document.getElementById('userRole');
+    if(!nameEl || !nameEl.value.trim()){
+      nameEl.style.borderColor = '#C0233B';
+      nameEl.setAttribute('placeholder', 'Please enter your name to continue');
+      nameEl.focus();
+      return;
+    }
+    if(!roleEl || !roleEl.value.trim()){
+      roleEl.style.borderColor = '#C0233B';
+      roleEl.setAttribute('placeholder', 'Please enter your role to continue');
+      roleEl.focus();
+      return;
+    }
+    saveUserInfo();
+    var overlay = document.getElementById('welcomeOverlay');
+    if(overlay) overlay.classList.add('hidden');
+    setTimeout(function(){ if(overlay) overlay.style.display = 'none'; }, 400);
+    // Resume to last slide if requested
+    if(resume){
+      var lastSlide = parseInt(localStorage.getItem('guide01_lastSlide') || '1');
+      if(lastSlide > 1 && window.goSlide) window.goSlide(lastSlide);
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    try {
+      var user = JSON.parse(localStorage.getItem(USER_KEY) || '{}');
+      if(user.name){
+        var el = document.getElementById('userName'); if(el) el.value = user.name;
+      }
+      if(user.role){ var el2 = document.getElementById('userRole'); if(el2) el2.value = user.role; }
+    } catch(e){}
+
+    // Show resume button if user has progress
+    var lastSlide = parseInt(localStorage.getItem('guide01_lastSlide') || '1');
+    if(lastSlide > 1){
+      var resumeDiv = document.getElementById('wdResume');
+      var resumeNum = document.getElementById('wdResumeNum');
+      var resumeLabel = document.getElementById('wdResumeLabel');
+      if(resumeDiv) resumeDiv.style.display = 'block';
+      if(resumeNum) resumeNum.textContent = lastSlide;
+      if(resumeLabel) resumeLabel.textContent = 'Pick up where you left off';
+    }
+  });
+})();
+
+/* ── MAP Activity ── */
+(function(){
+  var fields = ['mapStop','mapStart','mapContinue'];
+  var STORAGE_KEY = 'guide01_map_responses';
+
+  window.courseData = window.courseData || {};
+  window.courseData.mapCompleted = false;
+
+  function getFieldText(id){
+    var el = document.getElementById(id);
+    if(!el) return '';
+    var text = el.innerText.trim();
+    var placeholder = el.getAttribute('data-placeholder') || '';
+    return (text === placeholder || text === '') ? '' : text;
+  }
+
+  function updateCharCount(id){
+    var text = getFieldText(id);
+    var countEl = document.getElementById(id + 'Count');
+    if(countEl) countEl.textContent = text.length + ' character' + (text.length !== 1 ? 's' : '');
+  }
+
+  function updateHasContent(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var text = getFieldText(id);
+    el.classList.toggle('has-content', text.length > 0);
+  }
+
+  function showPlaceholder(el){
+    if(el.innerText.trim() === ''){
+      el.innerText = el.getAttribute('data-placeholder') || '';
+      el.classList.remove('has-content');
+    }
+  }
+
+  function hidePlaceholder(el){
+    var placeholder = el.getAttribute('data-placeholder') || '';
+    if(el.innerText.trim() === placeholder){
+      el.innerText = '';
+    }
+  }
+
+  function autoSave(){
+    var data = {};
+    fields.forEach(function(id){ data[id] = getFieldText(id); });
+    data.lastSaved = new Date().toISOString();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    checkCompletion();
+  }
+
+  function loadSaved(){
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      var data = JSON.parse(raw);
+      fields.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el && data[id]){
+          el.innerText = data[id];
+          el.classList.add('has-content');
+          updateCharCount(id);
+        }
+      });
+      checkCompletion();
+    } catch(e){}
+  }
+
+  function checkCompletion(){
+    var filled = fields.some(function(id){ return getFieldText(id).length > 0; });
+    window.courseData.mapCompleted = filled;
+    return filled;
+  }
+
+  window.saveMAP = function(){
+    var btn = document.getElementById('mapSaveBtn');
+    var status = document.getElementById('mapSaveStatus');
+    var validation = document.getElementById('mapValidation');
+
+    if(!checkCompletion()){
+      if(validation){ validation.textContent = 'Please fill in at least one field before saving.'; validation.classList.add('visible'); }
+      setTimeout(function(){ if(validation) validation.classList.remove('visible'); }, 3000);
+      return;
+    }
+
+    if(validation) validation.classList.remove('visible');
+    autoSave();
+
+    if(btn){ btn.classList.add('saved'); btn.innerHTML = 'SAVED <span style="font-size:20px;">✓</span>'; }
+    var now = new Date();
+    var timeStr = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    if(status){ status.textContent = 'Saved at ' + timeStr + ' · stored locally in your browser'; status.classList.add('visible'); }
+
+    setTimeout(function(){
+      if(btn){ btn.classList.remove('saved'); btn.innerHTML = 'SAVE MY PLAN <span style="font-size:20px;">✓</span>'; }
+    }, 2000);
+  };
+
+  window.printMAP = function(){
+    if(!checkCompletion()){
+      var validation = document.getElementById('mapValidation');
+      if(validation){ validation.textContent = 'Please fill in at least one field before downloading.'; validation.classList.add('visible'); }
+      setTimeout(function(){ if(validation) validation.classList.remove('visible'); }, 3000);
+      return;
+    }
+
+    var stopText = getFieldText('mapStop') || '—';
+    var startText = getFieldText('mapStart') || '—';
+    var contText = getFieldText('mapContinue') || '—';
+    var today = new Date().toLocaleDateString('en-CA', {year:'numeric',month:'long',day:'numeric'});
+
+    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>My Action Plan — Guide 01</title><style>'
+      + 'body{margin:0;padding:0;font-family:Arial,sans-serif;background:#fff;color:#111;}'
+      + '@page{size:A4 landscape;margin:20mm;}'
+      + '@media print{.no-print{display:none!important}}'
+      + '.card{max-width:900px;margin:40px auto;border:3px solid #192858;padding:0;}'
+      + '.card-head{background:#192858;color:#fff;padding:28px 36px;display:flex;align-items:center;justify-content:space-between;}'
+      + '.card-head h1{margin:0;font-size:28px;letter-spacing:2px;}'
+      + '.card-head .guide{font-size:14px;letter-spacing:3px;color:#C48ABD;text-transform:uppercase;}'
+      + '.card-body{padding:32px 36px;}'
+      + '.field{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid #E4E4E4;}'
+      + '.field:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}'
+      + '.field .label{display:inline-block;padding:4px 14px;font-weight:bold;font-size:13px;letter-spacing:2px;color:#fff;margin-bottom:10px;}'
+      + '.field .label.stop{background:#C0233B;}'
+      + '.field .label.start{background:#245BAA;}'
+      + '.field .label.cont{background:#74AE54;}'
+      + '.field .text{font-size:18px;line-height:1.6;color:#222;min-height:28px;}'
+      + '.card-foot{background:#F4F4F4;padding:16px 36px;display:flex;justify-content:space-between;font-size:13px;color:#5A5A5A;}'
+      + '.print-btn{display:block;margin:20px auto;padding:14px 32px;background:#192858;color:#fff;border:none;font-size:16px;font-family:Arial Black,sans-serif;letter-spacing:2px;cursor:pointer;}'
+      + '.print-btn:hover{background:#C0233B;}'
+      + '</style></head><body>'
+      + '<div class="card">'
+      + '<div class="card-head"><div><div class="guide">GUIDE 01 OF 18</div><h1>MY ACTION PLAN (MAP)</h1></div><div style="text-align:right;font-size:14px;color:rgba(255,255,255,0.7);">Accessibility First Series<br>University Health Network</div></div>'
+      + '<div class="card-body">'
+      + '<div class="field"><div class="label stop">STOP</div><div class="text">' + stopText.replace(/</g,'&lt;') + '</div></div>'
+      + '<div class="field"><div class="label start">START</div><div class="text">' + startText.replace(/</g,'&lt;') + '</div></div>'
+      + '<div class="field"><div class="label cont">CONTINUE</div><div class="text">' + contText.replace(/</g,'&lt;') + '</div></div>'
+      + '</div>'
+      + '<div class="card-foot"><span>Foundations of Disability, Inclusion &amp; Accessible Design</span><span>' + today + '</span></div>'
+      + '</div>'
+      + '<button class="print-btn no-print" onclick="window.print()">PRINT / SAVE AS PDF</button>'
+      + '</body></html>';
+
+    var w = window.open('', '_blank');
+    w.document.write(html);
+    w.document.close();
+  };
+
+  // Init on DOM ready
+  document.addEventListener('DOMContentLoaded', function(){
+    fields.forEach(function(id){
+      var el = document.getElementById(id);
+      if(!el) return;
+
+      // Show placeholder initially if empty
+      if(!el.innerText.trim() || el.innerText.trim() === el.getAttribute('data-placeholder')){
+        el.innerText = el.getAttribute('data-placeholder');
+      }
+
+      el.addEventListener('focus', function(){ hidePlaceholder(el); });
+      el.addEventListener('blur', function(){ showPlaceholder(el); updateCharCount(id); updateHasContent(id); autoSave(); });
+      el.addEventListener('input', function(){ updateCharCount(id); updateHasContent(id); });
+    });
+
+    loadSaved();
+  });
+})();
+
 /* ── Podcast Player ── */
 (function(){
   var audio, playBtn, fill, timeEl;
@@ -2193,6 +2542,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
   resize();
 
   document.addEventListener('keydown', function(e) {
+    if(document.getElementById('welcomeOverlay') && !document.getElementById('welcomeOverlay').classList.contains('hidden')) return;
     if (e.target.hasAttribute && e.target.hasAttribute('contenteditable')) return;
     if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goSlide(current + 1); }
     if (e.key === 'ArrowLeft') { e.preventDefault(); goSlide(current - 1); }
@@ -2259,95 +2609,241 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     });
   });
 
-  /* ── Branching scenario choices ── */
-  document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer) {
-    var correctAnswer = optionsContainer.getAttribute('data-correct');
-    var overlayId = optionsContainer.getAttribute('data-overlay');
-    var options = optionsContainer.querySelectorAll('.option');
+  /* ── Quiz Engine with Scoring & Attempts ── */
+  (function(){
+    window.courseData = window.courseData || {};
+    window.courseData.quizScore = 0;
+    window.courseData.quizTotal = 0;
+    window.courseData.quizAttempts = 0;
+    window.courseData.scenarioScore = 0;
+    window.courseData.scenarioTotal = 0;
+    var quizAnswered = {};
+    var kcResetFns = [];
 
-    options.forEach(function(opt) {
-      opt.addEventListener('click', function() {
-        var choice = opt.getAttribute('data-choice');
-        if (!choice) return;
+    // Inject submit buttons for all scenario options
+    document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer) {
+      var btn = document.createElement('button');
+      btn.className = 'submit-answer-btn';
+      btn.textContent = 'SUBMIT ANSWER';
+      btn.disabled = true;
+      optionsContainer.parentNode.insertBefore(btn, optionsContainer.nextSibling);
+    });
 
-        options.forEach(function(o) {
-          o.classList.remove('sel', 'correct', 'incorrect');
+    // Inject submit buttons for all KC questions
+    document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kcContainer) {
+      var btn = document.createElement('button');
+      btn.className = 'submit-answer-btn';
+      btn.textContent = 'SUBMIT ANSWER';
+      btn.disabled = true;
+      var kcQuestion = kcContainer.closest('.kc-question');
+      if (kcQuestion) kcQuestion.appendChild(btn);
+      else kcContainer.parentNode.insertBefore(btn, kcContainer.nextSibling);
+      window.courseData.quizTotal++;
+    });
+
+    // Count scenario questions
+    document.querySelectorAll('.options[data-correct]').forEach(function() {
+      window.courseData.scenarioTotal++;
+    });
+
+    /* ── Branching scenario choices: select then submit ── */
+    document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer) {
+      var correctAnswer = optionsContainer.getAttribute('data-correct');
+      var overlayId = optionsContainer.getAttribute('data-overlay');
+      var options = optionsContainer.querySelectorAll('.option');
+      var submitBtn = optionsContainer.nextElementSibling;
+      var selected = null;
+      var locked = false;
+
+      options.forEach(function(opt) {
+        opt.style.cursor = 'pointer';
+        opt.addEventListener('click', function() {
+          if (locked) return;
+          options.forEach(function(o) { o.classList.remove('sel'); });
+          opt.classList.add('sel');
+          selected = opt.getAttribute('data-choice');
+          if (submitBtn) submitBtn.disabled = false;
         });
+      });
 
-        if (choice === correctAnswer) {
-          opt.classList.add('correct');
+      if (submitBtn) submitBtn.addEventListener('click', function() {
+        if (!selected || locked) return;
+        locked = true;
+        submitBtn.disabled = true;
+        submitBtn.classList.add('submitted');
+        submitBtn.textContent = 'SUBMITTED ✓';
+        options.forEach(function(o) { o.classList.add('locked'); o.style.cursor = 'default'; });
+
+        var chosenOpt = null;
+        options.forEach(function(o) { if (o.getAttribute('data-choice') === selected) chosenOpt = o; });
+
+        if (selected === correctAnswer) {
+          if (chosenOpt) chosenOpt.classList.add('correct');
+          window.courseData.scenarioScore++;
         } else {
-          opt.classList.add('incorrect');
+          if (chosenOpt) chosenOpt.classList.add('incorrect');
           options.forEach(function(o) {
             if (o.getAttribute('data-choice') === correctAnswer) o.classList.add('correct');
           });
         }
 
-        // Show feedback in overlay on top of image
         if (overlayId) {
           var overlay = document.getElementById(overlayId);
           if (overlay) {
             var fbContent = overlay.querySelector('.fb-content');
-            var fbText = opt.getAttribute('data-fb') || '';
+            var fbText = chosenOpt ? (chosenOpt.getAttribute('data-fb') || '') : '';
             if (fbContent) fbContent.innerHTML = fbText;
             overlay.classList.add('show');
           }
         }
       });
     });
-  });
 
-  /* ── Knowledge Check quiz interaction ── */
-  document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kcContainer) {
-    var correctAnswer = kcContainer.getAttribute('data-correct');
-    var opts = kcContainer.querySelectorAll('.kc-opt');
-    var quizQ = kcContainer.closest('.quiz-q') || kcContainer.closest('.kc-question');
-    var answered = false;
+    /* ── Knowledge Check: select then submit with scoring (2 attempts) ── */
+    document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kcContainer) {
+      var correctAnswer = kcContainer.getAttribute('data-correct');
+      var qnum = kcContainer.getAttribute('data-qnum');
+      var opts = kcContainer.querySelectorAll('.kc-opt');
+      var kcQuestion = kcContainer.closest('.kc-question');
+      var submitBtn = kcQuestion ? kcQuestion.querySelector('.submit-answer-btn') : null;
+      var selected = null;
+      var locked = false;
+      var attempts = 0;
+      var maxAttempts = 2;
 
-    opts.forEach(function(opt) {
-      opt.addEventListener('click', function() {
-        if (answered) return;
-        var answer = opt.getAttribute('data-answer');
-        if (!answer) return;
-        answered = true;
+      opts.forEach(function(opt) {
+        opt.addEventListener('click', function() {
+          if (locked) return;
+          opts.forEach(function(o) { o.classList.remove('selected'); });
+          opt.classList.add('selected');
+          selected = opt.getAttribute('data-answer');
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.remove('submitted'); submitBtn.textContent = 'SUBMIT ANSWER'; }
+        });
+      });
 
-        opts.forEach(function(o) { o.classList.remove('selected', 'correct', 'incorrect'); });
+      if (submitBtn) submitBtn.addEventListener('click', function() {
+        if (!selected || locked) return;
+        attempts++;
+        var isCorrect = selected === correctAnswer;
 
-        if (answer === correctAnswer) {
-          opt.classList.add('correct');
-          if (quizQ) { var cfb = quizQ.querySelector('[data-fb-correct]'); if (cfb) { cfb.classList.add('show', 'correct-fb'); } }
-        } else {
-          opt.classList.add('incorrect');
-          opts.forEach(function(o) { if (o.getAttribute('data-answer') === correctAnswer) o.classList.add('correct'); });
-          if (quizQ) {
-            var fb = quizQ.querySelector('[data-fb-wrong]');
-            if (fb) { fb.classList.add('show', 'incorrect-fb'); }
-          }
-        }
-
-        // Show next button if present
-        if (quizQ) {
-          var nextBtn = quizQ.querySelector('[data-quiz-next]');
-          if (nextBtn) nextBtn.style.display = 'inline-block';
-        }
-
-        // Show feedback panel (works for all KC grids)
+        // Show feedback panel
         var kcGrid = kcContainer.closest('.kc-grid');
-        if (kcGrid) {
-          var fbPanel = kcGrid.querySelector('.kc-feedback');
+        var fbPanel = kcGrid ? kcGrid.querySelector('.kc-feedback') : null;
+
+        if (isCorrect) {
+          // Correct — lock it, score it
+          locked = true;
+          quizAnswered[qnum] = selected;
+          window.courseData.quizAttempts++;
+          window.courseData.quizScore++;
+          submitBtn.disabled = true;
+          submitBtn.classList.add('submitted');
+          submitBtn.textContent = 'CORRECT ✓';
+          opts.forEach(function(o) { o.classList.add('locked'); });
+          opts.forEach(function(o) {
+            o.classList.remove('selected', 'incorrect');
+            if (o.getAttribute('data-answer') === correctAnswer) o.classList.add('correct');
+          });
           if (fbPanel) {
             fbPanel.classList.remove('hidden');
             var head = fbPanel.querySelector('.head');
-            if (answer === correctAnswer) {
-              if (head) head.style.background = 'var(--chartreuse)';
-            } else {
-              if (head) head.style.background = 'var(--red)';
-            }
+            var icon = fbPanel.querySelector('.icon');
+            if (head) head.style.background = 'var(--chartreuse)';
+            if (icon) icon.textContent = '✓';
+          }
+        } else if (attempts < maxAttempts) {
+          // Wrong on first attempt — show hint, let them try again
+          var chosenOpt = null;
+          opts.forEach(function(o) { if (o.getAttribute('data-answer') === selected) chosenOpt = o; });
+          if (chosenOpt) chosenOpt.classList.add('incorrect');
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'TRY AGAIN — ' + (maxAttempts - attempts) + ' attempt left';
+          selected = null;
+          // Allow re-selection after brief delay
+          setTimeout(function(){
+            if (chosenOpt) { chosenOpt.classList.add('locked'); chosenOpt.style.opacity = '0.5'; }
+            opts.forEach(function(o) { if (!o.classList.contains('locked')) o.classList.remove('selected'); });
+          }, 600);
+        } else {
+          // Wrong on final attempt — lock, reveal correct
+          locked = true;
+          quizAnswered[qnum] = selected;
+          window.courseData.quizAttempts++;
+          submitBtn.disabled = true;
+          submitBtn.classList.add('submitted');
+          submitBtn.textContent = 'SUBMITTED ✓';
+          opts.forEach(function(o) { o.classList.add('locked'); });
+          opts.forEach(function(o) {
+            o.classList.remove('selected');
+            if (o.getAttribute('data-answer') === selected) o.classList.add('incorrect');
+            if (o.getAttribute('data-answer') === correctAnswer) o.classList.add('correct');
+          });
+          if (fbPanel) {
+            fbPanel.classList.remove('hidden');
+            var head = fbPanel.querySelector('.head');
+            var icon = fbPanel.querySelector('.icon');
+            if (head) head.style.background = 'var(--red)';
+            if (icon) icon.textContent = '✗';
           }
         }
+
+        updateResultsSummary();
+      });
+
+      // Register reset function for retry
+      kcResetFns.push(function(){
+        selected = null; locked = false; attempts = 0;
+        opts.forEach(function(o) { o.classList.remove('selected','correct','incorrect','locked'); o.style.opacity = ''; });
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.classList.remove('submitted'); submitBtn.textContent = 'SUBMIT ANSWER'; }
+        var kcGrid = kcContainer.closest('.kc-grid');
+        if (kcGrid) { var fb = kcGrid.querySelector('.kc-feedback'); if (fb) fb.classList.add('hidden'); }
       });
     });
-  });
+
+    /* ── Results summary on completion slide ── */
+    function updateResultsSummary() {
+      var el = document.getElementById('quizResultsSummary');
+      if (!el) return;
+      var total = window.courseData.quizTotal;
+      var score = window.courseData.quizScore;
+      var pct = total > 0 ? Math.round((score / total) * 100) : 0;
+      el.innerHTML = '<div class="quiz-score-badge">KNOWLEDGE CHECK SCORE: <span class="score-num">' + score + ' / ' + total + '</span> (' + pct + '%)</div>';
+      el.style.display = 'block';
+    }
+
+    /* ── Retry quiz ── */
+    window.retryQuiz = function() {
+      window.courseData.quizScore = 0;
+      window.courseData.quizAttempts = 0;
+      window.courseData.scenarioScore = 0;
+      quizAnswered = {};
+
+      // Reset all KC questions via registered closures (resets attempts counter)
+      kcResetFns.forEach(function(fn) { fn(); });
+
+      // Reset scenario options
+      document.querySelectorAll('.options[data-correct]').forEach(function(oc) {
+        oc.querySelectorAll('.option').forEach(function(o) {
+          o.classList.remove('sel', 'correct', 'incorrect', 'locked');
+          o.style.cursor = 'pointer';
+        });
+        var overlay = oc.getAttribute('data-overlay');
+        if (overlay) {
+          var el = document.getElementById(overlay);
+          if (el) el.classList.remove('show');
+        }
+      });
+      document.querySelectorAll('.options[data-correct] + .submit-answer-btn').forEach(function(btn) {
+        btn.disabled = true;
+        btn.classList.remove('submitted');
+        btn.textContent = 'SUBMIT ANSWER';
+      });
+
+      updateResultsSummary();
+      // Navigate to first KC slide
+      if (window.goSlide) window.goSlide(13);
+    };
+  })();
 
   /* ── Quiz navigation (KC1 multi-question) ── */
   document.querySelectorAll('[data-quiz-next]').forEach(function(btn) {
@@ -2461,6 +2957,36 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 </script>
 
 <!-- Side Menu Panel -->
+<!-- Welcome Dialog -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-dialog">
+    <div class="wd-header">
+      <div class="wd-logo">UHN</div>
+      <div class="wd-sep"></div>
+      <div class="wd-series">Accessibility First</div>
+    </div>
+    <div class="wd-accent"></div>
+    <div class="wd-body">
+      <div class="wd-eyebrow">GUIDE 01 OF 18</div>
+      <div class="wd-title">Welcome to Foundations of Disability, Inclusion &amp; Accessible Design</div>
+      <div class="wd-subtitle">Before you begin, tell us a bit about yourself. This information stays private and is used only to personalize your action plan.</div>
+      <div class="wd-field">
+        <label>Your Name</label>
+        <input id="userName" type="text" placeholder="e.g. Jordan Chen">
+      </div>
+      <div class="wd-field">
+        <label>Your Role / Unit</label>
+        <input id="userRole" type="text" placeholder="e.g. Registered Nurse, 7 East">
+      </div>
+      <button class="wd-begin" onclick="dismissWelcome()">BEGIN GUIDE 01 <span style="font-size:24px;">›</span></button>
+      <div id="wdResume" style="display:none; margin-top:12px;">
+        <button onclick="dismissWelcome(true)" style="width:100%; padding:14px; background:var(--cobalt); color:#fff; font-family:var(--font-head); font-size:16px; letter-spacing:2px; border:0; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;">RESUME — SLIDE <span id="wdResumeNum"></span> <span style="font-size:22px;">›</span></button>
+        <div style="text-align:center; margin-top:6px; font-size:11px; color:var(--muted);" id="wdResumeLabel"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="side-menu-scrim" onclick="closeMenu()"></div>
 <div class="side-menu">
   <div class="sm-head">
@@ -2504,6 +3030,10 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     </button>
     <div class="vo-vol-slider"><input type="range" id="voVolRange" min="0" max="100" value="80"></div>
   </div>
+  <button class="vo-btn bgm-toggle muted" id="bgmToggle" title="Background Music">
+    <svg class="bgm-on" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    <svg class="bgm-off" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" opacity="0.4"/><line x1="3" y1="3" x2="21" y2="21" stroke="#fff" stroke-width="2"/></svg>
+  </button>
   <div class="vo-progress-wrap" id="voProgressWrap">
     <div class="vo-progress-bg"><div class="vo-progress-fill" id="voProgressFill"></div></div>
   </div>
@@ -2905,6 +3435,60 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 
   // Play VO for initial slide
   setTimeout(function(){ playSlideVO(1); }, 500);
+})();
+</script>
+
+<audio id="bgmAudio" loop preload="auto" src="Path_to_Wellness_2026-05-24T012729.mp3"></audio>
+<script>
+/* ── Background Music Toggle ── */
+(function(){
+  var audio = document.getElementById('bgmAudio');
+  var btn = document.getElementById('bgmToggle');
+  if (!audio || !btn) return;
+
+  audio.volume = 0.15;
+
+  // Default: button shows muted. Auto-play on first user interaction.
+  var wasMuted = localStorage.getItem('bgm-muted');
+  if (wasMuted === 'true') {
+    btn.classList.add('muted');
+  } else {
+    function startBgm() {
+      btn.classList.remove('muted');
+      audio.play().catch(function(){});
+      document.removeEventListener('click', startBgm);
+      document.removeEventListener('keydown', startBgm);
+    }
+    document.addEventListener('click', startBgm);
+    document.addEventListener('keydown', startBgm);
+  }
+
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (btn.classList.contains('muted')) {
+      btn.classList.remove('muted');
+      audio.play().catch(function(){});
+      localStorage.setItem('bgm-muted', 'false');
+    } else {
+      btn.classList.add('muted');
+      audio.pause();
+      localStorage.setItem('bgm-muted', 'true');
+    }
+  });
+
+  // Duck BGM when voiceover plays
+  var voAudio = document.getElementById('voAudio');
+  if (voAudio) {
+    voAudio.addEventListener('play', function() {
+      if (!btn.classList.contains('muted')) audio.volume = 0.05;
+    });
+    voAudio.addEventListener('pause', function() {
+      if (!btn.classList.contains('muted')) audio.volume = 0.15;
+    });
+    voAudio.addEventListener('ended', function() {
+      if (!btn.classList.contains('muted')) audio.volume = 0.15;
+    });
+  }
 })();
 </script>
 

@@ -233,6 +233,13 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
   font-family:var(--font-head); font-size:14px; color:var(--navy); letter-spacing:1px; margin-top:1px;
 }
 
+/* ── Background Music Toggle (inside vo-controls) ── */
+.bgm-toggle { position:relative; }
+.bgm-toggle.muted { opacity:0.5; }
+.bgm-toggle .bgm-off { display:none; }
+.bgm-toggle.muted .bgm-on { display:none; }
+.bgm-toggle.muted .bgm-off { display:block; }
+
 /* ── Photo placeholder ── */
 .photo {
   background:repeating-linear-gradient(135deg,#EAEAEA 0 14px,#F4F4F4 14px 28px);
@@ -662,6 +669,17 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 .quiz-feedback-panel.show { display:block; }
 .quiz-feedback-panel.correct-fb { background:var(--chartreuse-bg); border-left:4px solid var(--chartreuse); color:#222; }
 .quiz-feedback-panel.incorrect-fb { background:var(--red-bg); border-left:4px solid var(--red); color:#222; }
+
+/* ── Submit / Lock Button ── */
+.submit-btn { padding:14px 32px; font-family:var(--font-head); font-size:16px; letter-spacing:2px; text-transform:uppercase; border:none; cursor:pointer; transition:all 0.15s; margin-top:14px; }
+.submit-btn:disabled { background:var(--neutral); color:var(--muted); cursor:not-allowed; }
+.submit-btn.ready { background:var(--cobalt); color:#fff; }
+.submit-btn.ready:hover { background:var(--navy); }
+.submit-btn.submitted { background:var(--navy); color:#fff; pointer-events:none; }
+.options.locked .option { pointer-events:none; }
+.options.locked .option:not(.sel):not(.correct):not(.incorrect) { opacity:0.55; }
+.kc-options.locked .kc-opt { pointer-events:none; }
+.kc-options.locked .kc-opt:not(.selected):not(.correct):not(.incorrect) { opacity:0.55; }
 
 /* ── Format badge ── */
 .format-badge {
@@ -1261,6 +1279,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
           <div>You tell her the system is accessible and offer to walk her through it on your computer.</div>
         </div>
       </div>
+      <button class="submit-btn" disabled>CONFIRM CHOICE</button>
     </div>
   </div>
 <div class="slide-footer">
@@ -1323,6 +1342,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
           <div>You point to the sign and read it aloud.</div>
         </div>
       </div>
+      <button class="submit-btn" disabled>CONFIRM CHOICE</button>
     </div>
   </div>
 <div class="slide-footer">
@@ -1385,6 +1405,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
           <div>You agree the checklist was completed and move on.</div>
         </div>
       </div>
+      <button class="submit-btn" disabled>CONFIRM CHOICE</button>
     </div>
   </div>
 <div class="slide-footer">
@@ -1440,6 +1461,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
           <span class="mark">INCORRECT</span>
         </div>
       </div>
+      <button class="submit-btn" disabled>SUBMIT ANSWER</button>
     </div>
     <div class="kc-feedback hidden" id="kc1q1Feedback">
       <div class="head"><div class="icon">✓</div>Feedback</div>
@@ -1502,6 +1524,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
           <span class="mark">INCORRECT</span>
         </div>
       </div>
+      <button class="submit-btn" disabled>SUBMIT ANSWER</button>
     </div>
     <div class="kc-feedback hidden" id="kc1q2Feedback">
       <div class="head"><div class="icon">✓</div>Feedback</div>
@@ -1564,6 +1587,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
           <span class="mark">INCORRECT</span>
         </div>
       </div>
+      <button class="submit-btn" disabled>SUBMIT ANSWER</button>
     </div>
     <div class="kc-feedback hidden" id="kc2Feedback">
       <div class="head"><div class="icon">✓</div>Feedback</div>
@@ -1912,6 +1936,7 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
           <div>Ask another staff member to take over. Hand off to a colleague while you keep the queue moving.</div>
         </div>
       </div>
+      <button class="submit-btn" disabled>CONFIRM CHOICE</button>
     </div>
   </div>
 <div class="slide-footer">
@@ -2248,71 +2273,170 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     });
   });
 
-  /* ── Branching scenario choices ── */
+  /* ── Branching scenario choices (with submit/lock) ── */
+  if (!window.courseData) window.courseData = {};
+  if (!window.courseData.submissions) window.courseData.submissions = {};
+
   document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer) {
     var correctAnswer = optionsContainer.getAttribute('data-correct');
     var overlayId = optionsContainer.getAttribute('data-overlay');
     var options = optionsContainer.querySelectorAll('.option');
+    var submitBtn = optionsContainer.parentElement.querySelector('.submit-btn');
+    var containerKey = overlayId || optionsContainer.getAttribute('data-correct') + '-' + Array.prototype.indexOf.call(document.querySelectorAll('.options[data-correct]'), optionsContainer);
+    var selectedChoice = null;
+
+    // Restore state if previously submitted
+    if (window.courseData.submissions[containerKey]) {
+      var saved = window.courseData.submissions[containerKey];
+      options.forEach(function(o) {
+        var ch = o.getAttribute('data-choice');
+        if (ch === saved.selected) {
+          if (ch === correctAnswer) { o.classList.add('correct'); }
+          else { o.classList.add('incorrect'); }
+        }
+        if (ch === correctAnswer && saved.selected !== correctAnswer) { o.classList.add('correct'); }
+      });
+      optionsContainer.classList.add('locked');
+      if (submitBtn) { submitBtn.classList.remove('ready'); submitBtn.classList.add('submitted'); submitBtn.textContent = '\u2713 SUBMITTED'; submitBtn.disabled = true; }
+      if (overlayId) {
+        var overlay = document.getElementById(overlayId);
+        if (overlay) {
+          var fbContent = overlay.querySelector('.fb-content');
+          var savedOpt = optionsContainer.querySelector('[data-choice="' + saved.selected + '"]');
+          if (fbContent && savedOpt) fbContent.innerHTML = savedOpt.getAttribute('data-fb') || '';
+          overlay.classList.add('show');
+        }
+      }
+      return;
+    }
 
     options.forEach(function(opt) {
       opt.addEventListener('click', function() {
-        var choice = opt.getAttribute('data-choice');
-        if (!choice) return;
+        if (optionsContainer.classList.contains('locked')) return;
+        options.forEach(function(o) { o.classList.remove('sel'); });
+        opt.classList.add('sel');
+        selectedChoice = opt.getAttribute('data-choice');
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.add('ready'); }
+      });
+    });
 
-        options.forEach(function(o) {
-          o.classList.remove('sel', 'correct', 'incorrect');
-        });
+    if (submitBtn) {
+      submitBtn.addEventListener('click', function() {
+        if (!selectedChoice || optionsContainer.classList.contains('locked')) return;
 
-        if (choice === correctAnswer) {
-          opt.classList.add('correct');
+        // Grade
+        options.forEach(function(o) { o.classList.remove('sel', 'correct', 'incorrect'); });
+        var chosenOpt = optionsContainer.querySelector('[data-choice="' + selectedChoice + '"]');
+        if (selectedChoice === correctAnswer) {
+          chosenOpt.classList.add('correct');
         } else {
-          opt.classList.add('incorrect');
-          options.forEach(function(o) {
-            if (o.getAttribute('data-choice') === correctAnswer) o.classList.add('correct');
-          });
+          chosenOpt.classList.add('incorrect');
+          options.forEach(function(o) { if (o.getAttribute('data-choice') === correctAnswer) o.classList.add('correct'); });
         }
 
-        // Show feedback in overlay on top of image
+        // Lock
+        optionsContainer.classList.add('locked');
+        submitBtn.classList.remove('ready');
+        submitBtn.classList.add('submitted');
+        submitBtn.textContent = '\u2713 SUBMITTED';
+        submitBtn.disabled = true;
+
+        // Save state
+        window.courseData.submissions[containerKey] = { selected: selectedChoice };
+
+        // Show feedback overlay
         if (overlayId) {
           var overlay = document.getElementById(overlayId);
           if (overlay) {
             var fbContent = overlay.querySelector('.fb-content');
-            var fbText = opt.getAttribute('data-fb') || '';
+            var fbText = chosenOpt.getAttribute('data-fb') || '';
             if (fbContent) fbContent.innerHTML = fbText;
             overlay.classList.add('show');
           }
         }
       });
-    });
+    }
   });
 
-  /* ── Knowledge Check quiz interaction ── */
+  /* ── Knowledge Check quiz interaction (with submit/lock) ── */
   document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kcContainer) {
     var correctAnswer = kcContainer.getAttribute('data-correct');
+    var qnum = kcContainer.getAttribute('data-qnum');
     var opts = kcContainer.querySelectorAll('.kc-opt');
     var quizQ = kcContainer.closest('.quiz-q') || kcContainer.closest('.kc-question');
-    var answered = false;
+    var submitBtn = kcContainer.parentElement.querySelector('.submit-btn');
+    var containerKey = 'kc-' + qnum;
+    var selectedAnswer = null;
+
+    // Restore state if previously submitted
+    if (window.courseData.submissions[containerKey]) {
+      var saved = window.courseData.submissions[containerKey];
+      opts.forEach(function(o) {
+        var ans = o.getAttribute('data-answer');
+        if (ans === saved.selected) {
+          if (ans === correctAnswer) { o.classList.add('correct'); }
+          else { o.classList.add('incorrect'); }
+        }
+        if (ans === correctAnswer && saved.selected !== correctAnswer) { o.classList.add('correct'); }
+      });
+      kcContainer.classList.add('locked');
+      if (submitBtn) { submitBtn.classList.remove('ready'); submitBtn.classList.add('submitted'); submitBtn.textContent = '\u2713 SUBMITTED'; submitBtn.disabled = true; }
+
+      // Show feedback panel
+      var kcGrid = kcContainer.closest('.kc-grid');
+      if (kcGrid) {
+        var fbPanel = kcGrid.querySelector('.kc-feedback');
+        if (fbPanel) {
+          fbPanel.classList.remove('hidden');
+          var head = fbPanel.querySelector('.head');
+          if (saved.selected === correctAnswer) { if (head) head.style.background = 'var(--chartreuse)'; }
+          else { if (head) head.style.background = 'var(--red)'; }
+        }
+      }
+      if (quizQ) {
+        if (saved.selected === correctAnswer) { var cfb = quizQ.querySelector('[data-fb-correct]'); if (cfb) cfb.classList.add('show', 'correct-fb'); }
+        else { var fb = quizQ.querySelector('[data-fb-wrong]'); if (fb) fb.classList.add('show', 'incorrect-fb'); }
+        var nextBtn = quizQ.querySelector('[data-quiz-next]');
+        if (nextBtn) nextBtn.style.display = 'inline-block';
+      }
+      return;
+    }
 
     opts.forEach(function(opt) {
       opt.addEventListener('click', function() {
-        if (answered) return;
-        var answer = opt.getAttribute('data-answer');
-        if (!answer) return;
-        answered = true;
+        if (kcContainer.classList.contains('locked')) return;
+        opts.forEach(function(o) { o.classList.remove('selected'); });
+        opt.classList.add('selected');
+        selectedAnswer = opt.getAttribute('data-answer');
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.add('ready'); }
+      });
+    });
 
+    if (submitBtn) {
+      submitBtn.addEventListener('click', function() {
+        if (!selectedAnswer || kcContainer.classList.contains('locked')) return;
+
+        // Grade
         opts.forEach(function(o) { o.classList.remove('selected', 'correct', 'incorrect'); });
-
-        if (answer === correctAnswer) {
-          opt.classList.add('correct');
-          if (quizQ) { var cfb = quizQ.querySelector('[data-fb-correct]'); if (cfb) { cfb.classList.add('show', 'correct-fb'); } }
+        var chosenOpt = kcContainer.querySelector('[data-answer="' + selectedAnswer + '"]');
+        if (selectedAnswer === correctAnswer) {
+          chosenOpt.classList.add('correct');
+          if (quizQ) { var cfb = quizQ.querySelector('[data-fb-correct]'); if (cfb) cfb.classList.add('show', 'correct-fb'); }
         } else {
-          opt.classList.add('incorrect');
+          chosenOpt.classList.add('incorrect');
           opts.forEach(function(o) { if (o.getAttribute('data-answer') === correctAnswer) o.classList.add('correct'); });
-          if (quizQ) {
-            var fb = quizQ.querySelector('[data-fb-wrong]');
-            if (fb) { fb.classList.add('show', 'incorrect-fb'); }
-          }
+          if (quizQ) { var fb = quizQ.querySelector('[data-fb-wrong]'); if (fb) fb.classList.add('show', 'incorrect-fb'); }
         }
+
+        // Lock
+        kcContainer.classList.add('locked');
+        submitBtn.classList.remove('ready');
+        submitBtn.classList.add('submitted');
+        submitBtn.textContent = '\u2713 SUBMITTED';
+        submitBtn.disabled = true;
+
+        // Save state
+        window.courseData.submissions[containerKey] = { selected: selectedAnswer };
 
         // Show next button if present
         if (quizQ) {
@@ -2320,22 +2444,19 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
           if (nextBtn) nextBtn.style.display = 'inline-block';
         }
 
-        // Show feedback panel (works for all KC grids)
+        // Show feedback panel
         var kcGrid = kcContainer.closest('.kc-grid');
         if (kcGrid) {
           var fbPanel = kcGrid.querySelector('.kc-feedback');
           if (fbPanel) {
             fbPanel.classList.remove('hidden');
             var head = fbPanel.querySelector('.head');
-            if (answer === correctAnswer) {
-              if (head) head.style.background = 'var(--chartreuse)';
-            } else {
-              if (head) head.style.background = 'var(--red)';
-            }
+            if (selectedAnswer === correctAnswer) { if (head) head.style.background = 'var(--chartreuse)'; }
+            else { if (head) head.style.background = 'var(--red)'; }
           }
         }
       });
-    });
+    }
   });
 
   /* ── Quiz navigation (KC1 multi-question) ── */
@@ -2449,6 +2570,9 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 })();
 </script>
 
+<!-- Background Music -->
+<audio id="bgmAudio" loop preload="auto" src="Path_to_Wellness_2026-05-24T012729.mp3"></audio>
+
 <!-- Side Menu Panel -->
 <div class="side-menu-scrim" onclick="closeMenu()"></div>
 <div class="side-menu">
@@ -2493,6 +2617,10 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
     </button>
     <div class="vo-vol-slider"><input type="range" id="voVolRange" min="0" max="100" value="80"></div>
   </div>
+  <button class="vo-btn bgm-toggle muted" id="bgmToggle" title="Background Music">
+    <svg class="bgm-on" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    <svg class="bgm-off" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" opacity="0.4"/><line x1="3" y1="3" x2="21" y2="21" stroke="#fff" stroke-width="2"/></svg>
+  </button>
   <div class="vo-progress-wrap" id="voProgressWrap">
     <div class="vo-progress-bg"><div class="vo-progress-fill" id="voProgressFill"></div></div>
   </div>
@@ -2886,6 +3014,686 @@ body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
 
   // Play VO for initial slide
   setTimeout(function(){ playSlideVO(1); }, 500);
+})();
+</script>
+
+<!-- ═══════ Course Completion & Variable Tracking System ═══════ -->
+<style>
+/* ── Resume Modal ── */
+.tracking-resume-modal {
+  position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center;
+  background:rgba(15,26,61,0.7); opacity:0; pointer-events:none; transition:opacity 0.3s ease;
+}
+.tracking-resume-modal.visible { opacity:1; pointer-events:auto; }
+.tracking-resume-modal .modal-card {
+  background:var(--navy); color:#fff; padding:48px 56px; max-width:520px; width:90%;
+  text-align:center; box-shadow:0 12px 48px rgba(0,0,0,0.5);
+}
+.tracking-resume-modal .modal-card h2 {
+  font-family:var(--font-head); font-size:28px; margin:0 0 8px; letter-spacing:2px;
+}
+.tracking-resume-modal .modal-card p {
+  font-size:18px; color:rgba(255,255,255,0.75); margin:0 0 28px; line-height:1.5;
+}
+.tracking-resume-modal .modal-btns { display:flex; gap:14px; justify-content:center; }
+.tracking-resume-modal .modal-btns button {
+  font-family:var(--font-head); font-size:16px; padding:14px 28px; border:0; cursor:pointer;
+  letter-spacing:2px; text-transform:uppercase; transition:background 0.15s;
+}
+.tracking-resume-modal .btn-resume { background:var(--red); color:#fff; }
+.tracking-resume-modal .btn-resume:hover { background:#d42a47; }
+.tracking-resume-modal .btn-start-over { background:rgba(255,255,255,0.12); color:#fff; border:1px solid rgba(255,255,255,0.3) !important; }
+.tracking-resume-modal .btn-start-over:hover { background:rgba(255,255,255,0.2); }
+
+/* ── Completion Overlay ── */
+.tracking-completion-overlay {
+  position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center;
+  background:rgba(15,26,61,0.85); opacity:0; pointer-events:none; transition:opacity 0.3s ease;
+}
+.tracking-completion-overlay.visible { opacity:1; pointer-events:auto; }
+.tracking-completion-overlay .cert-card {
+  background:#fff; color:var(--navy); padding:56px 64px; max-width:640px; width:92%;
+  text-align:center; box-shadow:0 16px 64px rgba(0,0,0,0.4); border-top:6px solid var(--red);
+  position:relative;
+}
+.tracking-completion-overlay .cert-card::before {
+  content:''; position:absolute; top:6px; left:0; right:0; height:4px; background:var(--chartreuse);
+}
+.tracking-completion-overlay .cert-eyebrow {
+  font-family:var(--font-head); font-size:12px; letter-spacing:4px; color:var(--muted);
+  text-transform:uppercase; margin-bottom:12px;
+}
+.tracking-completion-overlay .cert-card h2 {
+  font-family:var(--font-head); font-size:36px; color:var(--navy); margin:0 0 8px;
+}
+.tracking-completion-overlay .cert-card h2 .accent { color:var(--red); }
+.tracking-completion-overlay .cert-stats {
+  display:flex; gap:32px; justify-content:center; margin:24px 0; padding:18px 0;
+  border-top:1px solid var(--neutral); border-bottom:1px solid var(--neutral);
+}
+.tracking-completion-overlay .cert-stat {
+  text-align:center;
+}
+.tracking-completion-overlay .cert-stat .val {
+  font-family:var(--font-head); font-size:28px; color:var(--cobalt); display:block;
+}
+.tracking-completion-overlay .cert-stat .lbl {
+  font-size:12px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-top:4px;
+}
+.tracking-completion-overlay .cert-logo-row { text-align:center; margin-bottom:16px; }
+.tracking-completion-overlay .cert-logo { height:60px; width:auto; }
+.tracking-completion-overlay .cert-rule { width:80px; height:3px; background:var(--red); margin:12px auto 16px; }
+.tracking-completion-overlay .cert-presents { font-size:16px; color:var(--muted); margin:8px 0 4px; }
+.tracking-completion-overlay .cert-name-row { margin:8px 0 12px; }
+.tracking-completion-overlay .cert-learner-name {
+  font-family:var(--font-head); font-size:32px; color:var(--navy); text-align:center;
+  border:none; border-bottom:2px solid var(--navy); background:transparent; outline:none;
+  width:80%; padding:8px 4px; letter-spacing:1px;
+}
+.tracking-completion-overlay .cert-learner-name::placeholder { color:#ccc; font-size:22px; }
+.tracking-completion-overlay .cert-course-title {
+  font-family:var(--font-head); font-size:20px; color:var(--navy); margin:12px 0 4px;
+}
+.tracking-completion-overlay .cert-course-sub {
+  font-size:15px; color:var(--cobalt); margin:0 0 16px; font-style:italic;
+}
+.tracking-completion-overlay .cert-badge {
+  width:90px; height:90px; border-radius:50%; background:var(--navy); color:#fff;
+  display:flex; align-items:center; justify-content:center; margin:16px auto;
+  font-family:var(--font-head); font-size:11px; text-align:center; line-height:1.3; padding:12px;
+  border:3px solid var(--red);
+}
+.tracking-completion-overlay .cert-date {
+  font-size:14px; color:var(--muted); margin-top:12px;
+}
+.tracking-completion-overlay .cert-signatures {
+  display:flex; gap:64px; justify-content:center; margin:28px 0 16px;
+}
+.tracking-completion-overlay .cert-sig { text-align:center; min-width:180px; }
+.tracking-completion-overlay .cert-sig-line { width:100%; height:1px; background:var(--navy); margin-bottom:6px; }
+.tracking-completion-overlay .cert-sig-name { font-family:var(--font-head); font-size:14px; color:var(--navy); }
+.tracking-completion-overlay .cert-sig-title { font-size:11px; color:var(--muted); margin-top:2px; }
+.tracking-completion-overlay .cert-footer-text {
+  font-size:11px; color:var(--muted); letter-spacing:1px; margin-top:16px; text-transform:uppercase;
+}
+.tracking-completion-overlay .cert-actions { display:flex; gap:12px; justify-content:center; margin-top:24px; }
+.tracking-completion-overlay .cert-print-btn {
+  background:var(--chartreuse); color:#fff; font-family:var(--font-head);
+  font-size:14px; padding:14px 28px; border:0; cursor:pointer; letter-spacing:2px;
+}
+.tracking-completion-overlay .cert-print-btn:hover { background:#5A9040; }
+.tracking-completion-overlay .cert-close {
+  background:var(--navy); color:#fff; font-family:var(--font-head);
+  font-size:14px; padding:14px 28px; border:0; cursor:pointer; letter-spacing:2px;
+}
+.tracking-completion-overlay .cert-close:hover { background:var(--red); }
+
+/* ── Print styles ── */
+@media print {
+  body * { visibility:hidden !important; }
+  #printCert, #printCert * { visibility:visible !important; }
+  #printCert {
+    position:fixed !important; left:0 !important; top:0 !important;
+    width:100vw !important; max-width:100% !important; padding:48px !important;
+    box-shadow:none !important; border:none !important;
+  }
+  .tracking-completion-overlay { position:fixed !important; inset:0 !important; background:#fff !important; }
+  .no-print { display:none !important; }
+  .cert-learner-name { border-bottom:1px solid #000 !important; }
+}
+
+/* ── Incomplete Checklist Overlay ── */
+.tracking-incomplete-overlay {
+  position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center;
+  background:rgba(15,26,61,0.7); opacity:0; pointer-events:none; transition:opacity 0.3s ease;
+}
+.tracking-incomplete-overlay.visible { opacity:1; pointer-events:auto; }
+.tracking-incomplete-overlay .checklist-card {
+  background:#fff; color:var(--navy); padding:48px 56px; max-width:520px; width:90%;
+  text-align:left; box-shadow:0 12px 48px rgba(0,0,0,0.5); border-top:6px solid var(--red);
+}
+.tracking-incomplete-overlay .checklist-card h2 {
+  font-family:var(--font-head); font-size:24px; margin:0 0 6px; color:var(--navy);
+}
+.tracking-incomplete-overlay .checklist-card .sub {
+  font-size:16px; color:var(--muted); margin-bottom:22px;
+}
+.tracking-incomplete-overlay .checklist-item {
+  display:flex; align-items:flex-start; gap:12px; padding:10px 0;
+  border-bottom:1px solid var(--neutral); font-size:16px; line-height:1.5;
+}
+.tracking-incomplete-overlay .checklist-item:last-child { border-bottom:0; }
+.tracking-incomplete-overlay .check-icon {
+  width:22px; height:22px; flex-shrink:0; border-radius:50%; display:grid; place-items:center;
+  font-size:13px; margin-top:2px;
+}
+.tracking-incomplete-overlay .check-icon.done { background:var(--chartreuse); color:#fff; }
+.tracking-incomplete-overlay .check-icon.pending { background:var(--neutral); color:var(--muted); }
+.tracking-incomplete-overlay .checklist-close {
+  margin-top:22px; background:var(--navy); color:#fff; font-family:var(--font-head);
+  font-size:14px; padding:12px 24px; border:0; cursor:pointer; letter-spacing:2px; width:100%;
+}
+.tracking-incomplete-overlay .checklist-close:hover { background:var(--red); }
+</style>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   Course Completion & Variable Tracking System
+   - Persists progress in localStorage (key: guide01_progress)
+   - Tracks visited slides, quiz score, MAP completion, time
+   - Shows resume modal, progress indicator, completion overlay
+   ═══════════════════════════════════════════════════════════════ */
+(function() {
+  'use strict';
+
+  var STORAGE_KEY = 'guide01_progress';
+  var allSlides = document.querySelectorAll('.slide[data-slide]');
+  var totalSlides = allSlides.length;
+  var MAP_SLIDE = 18; // data-slide for MAP Action Planning
+
+  // ── 1. Global courseData object ──
+  window.courseData = {
+    currentSlide: 1,
+    totalSlides: totalSlides,
+    visitedSlides: [1],
+    quizScore: 0,
+    quizTotal: 4,
+    quizPassed: false,
+    mapCompleted: false,
+    courseCompleted: false,
+    completionDate: null,
+    timeSpent: 0,
+    bookmarkSlide: 1
+  };
+
+  // ── Helper: deep copy ──
+  function cloneData() {
+    return JSON.parse(JSON.stringify(window.courseData));
+  }
+
+  // ── 7. getCourseData for SCORM ──
+  window.getCourseData = function() {
+    return cloneData();
+  };
+
+  // ── 3. localStorage persistence ──
+  var quizAnswers = {}; // keyed by qnum => true/false
+
+  function saveProgress() {
+    try {
+      var data = JSON.parse(JSON.stringify(window.courseData));
+      data.quizAnswers = quizAnswers;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch(e) { /* quota exceeded — silently fail */ }
+  }
+
+  function loadProgress() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch(e) { return null; }
+  }
+
+  // ── 6. Time tracking ──
+  var timerInterval = null;
+  var timerRunning = false;
+
+  function startTimer() {
+    if (timerRunning) return;
+    timerRunning = true;
+    timerInterval = setInterval(function() {
+      window.courseData.timeSpent++;
+    }, 1000);
+  }
+
+  function pauseTimer() {
+    timerRunning = false;
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  }
+
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) { pauseTimer(); saveProgress(); }
+    else { startTimer(); }
+  });
+
+  // ── 4. Progress indicator (update existing side menu elements) ──
+  function updateProgressIndicator() {
+    var visited = window.courseData.visitedSlides.length;
+    var total = window.courseData.totalSlides;
+    var pct = Math.round((visited / total) * 100);
+
+    // Update side menu progress bar
+    var fill = document.querySelector('.sm-progress-fill');
+    if (fill) {
+      fill.style.width = pct + '%';
+      if (pct >= 100) {
+        fill.style.background = 'var(--red)';
+      } else {
+        fill.style.background = 'var(--chartreuse)';
+      }
+    }
+    var txt = document.querySelector('.sm-progress-text');
+    if (txt) {
+      txt.textContent = visited + ' / ' + total + ' \u00B7 ' + pct + '%';
+    }
+  }
+
+  // ── Quiz score tracking ──
+  function recalcQuizScore() {
+    var correct = 0;
+    for (var k in quizAnswers) {
+      if (quizAnswers[k]) correct++;
+    }
+    window.courseData.quizScore = correct;
+    window.courseData.quizPassed = (correct >= 3); // 80% of 4 = 3.2, so 3/4 meets threshold
+    saveProgress();
+    checkCompletion();
+  }
+
+  // Hook into KC options click to detect quiz answers
+  document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kcContainer) {
+    var correctAnswer = kcContainer.getAttribute('data-correct');
+    var qnum = kcContainer.getAttribute('data-qnum');
+    var opts = kcContainer.querySelectorAll('.kc-opt');
+
+    opts.forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        if (quizAnswers.hasOwnProperty(qnum)) return; // already answered
+        var answer = opt.getAttribute('data-answer');
+        if (!answer) return;
+        quizAnswers[qnum] = (answer === correctAnswer);
+        recalcQuizScore();
+      });
+    });
+  });
+
+  // Also hook branching scenario options for save triggers
+  document.querySelectorAll('.options[data-correct]').forEach(function(optContainer) {
+    var opts = optContainer.querySelectorAll('.option');
+    var answered = false;
+    opts.forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        if (answered) return;
+        var choice = opt.getAttribute('data-choice');
+        if (!choice) return;
+        answered = true;
+        saveProgress();
+      });
+    });
+  });
+
+  // ── MAP completion tracking ──
+  function checkMapCompletion() {
+    var mapSlide = document.querySelector('[data-slide="' + MAP_SLIDE + '"]');
+    if (!mapSlide) return false;
+    var fields = mapSlide.querySelectorAll('.map-field .input[contenteditable]');
+    var defaults = ['Type your response here...', 'Type your response here... (optional)', ''];
+    for (var i = 0; i < fields.length; i++) {
+      var val = fields[i].textContent.trim();
+      if (val && defaults.indexOf(val) === -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Listen for input on MAP fields
+  document.querySelectorAll('.map-field .input[contenteditable]').forEach(function(field) {
+    field.addEventListener('input', function() {
+      window.courseData.mapCompleted = checkMapCompletion();
+      saveProgress();
+      checkCompletion();
+    });
+    field.addEventListener('blur', function() {
+      window.courseData.mapCompleted = checkMapCompletion();
+      saveProgress();
+      checkCompletion();
+    });
+  });
+
+  // ── 2. Completion check ──
+  function checkCompletion() {
+    if (window.courseData.courseCompleted) return true;
+
+    var allVisited = (window.courseData.visitedSlides.length >= window.courseData.totalSlides);
+    var quizOk = window.courseData.quizPassed;
+    var mapOk = window.courseData.mapCompleted;
+
+    if (allVisited && quizOk && mapOk) {
+      window.courseData.courseCompleted = true;
+      window.courseData.completionDate = new Date().toISOString();
+      saveProgress();
+      return true;
+    }
+    return false;
+  }
+
+  // ── Format time ──
+  function formatTime(sec) {
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    return m + 'm ' + s + 's';
+  }
+
+  // ── 5. Completion / Incomplete overlays ──
+  // Create resume modal
+  var resumeModal = document.createElement('div');
+  resumeModal.className = 'tracking-resume-modal';
+  resumeModal.innerHTML =
+    '<div class="modal-card">' +
+      '<h2>Welcome Back</h2>' +
+      '<p>Resume where you left off?</p>' +
+      '<div class="modal-btns">' +
+        '<button class="btn-resume">RESUME</button>' +
+        '<button class="btn-start-over">START OVER</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(resumeModal);
+
+  // Create completion overlay — printable certificate with UHN branding
+  var certLogoSrc = '';
+  var logoEl = document.querySelector('.topbar .brand img.logo');
+  if (logoEl) certLogoSrc = logoEl.src;
+  var completionOverlay = document.createElement('div');
+  completionOverlay.className = 'tracking-completion-overlay';
+  completionOverlay.innerHTML =
+    '<div class="cert-card" id="printCert">' +
+      '<div class="cert-logo-row"><img class="cert-logo" src="' + certLogoSrc + '" alt="UHN — Canada\'s Hospital"></div>' +
+      '<div class="cert-eyebrow">UNIVERSITY HEALTH NETWORK</div>' +
+      '<div class="cert-rule"></div>' +
+      '<h2>Certificate of <span class="accent">Completion</span></h2>' +
+      '<p class="cert-presents">This certifies that</p>' +
+      '<div class="cert-name-row"><input type="text" class="cert-learner-name" placeholder="Enter your full name" spellcheck="false"></div>' +
+      '<p class="cert-presents">has successfully completed</p>' +
+      '<h3 class="cert-course-title">Accessibility First Series — Guide 01</h3>' +
+      '<p class="cert-course-sub">Foundations of Disability, Inclusion &amp; Accessible Design</p>' +
+      '<div class="cert-badge">Accessibility<br>First:<br>Foundations</div>' +
+      '<div class="cert-stats">' +
+        '<div class="cert-stat"><span class="val cert-score">0/4</span><span class="lbl">Quiz Score</span></div>' +
+        '<div class="cert-stat"><span class="val cert-time">0m 0s</span><span class="lbl">Time Spent</span></div>' +
+        '<div class="cert-stat"><span class="val cert-slides">0/0</span><span class="lbl">Slides</span></div>' +
+      '</div>' +
+      '<div class="cert-date"></div>' +
+      '<div class="cert-signatures">' +
+        '<div class="cert-sig"><div class="cert-sig-line"></div><div class="cert-sig-name">Jacqueline Silvera</div><div class="cert-sig-title">IDEAA, People &amp; Culture, UHN</div></div>' +
+        '<div class="cert-sig"><div class="cert-sig-line"></div><div class="cert-sig-name cert-sig-learner">Learner</div><div class="cert-sig-title">Date of Completion</div></div>' +
+      '</div>' +
+      '<div class="cert-footer-text">Accessibility First eLearning Series · University Health Network · Toronto, Ontario, Canada</div>' +
+      '<div class="cert-actions no-print">' +
+        '<button class="cert-print-btn">PRINT CERTIFICATE</button>' +
+        '<button class="cert-close">CLOSE</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(completionOverlay);
+
+  completionOverlay.querySelector('.cert-close').addEventListener('click', function() {
+    completionOverlay.classList.remove('visible');
+  });
+  completionOverlay.querySelector('.cert-print-btn').addEventListener('click', function() {
+    window.print();
+  });
+  // Sync learner name to signature line
+  var nameInput = completionOverlay.querySelector('.cert-learner-name');
+  var sigLearner = completionOverlay.querySelector('.cert-sig-learner');
+  nameInput.addEventListener('input', function() {
+    sigLearner.textContent = nameInput.value || 'Learner';
+  });
+
+  // Create incomplete checklist overlay
+  var incompleteOverlay = document.createElement('div');
+  incompleteOverlay.className = 'tracking-incomplete-overlay';
+  incompleteOverlay.innerHTML =
+    '<div class="checklist-card">' +
+      '<h2>Almost There</h2>' +
+      '<div class="sub">Complete the following to finish the course:</div>' +
+      '<div class="checklist-items"></div>' +
+      '<button class="checklist-close">GOT IT</button>' +
+    '</div>';
+  document.body.appendChild(incompleteOverlay);
+
+  incompleteOverlay.querySelector('.checklist-close').addEventListener('click', function() {
+    incompleteOverlay.classList.remove('visible');
+  });
+
+  function showCompletionOverlay() {
+    var d = window.courseData;
+    completionOverlay.querySelector('.cert-score').textContent = d.quizScore + '/' + d.quizTotal;
+    completionOverlay.querySelector('.cert-time').textContent = formatTime(d.timeSpent);
+    completionOverlay.querySelector('.cert-slides').textContent = d.visitedSlides.length + '/' + d.totalSlides;
+    var dateStr = d.completionDate ? new Date(d.completionDate).toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' }) : '';
+    completionOverlay.querySelector('.cert-date').textContent = 'Completed: ' + dateStr;
+    completionOverlay.classList.add('visible');
+  }
+
+  function showIncompleteOverlay() {
+    var d = window.courseData;
+    var items = '';
+    var remaining = d.totalSlides - d.visitedSlides.length;
+    var slideDone = remaining <= 0;
+    var quizDone = d.quizPassed;
+    var mapDone = d.mapCompleted;
+
+    items += '<div class="checklist-item">' +
+      '<span class="check-icon ' + (slideDone ? 'done' : 'pending') + '">' + (slideDone ? '\u2713' : '') + '</span>' +
+      '<span>' + (slideDone ? 'All slides visited' : 'Visit ' + remaining + ' more screen' + (remaining !== 1 ? 's' : '')) + '</span>' +
+    '</div>';
+
+    items += '<div class="checklist-item">' +
+      '<span class="check-icon ' + (quizDone ? 'done' : 'pending') + '">' + (quizDone ? '\u2713' : '') + '</span>' +
+      '<span>' + (quizDone ? 'Knowledge check passed' : 'Complete the knowledge check (score: ' + d.quizScore + '/' + d.quizTotal + ', need 3/' + d.quizTotal + ')') + '</span>' +
+    '</div>';
+
+    items += '<div class="checklist-item">' +
+      '<span class="check-icon ' + (mapDone ? 'done' : 'pending') + '">' + (mapDone ? '\u2713' : '') + '</span>' +
+      '<span>' + (mapDone ? 'MAP action plan started' : 'Fill in at least one MAP field') + '</span>' +
+    '</div>';
+
+    incompleteOverlay.querySelector('.checklist-items').innerHTML = items;
+    incompleteOverlay.classList.add('visible');
+  }
+
+  // ── Hook SUBMIT & FINISH button and add Complete Course on last slide ──
+  function hookCompletionButtons() {
+    // Find the SUBMIT & FINISH button on ANY slide
+    var allBtns = document.querySelectorAll('button');
+    allBtns.forEach(function(btn) {
+      if (btn.textContent.indexOf('SUBMIT') !== -1 && btn.textContent.indexOf('FINISH') !== -1) {
+        btn.addEventListener('click', function() {
+          handleCourseComplete();
+        });
+      }
+    });
+
+    // Add a Complete Course button on the last slide
+    var lastSlideNum = 0;
+    allSlides.forEach(function(s) {
+      var n = parseInt(s.getAttribute('data-slide'));
+      if (n > lastSlideNum) lastSlideNum = n;
+    });
+    var lastSlide = document.querySelector('[data-slide="' + lastSlideNum + '"]');
+    if (lastSlide && !lastSlide.querySelector('.tracking-complete-btn')) {
+      var completeBtn = document.createElement('button');
+      completeBtn.className = 'tracking-complete-btn';
+      completeBtn.style.cssText = 'position:absolute; bottom:100px; right:96px; background:#C0233B; color:#fff; font-family:Arial Black,Arial,sans-serif; font-size:20px; padding:18px 36px; border:0; letter-spacing:2px; cursor:pointer; display:inline-flex; align-items:center; gap:10px; z-index:9999; box-shadow:0 4px 16px rgba(0,0,0,0.3);';
+      completeBtn.innerHTML = 'COMPLETE COURSE<span style="font-size:24px;">\u203A</span>';
+      completeBtn.addEventListener('click', function() {
+        handleCourseComplete();
+      });
+      lastSlide.appendChild(completeBtn);
+    }
+  }
+
+  function handleCourseComplete() {
+    // Re-check MAP status
+    window.courseData.mapCompleted = checkMapCompletion();
+    if (checkCompletion()) {
+      showCompletionOverlay();
+    } else {
+      showIncompleteOverlay();
+    }
+  }
+
+  // ── 8. Hook into existing goSlide ──
+  var _trackingPrevGoSlide = window.goSlide;
+  window.goSlide = function(n) {
+    _trackingPrevGoSlide(n);
+
+    // Update current slide
+    window.courseData.currentSlide = n;
+
+    // Add to visitedSlides if not already there
+    if (window.courseData.visitedSlides.indexOf(n) === -1) {
+      window.courseData.visitedSlides.push(n);
+    }
+
+    // Update bookmark
+    window.courseData.bookmarkSlide = n;
+
+    // Update progress indicator
+    updateProgressIndicator();
+
+    // Save to localStorage
+    saveProgress();
+
+    // Check completion
+    checkCompletion();
+  };
+
+  // ── Initialization ──
+  function init() {
+    var saved = loadProgress();
+
+    if (saved && saved.bookmarkSlide && saved.bookmarkSlide > 1) {
+      // Restore state
+      window.courseData.visitedSlides = saved.visitedSlides || [1];
+      window.courseData.quizScore = saved.quizScore || 0;
+      window.courseData.quizPassed = saved.quizPassed || false;
+      window.courseData.mapCompleted = saved.mapCompleted || false;
+      window.courseData.courseCompleted = saved.courseCompleted || false;
+      window.courseData.completionDate = saved.completionDate || null;
+      window.courseData.timeSpent = saved.timeSpent || 0;
+      window.courseData.bookmarkSlide = saved.bookmarkSlide;
+      window.courseData.currentSlide = saved.currentSlide || 1;
+      window.courseData.totalSlides = totalSlides;
+
+      // Restore quiz answers
+      if (saved.quizAnswers) quizAnswers = saved.quizAnswers;
+
+      // Show resume modal
+      var slideNum = saved.bookmarkSlide;
+      resumeModal.querySelector('p').textContent = 'Resume where you left off? Slide ' + slideNum;
+      resumeModal.classList.add('visible');
+
+      resumeModal.querySelector('.btn-resume').addEventListener('click', function() {
+        resumeModal.classList.remove('visible');
+        window.goSlide(slideNum);
+      });
+
+      resumeModal.querySelector('.btn-start-over').addEventListener('click', function() {
+        resumeModal.classList.remove('visible');
+        // Reset progress
+        window.courseData.visitedSlides = [1];
+        window.courseData.quizScore = 0;
+        window.courseData.quizPassed = false;
+        window.courseData.mapCompleted = false;
+        window.courseData.courseCompleted = false;
+        window.courseData.completionDate = null;
+        window.courseData.timeSpent = 0;
+        window.courseData.bookmarkSlide = 1;
+        window.courseData.currentSlide = 1;
+        quizAnswers = {};
+        saveProgress();
+        updateProgressIndicator();
+        window.goSlide(1);
+      });
+    } else {
+      // First visit — mark slide 1 as visited
+      window.courseData.visitedSlides = [1];
+      saveProgress();
+    }
+
+    // Start timer
+    startTimer();
+
+    // Update progress indicator
+    updateProgressIndicator();
+
+    // Hook completion buttons
+    hookCompletionButtons();
+  }
+
+  // Run init after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    // DOM already loaded, defer slightly so other scripts finish
+    setTimeout(init, 100);
+  }
+
+})();
+</script>
+
+<script>
+/* ── Background Music Toggle ── */
+(function(){
+  var audio = document.getElementById('bgmAudio');
+  var btn = document.getElementById('bgmToggle');
+  if (!audio || !btn) return;
+
+  audio.volume = 0.15;
+
+  // Default: button shows muted. Auto-play on first user interaction.
+  var wasMuted = localStorage.getItem('bgm-muted');
+  if (wasMuted === 'true') {
+    btn.classList.add('muted');
+  } else {
+    function startBgm() {
+      btn.classList.remove('muted');
+      audio.play().catch(function(){});
+      document.removeEventListener('click', startBgm);
+      document.removeEventListener('keydown', startBgm);
+    }
+    document.addEventListener('click', startBgm);
+    document.addEventListener('keydown', startBgm);
+  }
+
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (btn.classList.contains('muted')) {
+      btn.classList.remove('muted');
+      audio.play().catch(function(){});
+      localStorage.setItem('bgm-muted', 'false');
+    } else {
+      btn.classList.add('muted');
+      audio.pause();
+      localStorage.setItem('bgm-muted', 'true');
+    }
+  });
+
+  // Pause BGM when voiceover plays, resume after
+  var voAudios = document.querySelectorAll('audio[data-vo]');
+  var bgmPausedByVo = false;
+  voAudios.forEach(function(vo) {
+    vo.addEventListener('play', function() {
+      if (!btn.classList.contains('muted') && !audio.paused) {
+        bgmPausedByVo = true;
+        audio.volume = 0.05;
+      }
+    });
+    vo.addEventListener('pause', function() {
+      if (bgmPausedByVo) {
+        bgmPausedByVo = false;
+        audio.volume = 0.15;
+      }
+    });
+    vo.addEventListener('ended', function() {
+      if (bgmPausedByVo) {
+        bgmPausedByVo = false;
+        audio.volume = 0.15;
+      }
+    });
+  });
 })();
 </script>
 
