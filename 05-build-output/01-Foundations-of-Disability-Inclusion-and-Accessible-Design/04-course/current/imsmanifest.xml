@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest identifier="UHN_AccessibilityFirst_Guide01"
-          version="4.0"
+          version="5.0"
           xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
           xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -16,7 +16,7 @@
   <organizations default="UHN_AF_G01_ORG">
     <organization identifier="UHN_AF_G01_ORG">
       <title>Accessibility First — Guide 01: Foundations of Disability, Inclusion &amp; Accessible Design</title>
-      <item identifier="UHN_AF_G01_ITEM" identifierref="UHN_AF_G01_RES" isvisible="true">
+      <item identifier="UHN_AF_G01_ITEM_V5" identifierref="UHN_AF_G01_RES_V5" isvisible="true">
         <title>Guide 01: Foundations of Disability, Inclusion &amp; Accessible Design</title>
         <adlcp:masteryscore>80</adlcp:masteryscore>
       </item>
@@ -24,7 +24,7 @@
   </organizations>
 
   <resources>
-    <resource identifier="UHN_AF_G01_RES"
+    <resource identifier="UHN_AF_G01_RES_V5"
               type="webcontent"
               adlcp:scormtype="sco"
               href="index.html">
