@@ -13,7 +13,7 @@ The course is being developed using an **AI-native production pipeline** — con
 | # | Guide | Status |
 |---|-------|--------|
 | 00 | Series Overview | Draft |
-| 01 | Foundations of Disability Inclusion and Accessible Design | **In progress** (mockup + VO + SCORM done) |
+| 01 | Foundations of Disability Inclusion and Accessible Design | **85%** — SCORM v5 on LMS, VO + quizzes + scenarios working, images pending |
 | 02 | Perceptions, Attitudes, and Barriers | Draft |
 | 03 | Vision Disabilities | Draft |
 | 04 | Sensory, Hearing, and Communication Disabilities | Draft |
@@ -50,22 +50,23 @@ Guide 01 is the most complete and serves as the template for all other guides.
    templates/               → Storyboard and document templates
 05-build-output/            → Per-guide output folders (this is where finished assets live)
    01-Foundations-.../       → Guide 01's full asset package:
-      00-course-overview/       Course overview docs
-      01-master-storyboard/     Master Word storyboard (internal)
-      02-ppt-storyboard/        PowerPoint storyboard (for external review)
-      03-assessment-bank/       Quiz questions and knowledge checks
-      04-scenario-branches/     Branching scenario scripts
-      05-image-briefs/          AI image generation prompts
-      06-audio-narration/       Generated voiceover MP3s
-      07-video-production/      Video assets
-      08-notebooklm-podcast/    AI-generated podcast episodes
-      09-progress-tracking/     Learner progress tracking
-      10-sme-review/            Subject matter expert review materials
-      11-qa-checklist/          Quality assurance checklists
-      12-references/            APA 7 reference lists
-      13-job-aids/              Downloadable job aids / handouts
-      storyboard/               Interactive HTML storyboard (deployed version)
-      Guide-01-SCORM-v3/        SCORM package (ready for LMS)
+      01-source/                Raw source content for this guide
+      02-production/            Production assets:
+         master-storyboard/       Master Word storyboard (internal)
+         assessment-bank/         Quiz questions and knowledge checks
+         scenario-branches/       Branching scenario scripts
+         image-briefs/            AI image generation prompts + generated images
+         narration-scripts/       VO scripts, per-screen text, captions, transcripts
+         podcast/                 NotebookLM podcast episode + transcript
+         sme-review/              Subject matter expert review materials
+         qa-checklist/            Quality assurance checklists
+         references/              APA 7 reference lists
+         job-aids/                Downloadable job aids / handouts
+      03-media/                 All media assets (vo/, images/, bgm/, podcast/)
+      04-course/                SCORM course package:
+         current/                 LIVE course files (index.html + JS + CSS + media)
+         template/                Clean template for new guides
+      05-releases/              Versioned SCORM zips (v3.0, v4.0, v5.0)
 06-exports/                 → Exported deliverables
 07-archive/                 → Archived old versions and reference samples
 ```
@@ -174,6 +175,24 @@ The entire course series (and future courses) is built from just 10 reusable int
 
 These 10 templates cover every screen in the 18-guide accessibility series and generalize to any eLearning course.
 
+## SCORM & LMS Deployment
+
+The course is deployed to **UHN MyLearning (SumTotal LMS)** as a SCORM 1.2 package.
+
+**Packaging workflow:**
+1. Edit course files in `04-course/current/`
+2. Bump manifest version + item/resource identifiers in `imsmanifest.xml`
+3. Zip from inside `current/` → output to `05-releases/v{VERSION}.zip`
+4. Upload to SumTotal → "Replace the Structure" → "Re-Register"
+
+**Key SCORM features working:**
+- Completion status reports to LMS
+- Quiz score (0–100%) reports to LMS
+- Bookmarking / resume across sessions via `cmi.suspend_data`
+- Auto-sync every 30 seconds + save on page close
+
+**SumTotal-specific:** Changing `item` and `resource` identifiers in the manifest is required to trigger the "Manifest Change" dialog. Without this, SumTotal silently replaces content with no learner reset prompt.
+
 ## Tech Stack
 
 - HTML/CSS/JS — interactive storyboard mockups
@@ -183,3 +202,4 @@ These 10 templates cover every screen in the 18-guide accessibility series and g
 - Claude — content authoring, code generation, production orchestration
 - GPT Image 2 — illustration generation
 - SCORM 1.2 — LMS packaging standard
+- SumTotal — LMS (UHN MyLearning)
