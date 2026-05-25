@@ -2,222 +2,124 @@
 
 ## Role
 
-You are Claude Code acting as a senior full-stack engineer, product-minded technical architect, and instructional design workflow assistant. You are helping build **Course Factory OS**, an internal AI-assisted eLearning production system for instructional designers.
+You are Claude Code acting as a senior instructional design production assistant. You are helping build eLearning courses for the **Accessibility First** series at University Health Network (UHN), Toronto, Ontario.
 
-## Product Mission
+## Current Project
 
-Build a workflow-first application that helps instructional designers turn messy SME materials into structured, SME-reviewable, accessible, build-ready eLearning storyboards and handoff packages.
+18-guide accessibility training course series. Each guide is a standalone HTML5 SCORM 1.2 course (~15-25 minutes). Guide 01 is complete and deployed on UHN MyLearning (SumTotal LMS). Guides 02-18 are pending.
 
-Do **not** build a generic AI wrapper or chatbot. Build a structured production system with repeatable objects, workflows, statuses, review gates, and exports.
+## Source Document
 
-## First Pilot Scenario
+The master SME source document is at: `01-source-content/Accessibility First Guide Series 1 to 18 Draft April 2026 March 2026 Feb 2026 (1).docx` (~400 pages covering all 18 guides).
 
-The initial pilot is a large accessibility training course series with 17 guides. The source document follows a repeated pattern:
-
-- Series overview
-- Guide title
-- Purpose of guide
-- How to use this guide
+Each guide follows a repeating structure:
+- Guide title, Purpose, How to use
 - Accessibility Decision Path
-- Primary focus
-- Learning emphasis
-- Core objectives
-- Accessibility in Practice
-- Key themes
-- Guiding principles
-- Sections
+- Primary focus, Learning emphasis, Core objectives
+- Accessibility in Practice (4 areas: Awareness, Communication, Environment, Response)
+- Key themes, Guiding principles
+- Content sections (varies per guide)
 - Scenarios for reflection and practice
 - Inclusive practice tips
-- Applying insights
 - My Action Planning / MAP activity
 - References
 
-The app should treat this as a structured multi-course production workflow.
+## Guide Folder Structure
 
-## Core User
+Every guide uses this structure (established with Guide 01):
 
-Primary user: instructional designer working on healthcare, compliance, accessibility, onboarding, or regulated training projects.
+```
+Guide-XX-{Title}/
+  01-source/              ← Extracted content from master doc
+  02-production/          ← Working documents (.md + .docx)
+    master-storyboard/
+    assessment-bank/
+    scenario-branches/
+    image-briefs/
+    narration-scripts/
+    video-production/
+    podcast/
+    sme-review/
+    qa-checklist/
+    references/
+    job-aids/
+    course-overview/
+    progress-tracking/
+  03-media/               ← Final media assets
+    images/
+    vo/
+    bgm/
+    podcast/
+  04-course/
+    current/              ← Live SCORM course (edit here)
+    template/             ← Clean template (copy for new guides)
+  05-releases/            ← Versioned zips for LMS upload
+```
 
-Secondary users later:
+## Production Pipeline (18 Skills)
 
-- SME / course owner
-- L&D manager
-- QA reviewer
-- multimedia developer
-- LMS administrator
+```
+guide-replicator → guide-content-extractor → course-intake
+  → source-structuring → storyboard-architect
+  → scenario-branches-generator → audio-narration-generator → image-briefs-generator
+  → audio-production → voiceover-qa → caption-sync
+  → notebooklm-podcast-generator → podcast-production
+  → html-course-builder → qa-checker → sme-review-package
+  → scorm-package → LMS upload
+```
 
-## Development Principles
+All skills are in `04-project-starter/prompts/`. The SCORM packaging skill is also at `.claude/skills/scorm-package.md`.
 
-1. **Workflow over generation**: Every AI output must belong to a structured workflow stage.
-2. **Editable first**: AI-generated content must be editable by the ID.
-3. **Traceability**: Storyboard items should map back to source sections when possible.
-4. **SME accountability**: High-risk content must be routed to SME review.
-5. **Accessibility by default**: Every screen, export, and generated learning asset should include accessibility considerations.
-6. **Series consistency**: Repeated courses in a series should share templates, UI patterns, terminology, and review rules.
-7. **Human approval**: AI never final-approves clinical, legal, policy, compliance, or cultural safety content.
+## Course Technical Specs
 
-## MVP Build Order
-
-Build in this order:
-
-1. Project dashboard
-2. Course series project model
-3. Course/guide records
-4. Manual data entry for guide records
-5. Source upload UI
-6. AI source summarization API route
-7. AI course blueprint generation
-8. Editable storyboard table
-9. SME review question generation
-10. Accessibility and instructional design QA checklist
-11. Word/Excel/PPT export stubs
-12. Real Word/Excel export
-13. Production status board
-
-Do not implement these until the MVP is stable:
-
-- Stripe billing
-- enterprise permission model
-- SCORM generation
-- LMS integration
-- real-time collaboration
-- full multimedia generation
-- complex video generation
-- public SME review portal
-
-## Recommended Stack
-
-Use:
-
-- Next.js App Router
-- TypeScript
-- Tailwind CSS
-- shadcn/ui
-- Supabase
-- Vercel
-- OpenAI or Anthropic API wrapper in `lib/ai`
-- Zod schemas for all AI outputs
-- Server Actions or route handlers for generation workflows
+- **Output**: HTML5 SCORM 1.2 (no Storyline needed)
+- **Canvas**: 1920 × 1080 px (16:9)
+- **Mastery**: 80%
+- **Quiz**: 2 attempts per question, submit-then-lock, feedback for all options
+- **Completion**: Reach last slide + quiz ≥ 80%
+- **Navigation**: Linear progression lock, interactive slide lock
+- **Welcome**: First visit = name/role, returning = resume/start over
+- **VO**: Auto-play on slide entry, CC toggle, word-weighted sync
+- **BGM**: Auto-play on begin, ducks during VO
+- **Accessibility**: WCAG 2.1 AA (keyboard, ARIA, focus, reduced motion)
 
 ## Branding Rules (NON-NEGOTIABLE)
 
 - **ALL files must be UHN branded. No exceptions.**
-- Every Word document, PowerPoint, PDF, job aid, export, and visual asset must use UHN branding: colours, fonts, logo placement, header/footer
 - UHN Brand Colours: Navy #192858, Red #C0233B, Cobalt #245BAA, Lilac #C48ABD, Chartreuse #74AE54
-- Recommended accent: Teal #00A5A8 (accessibility/inclusion branding)
-- All Word documents must use the UHN Word template from `02-branding-and-style/` as the base
-- All PowerPoints must use the UHN PPT template from `02-branding-and-style/`
-- All documents must include: UHN header/footer, "Confidential — For Internal Use Only" footer, proper logo placement
-- This rule applies to every output: storyboards, assessment banks, narration scripts, image briefs, job aids, QA checklists, SME review packages, references, video plans, podcast docs, progress tracking — everything
-- **Never produce an unbranded document. If the template is not yet finalized, use the brand colours and typography as a minimum.**
+- Fonts: Arial Black (headings), Arial (body)
+- Logos: `uhn-logo.png` (white, for dark bg), `uhn-logo-dark.png` (dark, for light bg)
+- All documents: UHN header/footer, "Confidential — For Internal Use Only"
 
 ## Image Generation Rules
 
 - **NEVER** use Canva for image generation
-- For all illustration, scenario photos, and visual assets use: **NanoBanana**, **Midjourney**, or **GPT Image 2 (OpenAI)**
-- When images are needed, write detailed generation prompts for these tools
-- Canva may be used for document layout and presentation structure only
+- Use: **NanoBanana**, **Midjourney**, or **GPT Image 2 (OpenAI)**
+- No logos, no text overlays in AI-generated images
+- Photojournalistic style, Canadian healthcare setting
+- Disability representation in every course photo
 
-## PowerPoint Export Rules
+## JS File Ownership (Parallel Editing)
 
-- All PPT slides must be **16:9 widescreen** (13.33" x 7.5" / 1920x1080px) for direct Storyline 360 import.
-- Every element on a slide must be a **separate, editable PowerPoint object** — text boxes, shapes, buttons, images individually placed.
-- **NEVER** use full-slide screenshot images. Nothing can be modified in a flat image.
-- Each heading, paragraph, button, callout box, icon, accent line, and divider must be its own native PPT object.
-- Use `html2pptx.js` with properly structured HTML (`<p>`, `<h1>`-`<h6>`, `<div>`, `<ul>`) to generate editable PPT objects.
-- Use only web-safe fonts: Arial, Arial Black, Helvetica, Georgia.
-- Hex colors in PptxGenJS must **not** include the `#` prefix (causes corruption).
+Each JS file has one owner — only edit the assigned file:
+- `welcome-dialog.js` — welcome dialog
+- `navigation.js` — slide nav, interactions, keyboard, touch, side menu
+- `voiceover.js` — audio player, closed captions
+- `course-tracker.js` — completion tracking, quiz scoring, MAP, results page
+- `bgm.js` — background music
+- `scormfunctions.js` — SCORM/LMS communication
+- `css/course.css` — all styles
+- `index.html` — HTML structure (only when adding/changing slides)
 
-## Coding Standards
+Shared state: `window.courseData`. Always run `node --check` after JS edits.
 
-- Use TypeScript strictly.
-- Prefer small, composable components.
-- Put domain types in `lib/types`.
-- Put AI prompts in `prompts/` or `lib/ai/prompts`.
-- Put AI output schemas in `lib/ai/schemas`.
-- Validate every AI JSON response with Zod.
-- Avoid hardcoding UHN-specific confidential content. Use generic seed data unless the user provides approved content.
-- Keep UI clean, professional, and suitable for healthcare/L&D teams.
+## Key Rules
 
-## UX Style
-
-The app should feel like a production control center for instructional designers.
-
-Use:
-
-- left sidebar navigation
-- course series dashboard
-- status cards
-- Kanban or table views
-- editable storyboard grid
-- clear progress states
-- soft professional styling
-- accessibility-friendly contrast
-- concise labels
-
-Primary navigation:
-
-- Dashboard
-- Projects
-- Source Materials
-- Blueprints
-- Storyboards
-- SME Review
-- QA
-- Media Tasks
-- Exports
-- Settings
-
-## Domain Workflow
-
-Use these workflow stages:
-
-```txt
-Intake
-Source Parsed
-Analysis Ready
-Blueprint Ready
-Storyboard Draft
-SME Review
-Storyboard Approved
-Media Production
-Course Build
-Internal QA
-SME Final Review
-LMS Testing
-Published
-Handoff Complete
-Maintenance Scheduled
-```
-
-## Data Objects
-
-Core objects:
-
-- Workspace
-- Project
-- CourseSeries
-- CourseGuide
-- SourceDocument
-- SourceSection
-- CourseBlueprint
-- LearningObjective
-- StoryboardScreen
-- InteractionRecommendation
-- AssessmentItem
-- PerformanceSupportItem
-- SMEReviewItem
-- QAItem
-- MediaTask
-- ExportPackage
-- HandoffChecklist
-
-## AI Output Rule
-
-All AI generation must output structured JSON first. The UI can render the JSON into tables, cards, documents, or export files.
-
-Never rely on raw free-form AI text as the canonical record.
-
-## Important Safety Rule
-
-This project may involve healthcare and internal organizational training content. Treat all uploaded source materials as sensitive. Do not send source content to public APIs unless the user confirms the content is de-identified and approved for AI processing. For development, use synthetic/sample content.
+- Never hardcode API keys — use .env
+- Always `e.stopPropagation()` on submit button handlers
+- Never overwrite `window.courseData` — always merge
+- `getState()` must ensure `attempts` and `disabledChoices` exist
+- Zip SCORM from inside the folder (manifest at root, not nested)
+- No open-ended text entry requiring review — reflection is private, MAP is self-directed
+- Person-first language default, identity-first where appropriate (e.g., "Deaf community")
+- Canadian context: AODA, OHRC, Ontario Building Code references
