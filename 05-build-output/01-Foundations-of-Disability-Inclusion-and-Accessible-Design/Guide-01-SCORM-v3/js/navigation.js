@@ -82,12 +82,140 @@
   const total = slides.length;
   let current = 1;
 
+  /* ── Linear progression: visitedSlides tracking ── */
+  if (!window.courseData) window.courseData = {};
+  if (!window.courseData.submissions) window.courseData.submissions = {};
+  if (!window.courseData.visitedSlides) {
+    // Try to load from localStorage
+    try {
+      var saved = localStorage.getItem('courseVisitedSlides');
+      if (saved) {
+        window.courseData.visitedSlides = JSON.parse(saved);
+      } else {
+        window.courseData.visitedSlides = [1]; // Slide 1 is always unlocked
+      }
+    } catch(e) {
+      window.courseData.visitedSlides = [1];
+    }
+  }
+
+  function saveVisitedSlides() {
+    try {
+      localStorage.setItem('courseVisitedSlides', JSON.stringify(window.courseData.visitedSlides));
+    } catch(e) {}
+  }
+
+  function isSlideUnlocked(n) {
+    if (n === 1) return true;
+    // Slide N is unlocked if slide N-1 has been visited
+    return window.courseData.visitedSlides.indexOf(n - 1) !== -1;
+  }
+
+  function markSlideVisited(n) {
+    if (window.courseData.visitedSlides.indexOf(n) === -1) {
+      window.courseData.visitedSlides.push(n);
+      saveVisitedSlides();
+    }
+  }
+
+  /* ── Interactive slide lock: disable next until interaction is complete ── */
+  // Slides that require interaction before advancing
+  var interactiveSlides = {
+    10: 'scenario',  // Scenario 1
+    11: 'scenario',  // Scenario 2
+    12: 'scenario',  // Scenario 3
+    13: 'kc',        // KC1
+    14: 'kc',        // KC2
+    15: 'kc',        // KC3
+    17: 'reflection', // Reflection prompt
+    21: 'scenario'   // Scenario 4
+  };
+
+  function isSlideInteractionComplete(slideNum) {
+    var type = interactiveSlides[slideNum];
+    if (!type) return true; // not an interactive slide
+
+    var slideEl = document.querySelector('[data-slide="' + slideNum + '"]');
+    if (!slideEl) return true;
+
+    if (type === 'scenario') {
+      var opts = slideEl.querySelector('.options[data-correct]');
+      return opts && opts.classList.contains('locked');
+    }
+    if (type === 'kc') {
+      var kc = slideEl.querySelector('.kc-options[data-qnum]');
+      return kc && kc.classList.contains('locked');
+    }
+    if (type === 'reflection') {
+      var inputs = slideEl.querySelectorAll('.input[contenteditable]');
+      for (var i = 0; i < inputs.length; i++) {
+        var text = inputs[i].textContent.trim();
+        if (text && text !== 'Type your reflection here...' && text !== 'Type your response here...' && text !== 'Type your response here... (optional)') {
+          return true;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
+
+  function updateNextButtonState(slideNum) {
+    var slideEl = document.querySelector('[data-slide="' + slideNum + '"]');
+    if (!slideEl) return;
+    var nextBtn = slideEl.querySelector('.sn-btn.next');
+    if (!nextBtn) return;
+
+    if (interactiveSlides[slideNum] && !isSlideInteractionComplete(slideNum)) {
+      nextBtn.classList.add('disabled');
+      nextBtn.style.opacity = '0.35';
+      nextBtn.style.cursor = 'not-allowed';
+    } else {
+      nextBtn.classList.remove('disabled');
+      nextBtn.style.opacity = '';
+      nextBtn.style.cursor = '';
+    }
+  }
+
+  // Expose so quiz/scenario handlers can call it after submission
+  window.updateNextButtonState = updateNextButtonState;
+
+  // Warning toast for clicking disabled next
+  var warningToast = document.createElement('div');
+  warningToast.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(25,40,88,0.95); color:#fff; padding:24px 40px; font-family:var(--font-head); font-size:18px; letter-spacing:1px; z-index:99999; opacity:0; pointer-events:none; transition:opacity 0.3s; text-align:center; max-width:500px; line-height:1.5;';
+  document.body.appendChild(warningToast);
+  var warningTimeout = null;
+
+  function showWarningToast(msg) {
+    warningToast.textContent = msg;
+    warningToast.style.opacity = '1';
+    if (warningTimeout) clearTimeout(warningTimeout);
+    warningTimeout = setTimeout(function() {
+      warningToast.style.opacity = '0';
+    }, 2500);
+  }
+
   function goSlide(n) {
     if (n < 1 || n > total) return;
+    // Linear progression lock: prevent skipping ahead
+    if (!isSlideUnlocked(n)) return;
+
+    // Interactive slide lock: block forward if interaction not complete
+    if (n > current && interactiveSlides[current] && !isSlideInteractionComplete(current)) {
+      showWarningToast('Please complete the activity on this slide before continuing.');
+      return;
+    }
+
     slides.forEach(s => s.classList.remove('active'));
     current = n;
     const target = document.querySelector('[data-slide="' + n + '"]');
     if (target) target.classList.add('active');
+
+    // Mark this slide as visited (unlocks the next one)
+    markSlideVisited(n);
+
+    // Update next button state for the new slide
+    updateNextButtonState(n);
+
     resize();
   }
   window.goSlide = goSlide;
@@ -136,11 +264,10 @@
       var touch = e.changedTouches[0];
       var dx = touch.screenX - touchStartX;
       var dy = touch.screenY - touchStartY;
-      // Only horizontal swipes — ignore if vertical movement exceeds horizontal
       if (Math.abs(dy) > Math.abs(dx)) return;
       if (Math.abs(dx) < SWIPE_MIN) return;
-      if (dx < 0) { goSlide(current + 1); } // swipe left → next
-      else { goSlide(current - 1); }         // swipe right → prev
+      if (dx < 0) { goSlide(current + 1); }
+      else { goSlide(current - 1); }
     }, { passive: true });
   })();
 
@@ -150,7 +277,6 @@
     var tag = e.target.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
-    // Escape: close side menu or feedback overlays
     if (e.key === 'Escape') {
       if (document.body.classList.contains('nav-open')) {
         closeMenu();
@@ -167,14 +293,12 @@
       }
     }
 
-    // Arrow keys for slide navigation (only when not focused on interactive elements)
     var isInteractive = e.target.closest && e.target.closest('.option, .kc-opt, .tab-btn, .acc-header, .step, .sm-item');
     if (!isInteractive) {
       if (e.key === 'ArrowRight') { e.preventDefault(); goSlide(current + 1); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); goSlide(current - 1); }
     }
 
-    // Space: activate focused element or advance slide
     if (e.key === ' ' && !isInteractive) {
       e.preventDefault();
       goSlide(current + 1);
@@ -193,7 +317,6 @@
         btn.setAttribute('aria-selected', 'true');
         if (panels[i]) panels[i].classList.add('active');
       });
-      // Arrow key navigation within tablist
       btn.addEventListener('keydown', function(e) {
         if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
           e.preventDefault();
@@ -260,47 +383,83 @@
     });
   });
 
-  /* ── Branching scenario choices (with submit/lock) ── */
-  if (!window.courseData) window.courseData = {};
-  if (!window.courseData.submissions) window.courseData.submissions = {};
+  /* ══════════════════════════════════════════════════════════════
+     TASK 1 & 4: Branching scenario choices (2 attempts, full feedback)
+     ══════════════════════════════════════════════════════════════ */
 
   document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer) {
     var correctAnswer = optionsContainer.getAttribute('data-correct');
     var overlayId = optionsContainer.getAttribute('data-overlay');
     var options = optionsContainer.querySelectorAll('.option');
     var submitBtn = optionsContainer.parentElement.querySelector('.submit-btn');
-    var containerKey = overlayId || optionsContainer.getAttribute('data-correct') + '-' + Array.prototype.indexOf.call(document.querySelectorAll('.options[data-correct]'), optionsContainer);
+    var containerKey = overlayId || correctAnswer + '-' + Array.prototype.indexOf.call(document.querySelectorAll('.options[data-correct]'), optionsContainer);
     var selectedChoice = null;
+    var MAX_ATTEMPTS = 2;
 
-    // Restore state if previously submitted
-    if (window.courseData.submissions[containerKey]) {
-      var saved = window.courseData.submissions[containerKey];
+    // Initialize attempts tracking
+    if (!window.courseData.submissions[containerKey]) {
+      window.courseData.submissions[containerKey] = { attempts: 0, disabledChoices: [] };
+    }
+
+    // Use a getter function so we always read the live object (supports retry reset)
+    function getState() { return window.courseData.submissions[containerKey]; }
+
+    // Restore visual state if previously completed
+    var initState = getState();
+    var isAlreadyComplete = false;
+    if (initState.selected) {
+      isAlreadyComplete = true;
       options.forEach(function(o) {
         var ch = o.getAttribute('data-choice');
-        if (ch === saved.selected) {
+        if (ch === initState.selected) {
           if (ch === correctAnswer) { o.classList.add('correct'); }
           else { o.classList.add('incorrect'); }
         }
-        if (ch === correctAnswer && saved.selected !== correctAnswer) { o.classList.add('correct'); }
+        if (ch === correctAnswer && initState.selected !== correctAnswer) { o.classList.add('correct'); }
       });
       optionsContainer.classList.add('locked');
-      if (submitBtn) { submitBtn.classList.remove('ready'); submitBtn.classList.add('submitted'); submitBtn.textContent = '\u2713 SUBMITTED'; submitBtn.disabled = true; }
+      if (submitBtn) {
+        submitBtn.classList.remove('ready');
+        submitBtn.classList.add('submitted');
+        submitBtn.textContent = initState.selected === correctAnswer ? 'CORRECT \u2713' : 'SUBMITTED \u2713';
+        submitBtn.disabled = true;
+      }
       if (overlayId) {
         var overlay = document.getElementById(overlayId);
         if (overlay) {
           var fbContent = overlay.querySelector('.fb-content');
-          var savedOpt = optionsContainer.querySelector('[data-choice="' + saved.selected + '"]');
-          if (fbContent && savedOpt) fbContent.innerHTML = savedOpt.getAttribute('data-fb') || '';
+          if (fbContent) {
+            fbContent.innerHTML = buildScenarioFeedback(optionsContainer, initState.selected, correctAnswer);
+          }
           overlay.classList.add('show');
         }
       }
-      return;
     }
 
+    // Restore partial state (attempt 1 used, not yet completed)
+    if (!isAlreadyComplete && initState.attempts > 0 && !initState.selected) {
+      if (initState.disabledChoices) {
+        initState.disabledChoices.forEach(function(ch) {
+          var opt = optionsContainer.querySelector('[data-choice="' + ch + '"]');
+          if (opt) {
+            opt.classList.add('disabled-choice');
+            opt.style.pointerEvents = 'none';
+          }
+        });
+      }
+    }
+
+    // ALWAYS attach click handlers (even if already complete — needed for retry)
     options.forEach(function(opt) {
       opt.addEventListener('click', function() {
         if (optionsContainer.classList.contains('locked')) return;
-        options.forEach(function(o) { o.classList.remove('sel'); o.setAttribute('aria-checked', 'false'); });
+        if (opt.classList.contains('disabled-choice')) return;
+        options.forEach(function(o) {
+          if (!o.classList.contains('disabled-choice')) {
+            o.classList.remove('sel');
+          }
+          o.setAttribute('aria-checked', 'false');
+        });
         opt.classList.add('sel');
         opt.setAttribute('aria-checked', 'true');
         selectedChoice = opt.getAttribute('data-choice');
@@ -309,44 +468,113 @@
     });
 
     if (submitBtn) {
-      submitBtn.addEventListener('click', function() {
+      submitBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
         if (!selectedChoice || optionsContainer.classList.contains('locked')) return;
 
-        // Grade
-        options.forEach(function(o) { o.classList.remove('sel', 'correct', 'incorrect'); });
-        var chosenOpt = optionsContainer.querySelector('[data-choice="' + selectedChoice + '"]');
+        var state = getState();
+        state.attempts++;
+
         if (selectedChoice === correctAnswer) {
+          // CORRECT on any attempt
+          options.forEach(function(o) { o.classList.remove('sel'); });
+          var chosenOpt = optionsContainer.querySelector('[data-choice="' + selectedChoice + '"]');
           chosenOpt.classList.add('correct');
+
+          optionsContainer.classList.add('locked');
+          submitBtn.classList.remove('ready');
+          submitBtn.classList.add('submitted');
+          submitBtn.textContent = 'CORRECT \u2713';
+          submitBtn.disabled = true;
+
+          state.selected = selectedChoice;
+          saveSubmissions();
+
+          if (overlayId) {
+            var overlay = document.getElementById(overlayId);
+            if (overlay) {
+              var fbContent = overlay.querySelector('.fb-content');
+              if (fbContent) fbContent.innerHTML = buildScenarioFeedback(optionsContainer, selectedChoice, correctAnswer);
+              overlay.classList.add('show');
+            }
+          }
+        } else if (state.attempts < MAX_ATTEMPTS) {
+          // FIRST WRONG: show hint, disable wrong option, allow retry
+          var chosenOpt = optionsContainer.querySelector('[data-choice="' + selectedChoice + '"]');
+          chosenOpt.classList.remove('sel');
+          chosenOpt.classList.add('incorrect', 'disabled-choice');
+          chosenOpt.style.pointerEvents = 'none';
+
+          if (!state.disabledChoices) state.disabledChoices = [];
+          state.disabledChoices.push(selectedChoice);
+          saveSubmissions();
+
+          // Show hint inline
+          showAttemptHint(optionsContainer, 'Incorrect \u2014 try again. 1 attempt remaining.');
+
+          // Reset submit button
+          submitBtn.disabled = true;
+          submitBtn.classList.remove('ready');
+          selectedChoice = null;
         } else {
+          // SECOND WRONG: lock everything, reveal correct, show feedback
+          options.forEach(function(o) { o.classList.remove('sel'); });
+          var chosenOpt = optionsContainer.querySelector('[data-choice="' + selectedChoice + '"]');
           chosenOpt.classList.add('incorrect');
-          options.forEach(function(o) { if (o.getAttribute('data-choice') === correctAnswer) o.classList.add('correct'); });
-        }
+          options.forEach(function(o) {
+            if (o.getAttribute('data-choice') === correctAnswer) o.classList.add('correct');
+          });
 
-        // Lock
-        optionsContainer.classList.add('locked');
-        submitBtn.classList.remove('ready');
-        submitBtn.classList.add('submitted');
-        submitBtn.textContent = '\u2713 SUBMITTED';
-        submitBtn.disabled = true;
+          optionsContainer.classList.add('locked');
+          submitBtn.classList.remove('ready');
+          submitBtn.classList.add('submitted');
+          submitBtn.textContent = 'SUBMITTED \u2713';
+          submitBtn.disabled = true;
 
-        // Save state
-        window.courseData.submissions[containerKey] = { selected: selectedChoice };
+          state.selected = selectedChoice;
+          saveSubmissions();
 
-        // Show feedback overlay
-        if (overlayId) {
-          var overlay = document.getElementById(overlayId);
-          if (overlay) {
-            var fbContent = overlay.querySelector('.fb-content');
-            var fbText = chosenOpt.getAttribute('data-fb') || '';
-            if (fbContent) fbContent.innerHTML = fbText;
-            overlay.classList.add('show');
+          // Remove hint if present
+          removeAttemptHint(optionsContainer);
+
+          if (overlayId) {
+            var overlay = document.getElementById(overlayId);
+            if (overlay) {
+              var fbContent = overlay.querySelector('.fb-content');
+              if (fbContent) fbContent.innerHTML = buildScenarioFeedback(optionsContainer, selectedChoice, correctAnswer);
+              overlay.classList.add('show');
+            }
           }
         }
       });
     }
   });
 
-  /* ── Knowledge Check quiz interaction (with submit/lock) ── */
+  /* Build scenario feedback showing both chosen + correct */
+  function buildScenarioFeedback(optionsContainer, selectedChoice, correctAnswer) {
+    var chosenOpt = optionsContainer.querySelector('[data-choice="' + selectedChoice + '"]');
+    var correctOpt = optionsContainer.querySelector('[data-choice="' + correctAnswer + '"]');
+    var html = '';
+
+    if (selectedChoice === correctAnswer) {
+      // Correct: show just their feedback
+      html += '<div style="margin-bottom:12px;"><span style="display:inline-block;background:var(--chartreuse);color:#fff;font-family:var(--font-head);font-size:13px;letter-spacing:2px;padding:4px 12px;margin-bottom:10px;">YOUR ANSWER (CORRECT)</span></div>';
+      html += '<div>' + (chosenOpt.getAttribute('data-fb') || '') + '</div>';
+    } else {
+      // Wrong: show their answer + correct answer
+      html += '<div style="margin-bottom:16px;"><span style="display:inline-block;background:var(--red);color:#fff;font-family:var(--font-head);font-size:13px;letter-spacing:2px;padding:4px 12px;margin-bottom:10px;">YOUR ANSWER: ' + selectedChoice + '</span></div>';
+      html += '<div style="margin-bottom:18px;">' + (chosenOpt.getAttribute('data-fb') || '') + '</div>';
+      html += '<div style="border-top:1px solid rgba(255,255,255,0.25);padding-top:14px;margin-top:14px;">';
+      html += '<span style="display:inline-block;background:var(--chartreuse);color:#fff;font-family:var(--font-head);font-size:13px;letter-spacing:2px;padding:4px 12px;margin-bottom:10px;">CORRECT ANSWER: ' + correctAnswer + '</span></div>';
+      html += '<div>' + (correctOpt.getAttribute('data-fb') || '') + '</div>';
+    }
+    return html;
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     TASK 2 & 4: Knowledge Check quiz interaction (2 attempts, feedback fix)
+     ══════════════════════════════════════════════════════════════ */
+
   document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kcContainer) {
     var correctAnswer = kcContainer.getAttribute('data-correct');
     var qnum = kcContainer.getAttribute('data-qnum');
@@ -355,45 +583,66 @@
     var submitBtn = kcContainer.parentElement.querySelector('.submit-btn');
     var containerKey = 'kc-' + qnum;
     var selectedAnswer = null;
+    var MAX_ATTEMPTS = 2;
 
-    // Restore state if previously submitted
-    if (window.courseData.submissions[containerKey]) {
-      var saved = window.courseData.submissions[containerKey];
+    // Initialize attempts tracking
+    if (!window.courseData.submissions[containerKey]) {
+      window.courseData.submissions[containerKey] = { attempts: 0, disabledChoices: [] };
+    }
+
+    // Use a getter function so we always read the live object (supports retry reset)
+    function getState() { return window.courseData.submissions[containerKey]; }
+
+    // Restore visual state if previously completed
+    var initState = getState();
+    var isAlreadyComplete = false;
+    if (initState.selected) {
+      isAlreadyComplete = true;
       opts.forEach(function(o) {
         var ans = o.getAttribute('data-answer');
-        if (ans === saved.selected) {
+        if (ans === initState.selected) {
           if (ans === correctAnswer) { o.classList.add('correct'); }
           else { o.classList.add('incorrect'); }
         }
-        if (ans === correctAnswer && saved.selected !== correctAnswer) { o.classList.add('correct'); }
+        if (ans === correctAnswer && initState.selected !== correctAnswer) { o.classList.add('correct'); }
       });
       kcContainer.classList.add('locked');
-      if (submitBtn) { submitBtn.classList.remove('ready'); submitBtn.classList.add('submitted'); submitBtn.textContent = '\u2713 SUBMITTED'; submitBtn.disabled = true; }
-
-      // Show feedback panel
-      var kcGrid = kcContainer.closest('.kc-grid');
-      if (kcGrid) {
-        var fbPanel = kcGrid.querySelector('.kc-feedback');
-        if (fbPanel) {
-          fbPanel.classList.remove('hidden');
-          var head = fbPanel.querySelector('.head');
-          if (saved.selected === correctAnswer) { if (head) head.style.background = 'var(--chartreuse)'; }
-          else { if (head) head.style.background = 'var(--red)'; }
-        }
+      if (submitBtn) {
+        submitBtn.classList.remove('ready');
+        submitBtn.classList.add('submitted');
+        submitBtn.textContent = initState.selected === correctAnswer ? 'CORRECT \u2713' : 'SUBMITTED \u2713';
+        submitBtn.disabled = true;
       }
+      showKcFeedback(kcContainer, initState.selected, correctAnswer);
       if (quizQ) {
-        if (saved.selected === correctAnswer) { var cfb = quizQ.querySelector('[data-fb-correct]'); if (cfb) cfb.classList.add('show', 'correct-fb'); }
-        else { var fb = quizQ.querySelector('[data-fb-wrong]'); if (fb) fb.classList.add('show', 'incorrect-fb'); }
-        var nextBtn = quizQ.querySelector('[data-quiz-next]');
-        if (nextBtn) nextBtn.style.display = 'inline-block';
+        var nextBtn2 = quizQ.querySelector('[data-quiz-next]');
+        if (nextBtn2) nextBtn2.style.display = 'inline-block';
       }
-      return;
+    }
+
+    // Restore partial state (attempt 1 used, not yet completed)
+    if (!isAlreadyComplete && initState.attempts > 0 && !initState.selected) {
+      if (initState.disabledChoices) {
+        initState.disabledChoices.forEach(function(ans) {
+          var opt = kcContainer.querySelector('[data-answer="' + ans + '"]');
+          if (opt) {
+            opt.classList.add('disabled-choice');
+            opt.style.pointerEvents = 'none';
+          }
+        });
+      }
     }
 
     opts.forEach(function(opt) {
       opt.addEventListener('click', function() {
         if (kcContainer.classList.contains('locked')) return;
-        opts.forEach(function(o) { o.classList.remove('selected'); o.setAttribute('aria-checked', 'false'); });
+        if (opt.classList.contains('disabled-choice')) return;
+        opts.forEach(function(o) {
+          if (!o.classList.contains('disabled-choice')) {
+            o.classList.remove('selected');
+          }
+          o.setAttribute('aria-checked', 'false');
+        });
         opt.classList.add('selected');
         opt.setAttribute('aria-checked', 'true');
         selectedAnswer = opt.getAttribute('data-answer');
@@ -402,51 +651,146 @@
     });
 
     if (submitBtn) {
-      submitBtn.addEventListener('click', function() {
+      submitBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
         if (!selectedAnswer || kcContainer.classList.contains('locked')) return;
 
-        // Grade
-        opts.forEach(function(o) { o.classList.remove('selected', 'correct', 'incorrect'); });
-        var chosenOpt = kcContainer.querySelector('[data-answer="' + selectedAnswer + '"]');
+        var state = getState();
+        state.attempts++;
+
         if (selectedAnswer === correctAnswer) {
+          // CORRECT on any attempt
+          opts.forEach(function(o) { o.classList.remove('selected'); });
+          var chosenOpt = kcContainer.querySelector('[data-answer="' + selectedAnswer + '"]');
           chosenOpt.classList.add('correct');
-          if (quizQ) { var cfb = quizQ.querySelector('[data-fb-correct]'); if (cfb) cfb.classList.add('show', 'correct-fb'); }
+
+          kcContainer.classList.add('locked');
+          submitBtn.classList.remove('ready');
+          submitBtn.classList.add('submitted');
+          submitBtn.textContent = 'CORRECT \u2713';
+          submitBtn.disabled = true;
+
+          state.selected = selectedAnswer;
+          saveSubmissions();
+          if (window.recalcQuizScore) window.recalcQuizScore();
+
+          showKcFeedback(kcContainer, selectedAnswer, correctAnswer);
+
+          if (quizQ) {
+            var nextBtn = quizQ.querySelector('[data-quiz-next]');
+            if (nextBtn) nextBtn.style.display = 'inline-block';
+          }
+        } else if (state.attempts < MAX_ATTEMPTS) {
+          // FIRST WRONG: hint, disable wrong option, allow retry
+          var chosenOpt = kcContainer.querySelector('[data-answer="' + selectedAnswer + '"]');
+          chosenOpt.classList.remove('selected');
+          chosenOpt.classList.add('incorrect', 'disabled-choice');
+          chosenOpt.style.pointerEvents = 'none';
+
+          if (!state.disabledChoices) state.disabledChoices = [];
+          state.disabledChoices.push(selectedAnswer);
+          saveSubmissions();
+
+          showAttemptHint(kcContainer, 'Incorrect \u2014 try again. 1 attempt remaining.');
+
+          submitBtn.disabled = true;
+          submitBtn.classList.remove('ready');
+          selectedAnswer = null;
         } else {
+          // SECOND WRONG: lock, reveal, feedback
+          opts.forEach(function(o) { o.classList.remove('selected'); });
+          var chosenOpt = kcContainer.querySelector('[data-answer="' + selectedAnswer + '"]');
           chosenOpt.classList.add('incorrect');
-          opts.forEach(function(o) { if (o.getAttribute('data-answer') === correctAnswer) o.classList.add('correct'); });
-          if (quizQ) { var fb = quizQ.querySelector('[data-fb-wrong]'); if (fb) fb.classList.add('show', 'incorrect-fb'); }
-        }
+          opts.forEach(function(o) {
+            if (o.getAttribute('data-answer') === correctAnswer) o.classList.add('correct');
+          });
 
-        // Lock
-        kcContainer.classList.add('locked');
-        submitBtn.classList.remove('ready');
-        submitBtn.classList.add('submitted');
-        submitBtn.textContent = '\u2713 SUBMITTED';
-        submitBtn.disabled = true;
+          kcContainer.classList.add('locked');
+          submitBtn.classList.remove('ready');
+          submitBtn.classList.add('submitted');
+          submitBtn.textContent = 'SUBMITTED \u2713';
+          submitBtn.disabled = true;
 
-        // Save state
-        window.courseData.submissions[containerKey] = { selected: selectedAnswer };
+          state.selected = selectedAnswer;
+          saveSubmissions();
+          if (window.recalcQuizScore) window.recalcQuizScore();
 
-        // Show next button if present
-        if (quizQ) {
-          var nextBtn = quizQ.querySelector('[data-quiz-next]');
-          if (nextBtn) nextBtn.style.display = 'inline-block';
-        }
+          removeAttemptHint(kcContainer);
+          showKcFeedback(kcContainer, selectedAnswer, correctAnswer);
 
-        // Show feedback panel
-        var kcGrid = kcContainer.closest('.kc-grid');
-        if (kcGrid) {
-          var fbPanel = kcGrid.querySelector('.kc-feedback');
-          if (fbPanel) {
-            fbPanel.classList.remove('hidden');
-            var head = fbPanel.querySelector('.head');
-            if (selectedAnswer === correctAnswer) { if (head) head.style.background = 'var(--chartreuse)'; }
-            else { if (head) head.style.background = 'var(--red)'; }
+          if (quizQ) {
+            var nextBtn = quizQ.querySelector('[data-quiz-next]');
+            if (nextBtn) nextBtn.style.display = 'inline-block';
           }
         }
       });
     }
   });
+
+  /* Show KC feedback panel */
+  function showKcFeedback(kcContainer, selectedAnswer, correctAnswer) {
+    var kcGrid = kcContainer.closest('.kc-grid');
+    if (kcGrid) {
+      var fbPanel = kcGrid.querySelector('.kc-feedback');
+      if (fbPanel) {
+        fbPanel.classList.remove('hidden');
+        fbPanel.style.visibility = 'visible';
+        fbPanel.style.opacity = '1';
+        var head = fbPanel.querySelector('.head');
+        if (selectedAnswer === correctAnswer) {
+          if (head) { head.style.background = 'var(--chartreuse)'; }
+        } else {
+          if (head) { head.style.background = 'var(--red)'; }
+        }
+      }
+    }
+  }
+
+  /* Show attempt hint below options */
+  function showAttemptHint(container, message) {
+    removeAttemptHint(container);
+    var hint = document.createElement('div');
+    hint.className = 'attempt-hint';
+    hint.textContent = message;
+    // Insert after the container
+    container.parentNode.insertBefore(hint, container.nextSibling);
+  }
+
+  function removeAttemptHint(container) {
+    var existing = container.parentNode.querySelector('.attempt-hint');
+    if (existing) existing.remove();
+  }
+
+  /* Save submissions to localStorage */
+  function saveSubmissions() {
+    try {
+      localStorage.setItem('courseSubmissions', JSON.stringify(window.courseData.submissions));
+    } catch(e) {}
+    // Update next button state after any submission change
+    if (window.updateNextButtonState) {
+      var activeSlide = document.querySelector('.slide.active');
+      if (activeSlide) {
+        var slideNum = parseInt(activeSlide.getAttribute('data-slide'));
+        window.updateNextButtonState(slideNum);
+      }
+    }
+  }
+
+  // Load submissions from localStorage on init
+  (function() {
+    try {
+      var saved = localStorage.getItem('courseSubmissions');
+      if (saved) {
+        var parsed = JSON.parse(saved);
+        // Merge with existing
+        for (var key in parsed) {
+          if (!window.courseData.submissions[key] || !window.courseData.submissions[key].selected) {
+            window.courseData.submissions[key] = parsed[key];
+          }
+        }
+      }
+    } catch(e) {}
+  })();
 
   /* ── Quiz navigation (KC1 multi-question) ── */
   document.querySelectorAll('[data-quiz-next]').forEach(function(btn) {
@@ -484,8 +828,46 @@
         input.style.color = '#888';
         input.style.fontStyle = 'italic';
       }
+      // Update next button after typing in reflection/MAP
+      if (window.updateNextButtonState) {
+        var activeSlide = document.querySelector('.slide.active');
+        if (activeSlide) window.updateNextButtonState(parseInt(activeSlide.getAttribute('data-slide')));
+      }
+    });
+    input.addEventListener('input', function() {
+      if (window.updateNextButtonState) {
+        var activeSlide = document.querySelector('.slide.active');
+        if (activeSlide) window.updateNextButtonState(parseInt(activeSlide.getAttribute('data-slide')));
+      }
     });
   });
+
+  /* ── Submit Reflection button (slide 17) ── */
+  var reflectBtn = document.getElementById('submitReflectionBtn');
+  if (reflectBtn) {
+    reflectBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var slide17 = document.querySelector('[data-slide="17"]');
+      var input = slide17 ? slide17.querySelector('.input[contenteditable]') : null;
+      var text = input ? input.textContent.trim() : '';
+      if (!text || text === 'Type your reflection here...') {
+        showWarningToast('Please type your reflection before submitting.');
+        return;
+      }
+      // Save reflection to localStorage
+      try {
+        localStorage.setItem('guide01_reflection', text);
+      } catch(ex) {}
+      // Visual confirmation
+      reflectBtn.textContent = 'SUBMITTED ✓';
+      reflectBtn.style.background = 'var(--chartreuse)';
+      reflectBtn.style.pointerEvents = 'none';
+      // Update next button state
+      if (window.updateNextButtonState) window.updateNextButtonState(17);
+      // Advance to next slide after a brief pause
+      setTimeout(function() { goSlide(18); }, 800);
+    });
+  }
 
   /* ── Start button on slide 1 ── */
   document.querySelectorAll('.start-bar .cta').forEach(function(btn) {
@@ -494,7 +876,10 @@
     });
   });
 
-  /* ── Side Menu Navigation ── */
+  /* ══════════════════════════════════════════════════════════════
+     TASK 5: Side Menu Navigation with linear progression lock
+     ══════════════════════════════════════════════════════════════ */
+
   var menuSlides = [
     {n:1, name:'Welcome', screen:'1.1'},
     {n:2, name:'Learning Objectives', screen:'1.2'},
@@ -526,11 +911,26 @@
     if(!list) return;
     list.innerHTML = '';
     menuSlides.forEach(function(s){
+      var unlocked = isSlideUnlocked(s.n);
+      var visited = window.courseData.visitedSlides.indexOf(s.n) !== -1;
+      var isCurrent = s.n === current;
+
       var btn = document.createElement('button');
-      btn.className = 'sm-item' + (s.n === current ? ' active' : '');
+      btn.className = 'sm-item';
+      if (isCurrent) btn.classList.add('active');
+      if (!unlocked) btn.classList.add('locked');
+      if (visited && !isCurrent) btn.classList.add('visited');
       btn.setAttribute('data-menu-slide', s.n);
-      btn.innerHTML = '<span class="sm-num">' + s.n + '</span><span class="sm-name">' + s.name + '</span><span class="sm-status">' + s.screen + '</span>';
-      btn.onclick = function(){ goSlide(s.n); closeMenu(); };
+
+      var lockIcon = !unlocked ? '<span class="sm-lock" aria-hidden="true">&#x1F512;</span>' : '';
+      btn.innerHTML = '<span class="sm-num">' + s.n + '</span><span class="sm-name">' + s.name + '</span>' + lockIcon + '<span class="sm-status">' + s.screen + '</span>';
+
+      if (unlocked) {
+        btn.onclick = function(){ goSlide(s.n); closeMenu(); };
+      } else {
+        btn.onclick = function(e){ e.preventDefault(); };
+        btn.setAttribute('aria-disabled', 'true');
+      }
       list.appendChild(btn);
     });
   }
@@ -538,7 +938,6 @@
   function openMenu(){
     document.body.classList.add('nav-open');
     buildMenu();
-    // Focus the close button when menu opens
     setTimeout(function() {
       var closeBtn = document.querySelector('.sm-close');
       if (closeBtn) closeBtn.focus();
@@ -557,7 +956,6 @@
   }
   window.announceToSR = announceToSR;
 
-  /* ── Get slide name from menuSlides array ── */
   function getSlideName(n) {
     for (var i = 0; i < menuSlides.length; i++) {
       if (menuSlides[i].n === n) return menuSlides[i].name;
@@ -568,24 +966,33 @@
   // Update menu active state when slide changes
   var origGoSlide = window.goSlide;
   window.goSlide = function(n){
+    var prevCurrent = current;
+
+    // Show warning if trying to advance on an incomplete interactive slide
+    if (n > prevCurrent && interactiveSlides[prevCurrent] && !isSlideInteractionComplete(prevCurrent)) {
+      showWarningToast('Please complete the activity on this slide before continuing.');
+    }
+
     origGoSlide(n);
-    current = n;
+    // Check if slide actually changed (inner goSlide may have blocked)
+    var activeEl = document.querySelector('.slide.active');
+    var actualN = activeEl ? parseInt(activeEl.getAttribute('data-slide')) : prevCurrent;
+    if (actualN === prevCurrent && n !== prevCurrent) return; // blocked
+    current = actualN;
+    n = actualN;
     var items = document.querySelectorAll('.sm-item');
     items.forEach(function(el){
       var sn = parseInt(el.getAttribute('data-menu-slide'));
       el.classList.toggle('active', sn === n);
     });
-    // Update progress bar
     var fill = document.querySelector('.sm-progress-fill');
     if(fill) fill.style.width = Math.round((n/total)*100) + '%';
     var txt = document.querySelector('.sm-progress-text');
     if(txt) txt.textContent = n + ' / ' + total;
 
-    // Announce slide change to screen readers
     var name = getSlideName(n);
     announceToSR('Slide ' + n + ' of ' + total + ': ' + name);
 
-    // Move focus to the active slide for focus trapping
     var activeSlide = document.querySelector('.slide.active');
     if (activeSlide) {
       activeSlide.setAttribute('tabindex', '-1');
@@ -593,11 +1000,12 @@
     }
   };
 
+  /* Exit button removed from footer — results page has EXIT in button row */
+
   /* ── Focus trapping within active slide ── */
   document.addEventListener('keydown', function(e) {
     if (e.key !== 'Tab') return;
     if (document.body.classList.contains('nav-open')) {
-      // Trap focus within side menu
       var menu = document.querySelector('.side-menu');
       if (!menu) return;
       var focusable = menu.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
@@ -611,13 +1019,11 @@
       }
       return;
     }
-    // Trap focus within active slide + VO controls
     var activeSlide = document.querySelector('.slide.active');
     if (!activeSlide) return;
     var slideFocusable = Array.prototype.slice.call(
       activeSlide.querySelectorAll('button:not([disabled]), [href], input, select, textarea, [contenteditable="true"], [tabindex]:not([tabindex="-1"]), .option, .kc-opt, .tab-btn, .acc-header, .step, .myth-card, .g-card, .risk-card')
     );
-    // Include VO controls
     var voControls = document.getElementById('voControls');
     if (voControls && !voControls.classList.contains('hidden')) {
       var voFocusable = voControls.querySelectorAll('button:not([disabled]), input');
@@ -639,12 +1045,95 @@
     }
   });
 
+  /* ── Reset Quiz UI (called from course-tracker.js retryQuiz) ── */
+  window.resetQuizUI = function() {
+    // Reset all scenario containers
+    document.querySelectorAll('.options[data-correct]').forEach(function(optionsContainer) {
+      var overlayId = optionsContainer.getAttribute('data-overlay');
+      var correctAnswer = optionsContainer.getAttribute('data-correct');
+      var containerKey = overlayId || correctAnswer + '-' + Array.prototype.indexOf.call(document.querySelectorAll('.options[data-correct]'), optionsContainer);
+
+      // Remove disabled-choice class and restore pointer-events on ALL options
+      var opts = optionsContainer.querySelectorAll('.option');
+      opts.forEach(function(o) {
+        o.classList.remove('disabled-choice', 'correct', 'incorrect', 'sel', 'selected', 'submitted');
+        o.style.pointerEvents = '';
+        o.setAttribute('aria-checked', 'false');
+      });
+
+      // Remove attempt hints
+      var hint = optionsContainer.parentNode.querySelector('.attempt-hint');
+      if (hint) hint.remove();
+
+      // Remove locked state
+      optionsContainer.classList.remove('locked');
+
+      // Reset submit button
+      var submitBtn = optionsContainer.parentElement.querySelector('.submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('ready', 'submitted');
+        submitBtn.textContent = 'CONFIRM CHOICE';
+      }
+
+      // Re-initialize the submission state so closures pick up the new object
+      window.courseData.submissions[containerKey] = { attempts: 0, disabledChoices: [] };
+    });
+
+    // Reset all KC containers
+    document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kcContainer) {
+      var qnum = kcContainer.getAttribute('data-qnum');
+      var containerKey = 'kc-' + qnum;
+
+      // Remove disabled-choice class and restore pointer-events on ALL options
+      var opts = kcContainer.querySelectorAll('.kc-opt');
+      opts.forEach(function(o) {
+        o.classList.remove('disabled-choice', 'correct', 'incorrect', 'selected', 'submitted');
+        o.style.pointerEvents = '';
+        o.setAttribute('aria-checked', 'false');
+      });
+
+      // Remove attempt hints
+      var hint = kcContainer.parentNode.querySelector('.attempt-hint');
+      if (hint) hint.remove();
+
+      // Remove locked state
+      kcContainer.classList.remove('locked');
+
+      // Reset submit button
+      var submitBtn = kcContainer.parentElement.querySelector('.submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('ready', 'submitted');
+        submitBtn.textContent = 'SUBMIT ANSWER';
+      }
+
+      // Hide feedback panels
+      var kcGrid = kcContainer.closest('.kc-grid');
+      if (kcGrid) {
+        var fbPanel = kcGrid.querySelector('.kc-feedback');
+        if (fbPanel) {
+          fbPanel.classList.add('hidden');
+          fbPanel.style.visibility = '';
+          fbPanel.style.opacity = '';
+        }
+      }
+
+      // Re-initialize the submission state so closures pick up the new object
+      window.courseData.submissions[containerKey] = { attempts: 0, disabledChoices: [] };
+    });
+
+    // Hide all scenario feedback overlays
+    document.querySelectorAll('.feedback-overlay').forEach(function(fb) {
+      fb.classList.remove('show');
+    });
+  };
+
   /* ── Enter/Space on interactive elements ── */
   document.addEventListener('keydown', function(e) {
     if (e.key !== 'Enter' && e.key !== ' ') return;
     var el = e.target;
     if (!el) return;
-    // Clickable elements that aren't native buttons
     if (el.classList.contains('option') || el.classList.contains('kc-opt') ||
         el.classList.contains('myth-card') || el.classList.contains('g-card') ||
         el.classList.contains('risk-card') || el.classList.contains('step') ||

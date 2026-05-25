@@ -374,10 +374,31 @@
   // Hook into goSlide
   var _prevGoSlide = window.goSlide;
   window.goSlide = function(n){
+    var beforeSlide = document.querySelector('.slide.active');
+    var beforeN = beforeSlide ? parseInt(beforeSlide.getAttribute('data-slide')) : 0;
     _prevGoSlide(n);
-    playSlideVO(n);
+    // Only play VO if slide actually changed
+    var afterSlide = document.querySelector('.slide.active');
+    var afterN = afterSlide ? parseInt(afterSlide.getAttribute('data-slide')) : beforeN;
+    if (afterN !== beforeN) playSlideVO(afterN);
   };
 
-  // Play VO for initial slide
-  setTimeout(function(){ playSlideVO(1); }, 500);
+  // Play VO after welcome dialog is dismissed (not on page load)
+  // The welcome dialog click counts as user interaction, so autoplay works
+  var voStarted = false;
+  function startVOAfterWelcome() {
+    if (voStarted) return;
+    voStarted = true;
+    var activeSlide = document.querySelector('.slide.active');
+    var slideNum = activeSlide ? parseInt(activeSlide.getAttribute('data-slide')) : 1;
+    setTimeout(function(){ playSlideVO(slideNum); }, 300);
+  }
+  var welcomeStart = document.getElementById('welcomeStartBtn');
+  var welcomeResume = document.getElementById('welcomeResumeBtn2') || document.getElementById('welcomeResumeBtn');
+  var welcomeStartOver = document.getElementById('welcomeStartOverBtn');
+  if (welcomeStart) welcomeStart.addEventListener('click', startVOAfterWelcome);
+  if (welcomeResume) welcomeResume.addEventListener('click', startVOAfterWelcome);
+  if (welcomeStartOver) welcomeStartOver.addEventListener('click', startVOAfterWelcome);
+  // Fallback if no welcome dialog
+  if (!welcomeStart) setTimeout(function(){ playSlideVO(1); }, 500);
 })();

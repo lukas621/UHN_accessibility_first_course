@@ -1,9 +1,7 @@
 /* ══════════════════════════════════════════════════════════════
    Welcome Dialog
-   - Shows on every page load — user must enter name + role
-   - Saves to localStorage (guide01_user)
-   - Shows resume option if returning user
-   - Blocks keyboard nav until dismissed
+   - First visit: name/role fields + BEGIN GUIDE
+   - Returning visit: skip name entry, show RESUME + START OVER
    ══════════════════════════════════════════════════════════════ */
 (function() {
   'use strict';
@@ -13,37 +11,121 @@
   var nameInput = document.getElementById('welcomeName');
   var roleInput = document.getElementById('welcomeRole');
   var startBtn = document.getElementById('welcomeStartBtn');
-  var resumeRow = document.getElementById('welcomeResumeRow');
   var resumeBtn = document.getElementById('welcomeResumeBtn');
 
   if (!overlay || !nameInput || !roleInput || !startBtn) return;
 
-  // Flag to block keyboard nav while dialog is open
   window.welcomeDialogOpen = true;
 
   // Check for returning user
   var savedUser = null;
+  var savedSlide = null;
   try {
     var raw = localStorage.getItem(STORAGE_KEY);
     if (raw) savedUser = JSON.parse(raw);
   } catch (e) {}
 
-  if (savedUser && savedUser.name) {
-    nameInput.value = savedUser.name;
-    roleInput.value = savedUser.role || '';
-
-    // Check if there's a saved slide to resume
+  try {
     var progressRaw = localStorage.getItem('guide01_progress');
     if (progressRaw) {
-      try {
-        var progress = JSON.parse(progressRaw);
-        if (progress.currentSlide && progress.currentSlide > 1) {
-          resumeRow.style.display = '';
-          resumeBtn.textContent = 'RESUME — SLIDE ' + progress.currentSlide;
-        }
-      } catch (e) {}
+      var progress = JSON.parse(progressRaw);
+      if (progress.currentSlide && progress.currentSlide > 1) {
+        savedSlide = progress.currentSlide;
+      }
+    }
+  } catch (e) {}
+
+  function saveUser() {
+    var userData = {
+      name: nameInput.value.trim(),
+      role: roleInput.value.trim(),
+      lastVisit: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+    } catch (e) {}
+    window.learnerName = userData.name;
+    window.learnerRole = userData.role;
+  }
+
+  function dismissDialog() {
+    overlay.classList.add('hidden');
+    window.welcomeDialogOpen = false;
+    var certName = document.querySelector('.cert-learner-name');
+    if (certName && window.learnerName) {
+      certName.value = window.learnerName;
     }
   }
+
+  function resetProgress() {
+    localStorage.removeItem('guide01_progress');
+    localStorage.removeItem('courseVisitedSlides');
+    localStorage.removeItem('courseSubmissions');
+    localStorage.removeItem('guide01_map_responses');
+    if (window.courseData) {
+      window.courseData.visitedSlides = [1];
+      window.courseData.submissions = {};
+      window.courseData.quizScore = 0;
+      window.courseData.quizPassed = false;
+      window.courseData.mapCompleted = false;
+      window.courseData.courseCompleted = false;
+      window.courseData.completionDate = null;
+      window.courseData.timeSpent = 0;
+      window.courseData.currentSlide = 1;
+    }
+  }
+
+  function restoreState() {
+    try {
+      var visitedRaw = localStorage.getItem('courseVisitedSlides');
+      if (visitedRaw && window.courseData) {
+        window.courseData.visitedSlides = JSON.parse(visitedRaw);
+      }
+    } catch (e) {}
+    try {
+      var subsRaw = localStorage.getItem('courseSubmissions');
+      if (subsRaw && window.courseData) {
+        window.courseData.submissions = JSON.parse(subsRaw);
+      }
+    } catch (e) {}
+  }
+
+  // ── RETURNING USER: skip name entry, show resume/start over ──
+  if (savedUser && savedUser.name && savedSlide) {
+    window.learnerName = savedUser.name;
+    window.learnerRole = savedUser.role || '';
+
+    // Replace the entire dialog content
+    var card = overlay.querySelector('.welcome-card');
+    card.innerHTML =
+      '<img class="welcome-logo" src="assets/uhn-logo-dark.png" alt="UHN">' +
+      '<div class="welcome-eyebrow">ACCESSIBILITY FIRST SERIES</div>' +
+      '<h2>Welcome back, <span class="accent">' + savedUser.name + '</span></h2>' +
+      '<p class="welcome-sub">Guide 01: Foundations of Disability, Inclusion &amp; Accessible Design</p>' +
+      '<div style="display:flex; flex-direction:column; gap:12px; margin-top:24px;">' +
+        '<button id="welcomeResumeBtn2" class="welcome-resume-btn">RESUME \u2014 SLIDE ' + savedSlide + '</button>' +
+        '<button id="welcomeStartOverBtn" class="welcome-start-btn" style="background:transparent; color:var(--navy,#192858); border:2px solid var(--navy,#192858);">START OVER</button>' +
+      '</div>';
+
+    // Wire resume
+    document.getElementById('welcomeResumeBtn2').addEventListener('click', function() {
+      restoreState();
+      dismissDialog();
+      if (window.goSlide) window.goSlide(savedSlide);
+    });
+
+    // Wire start over — full reset and reload
+    document.getElementById('welcomeStartOverBtn').addEventListener('click', function() {
+      resetProgress();
+      window.location.reload();
+    });
+
+    return;
+  }
+
+  // ── FIRST-TIME USER: show name/role fields + BEGIN ──
+  // Hide resume button (not needed for first visit)
+  if (resumeBtn) resumeBtn.style.display = 'none';
 
   function validate() {
     var valid = true;
@@ -62,60 +144,13 @@
     return valid;
   }
 
-  function saveUser() {
-    var userData = {
-      name: nameInput.value.trim(),
-      role: roleInput.value.trim(),
-      lastVisit: new Date().toISOString()
-    };
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
-    } catch (e) {}
-
-    // Make user info available globally (for certificate, MAP template, etc.)
-    window.learnerName = userData.name;
-    window.learnerRole = userData.role;
-  }
-
-  function dismissDialog() {
-    overlay.classList.add('hidden');
-    window.welcomeDialogOpen = false;
-
-    // Pre-fill certificate name if it exists
-    var certName = document.querySelector('.cert-learner-name');
-    if (certName && window.learnerName) {
-      certName.value = window.learnerName;
-    }
-  }
-
-  // Start button
   startBtn.addEventListener('click', function() {
     if (!validate()) return;
     saveUser();
     dismissDialog();
   });
 
-  // Resume button
-  if (resumeBtn) {
-    resumeBtn.addEventListener('click', function() {
-      if (!validate()) return;
-      saveUser();
-      dismissDialog();
-
-      // Navigate to saved slide
-      var progressRaw = localStorage.getItem('guide01_progress');
-      if (progressRaw) {
-        try {
-          var progress = JSON.parse(progressRaw);
-          if (progress.currentSlide && window.goSlide) {
-            window.goSlide(progress.currentSlide);
-          }
-        } catch (e) {}
-      }
-    });
-  }
-
-  // Enter key submits
+  // Enter key
   nameInput.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') { e.preventDefault(); roleInput.focus(); }
   });
@@ -123,11 +158,9 @@
     if (e.key === 'Enter') { e.preventDefault(); startBtn.click(); }
   });
 
-  // Clear error on input
   nameInput.addEventListener('input', function() { nameInput.classList.remove('error'); });
   roleInput.addEventListener('input', function() { roleInput.classList.remove('error'); });
 
-  // Focus name input on load
   setTimeout(function() { nameInput.focus(); }, 100);
 
 })();
