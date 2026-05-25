@@ -1,0 +1,91 @@
+1
+00:00:00,000 --> 00:00:04,799
+When you encounter a situation involving accessibility, what do you actually do?
+
+2
+00:00:04,799 --> 00:00:08,399
+That is where the Accessibility Decision Path comes in.
+
+3
+00:00:08,399 --> 00:00:12,799
+This is a five-step framework you can use in any moment.
+
+4
+00:00:12,799 --> 00:00:14,399
+Step one is Pause.
+
+5
+00:00:14,399 --> 00:00:18,799
+Before you act, take a breath and notice what is happening.
+
+6
+00:00:18,799 --> 00:00:20,399
+Are you making assumptions?
+
+7
+00:00:20,399 --> 00:00:23,599
+Is there a barrier you had not considered?
+
+8
+00:00:23,599 --> 00:00:25,199
+Step two is Listen.
+
+9
+00:00:25,199 --> 00:00:28,000
+Hear the person in front of you.
+
+10
+00:00:28,000 --> 00:00:31,199
+Ask how they would like to be supported.
+
+11
+00:00:31,199 --> 00:00:34,399
+Do not assume you know what someone needs.
+
+12
+00:00:34,399 --> 00:00:36,000
+Step three is Apply.
+
+13
+00:00:36,000 --> 00:00:43,600
+Use what you have learned — from this series, from your training, from your experience — to respond appropriately.
+
+14
+00:00:43,600 --> 00:00:45,200
+Step four is Adapt.
+
+15
+00:00:45,200 --> 00:00:48,400
+If your first approach does not work, adjust.
+
+16
+00:00:48,400 --> 00:00:51,200
+Flexibility is not a sign of failure.
+
+17
+00:00:51,200 --> 00:00:53,600
+It is a sign of competence.
+
+18
+00:00:53,600 --> 00:00:56,000
+And step five is Seek Support.
+
+19
+00:00:56,000 --> 00:00:58,799
+If you are unsure, ask for help.
+
+20
+00:00:58,799 --> 00:01:04,799
+Contact your manager, reach out to Patient Relations, or consult with accessibility resources at UHN.
+
+21
+00:01:04,799 --> 00:01:08,399
+You do not have to have all the answers.
+
+22
+00:01:08,399 --> 00:01:15,199
+These five steps — Pause, Listen, Apply, Adapt, Seek Support — will come back in every guide.
+
+23
+00:01:15,199 --> 00:01:16,799
+They are your anchor.

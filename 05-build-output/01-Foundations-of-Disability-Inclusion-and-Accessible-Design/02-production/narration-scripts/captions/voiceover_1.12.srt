@@ -1,0 +1,51 @@
+1
+00:00:00,000 --> 00:00:02,399
+Take a moment now to reflect.
+
+2
+00:00:02,399 --> 00:00:08,800
+Think about a recent interaction at work — with a patient, a colleague, or a visitor.
+
+3
+00:00:08,800 --> 00:00:13,200
+Was there a moment where accessibility could have been handled differently?
+
+4
+00:00:13,200 --> 00:00:16,000
+Not necessarily a failure, but an opportunity.
+
+5
+00:00:16,000 --> 00:00:22,000
+On screen, you will see a text box where you can write a brief reflection.
+
+6
+00:00:22,000 --> 00:00:30,000
+You might consider questions like: What barriers have I noticed in my workspace that I had not thought about before?
+
+7
+00:00:30,000 --> 00:00:35,600
+When was the last time I asked someone how they preferred to receive information?
+
+8
+00:00:35,600 --> 00:00:39,200
+What is one thing I could change this week?
+
+9
+00:00:39,200 --> 00:00:40,800
+Your reflection is private.
+
+10
+00:00:40,800 --> 00:00:44,800
+It is not shared with your manager or anyone else.
+
+11
+00:00:44,800 --> 00:00:47,200
+This is for your own learning.
+
+12
+00:00:47,200 --> 00:00:50,000
+Take as much time as you need.
+
+13
+00:00:50,000 --> 00:00:54,399
+When you are ready, move on to the action planning screen.

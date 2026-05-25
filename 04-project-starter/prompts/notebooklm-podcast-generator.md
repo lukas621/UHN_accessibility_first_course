@@ -87,6 +87,6 @@ Write a single Markdown document with these sections (but written as flowing nar
 ## File Output
 
 Save as: `PODCAST-SOURCE-GUIDE-{{guide_number}}.md`
-Location: `05-build-output/{{guide_folder}}/08-notebooklm-podcast/`
+Location: `05-build-output/{{guide_folder}}/02-production/podcast/`
 
 The document should be 2,000-3,000 words to produce a 10-15 minute NotebookLM podcast.
