@@ -1,6 +1,6 @@
 # SCORM Package Wrapper — Design Spec
 
-**Last updated:** 2026-05-25 (v4)
+**Last updated:** 2026-05-25 (v5)
 
 ## Purpose
 
@@ -50,6 +50,14 @@ Edit `04-course/current/imsmanifest.xml`:
 ```
 Increment the major version number each release (v3 → v4 → v5). This forces the LMS to treat it as a new package instead of using cached content.
 
+Also update item and resource identifiers to trigger SumTotal's "Manifest Change" dialog:
+```xml
+<item identifier="UHN_AF_G01_ITEM_V{VERSION}" identifierref="UHN_AF_G01_RES_V{VERSION}">
+...
+<resource identifier="UHN_AF_G01_RES_V{VERSION}">
+```
+**This is required for SumTotal** — without a structure change, it silently replaces content with no reset prompt. Changing the identifiers triggers the "Replace the Structure" dialog, which then offers Re-Register to reset learner progress.
+
 ### 2. Create zip
 
 ```bash
@@ -76,8 +84,11 @@ unzip -l v{VERSION}.zip | tail -1
 ## LMS Upload (UHN MyLearning)
 
 - **Cannot delete + re-upload** — must overwrite/replace the existing package
+- **SumTotal requires structure change to trigger reset** — changing `item` and `resource` identifiers (appending `_V{VERSION}`) triggers the "Manifest Change" dialog with two options:
+  - **Keep the Structure** — replaces content only, no learner reset
+  - **Replace the Structure** → then asks **Re-Register** (reset progress) or **Keep In-Progress**
+  - Always choose **Replace the Structure → Re-Register** for major updates
 - After uploading, **clear browser cache** (Cmd+Shift+R) or use incognito to verify
-- If LMS still shows old version, the manifest version bump should force a refresh
 
 ## imsmanifest.xml Template
 
@@ -98,8 +109,8 @@ unzip -l v{VERSION}.zip | tail -1
   <organizations default="UHN_AF_G{NN}_ORG">
     <organization identifier="UHN_AF_G{NN}_ORG">
       <title>{course_title}</title>
-      <item identifier="UHN_AF_G{NN}_ITEM"
-            identifierref="UHN_AF_G{NN}_RES"
+      <item identifier="UHN_AF_G{NN}_ITEM_V{VERSION}"
+            identifierref="UHN_AF_G{NN}_RES_V{VERSION}"
             isvisible="true">
         <title>{course_title}</title>
         <adlcp:masteryscore>80</adlcp:masteryscore>
@@ -107,7 +118,7 @@ unzip -l v{VERSION}.zip | tail -1
     </organization>
   </organizations>
   <resources>
-    <resource identifier="UHN_AF_G{NN}_RES"
+    <resource identifier="UHN_AF_G{NN}_RES_V{VERSION}"
               type="webcontent"
               adlcp:scormtype="sco"
               href="index.html">
@@ -161,6 +172,7 @@ Shared state lives in `window.courseData`. All JS files are IIFEs — no global 
 |---------|------|-------|
 | v3.0 | 2026-05-25 | Initial SCORM package with all features |
 | v4.0 | 2026-05-25 | Manifest version bump to force LMS cache refresh |
+| v5.0 | 2026-05-25 | Changed item/resource identifiers to trigger SumTotal structure change dialog |
 
 ## Success Criteria
 
