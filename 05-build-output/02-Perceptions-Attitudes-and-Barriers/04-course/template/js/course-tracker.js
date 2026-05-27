@@ -324,11 +324,13 @@
       if (isComplete) {
         statusEl.style.borderLeftColor = 'var(--chartreuse)';
         statusEl.style.background = 'var(--chartreuse-bg)';
-        msgEl.innerHTML = "You've completed Guide 01. You've earned the <b>Accessibility First: Foundations</b> badge.<br><span style='font-size:18px; font-weight:normal; color:#444;'>Knowledge Check: " + d.quizScore + "/" + d.quizTotal + " correct</span>";
+        msgEl.innerHTML = "You've completed Guide 01. You've earned the <b>Accessibility First: Foundations</b> badge.";
       } else {
         statusEl.style.borderLeftColor = 'var(--red)';
         statusEl.style.background = 'var(--red-bg)';
-        msgEl.innerHTML = "Course incomplete.<br><span style='font-size:18px; font-weight:normal;'>Knowledge Check: " + d.quizScore + "/" + d.quizTotal + " correct (need " + PASS_THRESHOLD + "/" + d.quizTotal + " to pass)</span>";
+        var remaining = [];
+        if (!quizOk) remaining.push('Pass the quiz (' + d.quizScore + '/' + d.quizTotal + ')');
+        msgEl.innerHTML = 'Course incomplete. ' + remaining.join(', ');
       }
     }
 
@@ -391,21 +393,6 @@
       });
     }
 
-    // RESTART COURSE — clears all progress and reloads
-    var restartBtn = document.getElementById('restartCourseBtn');
-    if (restartBtn) {
-      restartBtn.addEventListener('click', function() {
-        localStorage.removeItem('guide01_progress');
-        localStorage.removeItem('courseVisitedSlides');
-        localStorage.removeItem('courseSubmissions');
-        localStorage.removeItem('guide01_map_responses');
-        localStorage.removeItem('guide01_reflection');
-        localStorage.removeItem('guide01_user');
-        if (window.SCORM && window.SCORM.syncToLMS) window.SCORM.syncToLMS();
-        window.location.reload();
-      });
-    }
-
     // MAP save button (on slide 18) — wire immediately since it's in static HTML
     var mapSaveBtn = document.querySelector('.map-save-btn');
     if (mapSaveBtn) {
@@ -436,49 +423,48 @@
 
   // ── Retry Quiz ──
   function retryQuiz() {
-    // Reset KC answers only — scenarios are non-graded, leave them intact
+    // Reset quiz answers in tracker
     quizAnswers = {};
     window.courseData.quizScore = 0;
     window.courseData.quizPassed = false;
+
+    // If course was completed but we're retrying, reset completion
+    // (they might score lower this time)
     window.courseData.courseCompleted = false;
     window.courseData.completionDate = null;
 
-    // Delete only KC submission keys, keep scenario keys
-    var subs = window.courseData.submissions || {};
-    for (var key in subs) {
-      if (key.indexOf('kc-') === 0) delete subs[key];
+    // Call the navigation.js reset function which:
+    // - Removes disabled-choice class and restores pointer-events on ALL options
+    // - Removes attempt-hint elements
+    // - Re-initializes submission state objects so closures pick up fresh state
+    // - Resets locked state, submit buttons, and feedback panels/overlays
+    if (window.resetQuizUI) {
+      window.resetQuizUI();
     }
-
-    // Reset KC UI only (not scenarios)
-    document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kc) {
-      kc.classList.remove('locked');
-      var qnum = kc.getAttribute('data-qnum');
-      window.courseData.submissions['kc-' + qnum] = { attempts: 0, disabledChoices: [] };
-      kc.querySelectorAll('.kc-opt').forEach(function(o) {
-        o.classList.remove('correct', 'incorrect', 'selected', 'submitted', 'disabled-choice');
-        o.setAttribute('aria-checked', 'false');
-        o.style.pointerEvents = '';
-        o.style.opacity = '';
-      });
-      var btn = kc.parentElement.querySelector('.submit-btn');
-      if (btn) { btn.disabled = true; btn.classList.remove('ready', 'submitted'); btn.textContent = 'SUBMIT ANSWER'; }
-    });
-
-    // Hide KC feedback panels
-    document.querySelectorAll('.kc-feedback').forEach(function(fb) { fb.classList.add('hidden'); fb.style.visibility = ''; fb.style.opacity = ''; });
-    document.querySelectorAll('.kc-options .attempt-hint').forEach(function(h) { h.remove(); });
-
-    // Reset quiz-q navigation
-    document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
-    document.querySelectorAll('.quiz-q[data-q="1"]').forEach(function(q) { q.classList.add('active'); });
-    document.querySelectorAll('[data-quiz-next]').forEach(function(btn) { btn.style.display = 'none'; });
-    document.querySelectorAll('[data-fb-correct]').forEach(function(el) { el.classList.remove('show', 'correct-fb'); });
-    document.querySelectorAll('[data-fb-wrong]').forEach(function(el) { el.classList.remove('show', 'incorrect-fb'); });
 
     saveProgress();
 
-    // Navigate to first KC (slide 13), not first scenario
-    window.goSlide(13);
+    // Reset quiz-q to first question
+    document.querySelectorAll('.quiz-q').forEach(function(q) {
+      q.classList.remove('active');
+    });
+    document.querySelectorAll('.quiz-q[data-q="1"]').forEach(function(q) {
+      q.classList.add('active');
+    });
+    // Hide quiz next buttons
+    document.querySelectorAll('[data-quiz-next]').forEach(function(btn) {
+      btn.style.display = 'none';
+    });
+    // Also reset correct/incorrect feedback in quiz-q
+    document.querySelectorAll('[data-fb-correct]').forEach(function(el) {
+      el.classList.remove('show', 'correct-fb');
+    });
+    document.querySelectorAll('[data-fb-wrong]').forEach(function(el) {
+      el.classList.remove('show', 'incorrect-fb');
+    });
+
+    // Navigate to slide 10 (first scenario)
+    window.goSlide(10);
   }
 
   // ── MAP Download ──

@@ -97,6 +97,10 @@ For each scenario, generate:
 }
 ```
 
+## Flexible Scenario Count
+
+Number of scenarios varies per guide (2-4). Not every guide needs 4 scenarios + a decision tree. Evaluate the topic — some guides benefit from fewer scenarios with more depth.
+
 ## Scenario Quality Rules
 
 1. Scenarios must reflect real situations UHN employees encounter

@@ -89,6 +89,10 @@ For each screen requiring an image, generate:
 }
 ```
 
+## Flexible Slide Count
+
+Not all guides have the same number of slides. The number of images needed varies per guide (typically 8-16). Podcast slide (if present) does not need an image. Knowledge check slides do not need images. Impact screens (2-4 per guide) each need one image.
+
 ## Screen Types That Need Images
 
 1. **Welcome/Hero** — full-width inclusive healthcare photo

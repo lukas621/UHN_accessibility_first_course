@@ -137,6 +137,10 @@ Create these specific files:
 | sme-review/ | sme-review.md | SME review status, questions, and feedback log |
 | video-production/ | video-production.md | Video asset plans (if applicable) |
 
+### Note on Slide Count
+
+When replicating for a new guide, do NOT assume 23 slides. Check the storyboard-architect output first to determine the actual slide count, then create only the needed media asset placeholders.
+
 ### Step 6: Create progress tracking file
 
 In `02-production/progress-tracking/progress-tracking.md`, include a production checklist:

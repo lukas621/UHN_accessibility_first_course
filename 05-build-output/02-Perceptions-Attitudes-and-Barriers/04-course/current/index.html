@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>Accessibility First Series — Guide 02: Perceptions, Attitudes, and Barriers</title>
+<link rel="stylesheet" href="css/course.css">
+</head>
+<body>
+<!-- ═══════ WELCOME DIALOG ═══════ -->
+<div class="welcome-overlay" id="welcomeOverlay" role="dialog" aria-modal="true" aria-label="Welcome — enter your name to begin">
+  <div class="welcome-card">
+    <img class="welcome-logo" src="assets/uhn-logo-dark.png" alt="UHN — Canada's Hospital">
+    <div class="welcome-eyebrow">ACCESSIBILITY FIRST SERIES</div>
+    <h2>Guide 02: <span class="accent">Perceptions &amp; Attitudes</span></h2>
+    <p class="welcome-sub">Perceptions, Attitudes, and Barriers</p>
+    <div class="welcome-fields">
+      <div class="welcome-field">
+        <label for="welcomeName">Your Name</label>
+        <input type="text" id="welcomeName" placeholder="Enter your full name" autocomplete="name">
+        <span class="error-msg">Please enter your name</span>
+      </div>
+      <div class="welcome-field">
+        <label for="welcomeRole">Your Role</label>
+        <input type="text" id="welcomeRole" placeholder="e.g. Nurse, Clerk, Physician, Manager" autocomplete="organization-title">
+        <span class="error-msg">Please enter your role</span>
+      </div>
+    </div>
+    <div class="welcome-buttons" id="welcomeButtons">
+      <button class="welcome-start-btn" id="welcomeStartBtn">BEGIN GUIDE</button>
+      <button class="welcome-resume-btn" id="welcomeResumeBtn" style="display:none;">RESUME — SLIDE 2</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SLIDE 1: 2.1 Welcome and Course Purpose ═══════ -->
+<section class="slide s-title active" data-slide="1">
+  <div class="left">
+    <div class="brandline">
+      <img class="logo" src="assets/uhn-logo.png" alt="UHN Canada's Hospital">
+      <span>ACCESSIBILITY FIRST SERIES</span>
+    </div>
+    <div>
+      <div class="guide-num" style="margin-bottom:32px;">GUIDE 02 OF 18 · PERCEPTIONS &amp; ATTITUDES</div>
+      <h1 style="margin-bottom:28px;">
+        Perceptions, Attitudes, and <span style="color:var(--lilac)">Barriers</span>
+      </h1>
+      <div class="sub">Over the next 15 to 20 minutes, you will examine how our own perceptions and attitudes shape the care and environments we create — and build practical strategies to move from compliance toward genuine inclusion.</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta">Duration<b>15–20 min</b></div>
+      <div class="meta">Audience<b>All UHN Staff</b></div>
+      <div class="meta">Version<b>v1.0 · 2026</b></div>
+    </div>
+  </div>
+  <div class="right">
+    <div class="hero-photo"><img src="media/images/g02-hero-welcome-01.png" alt="Diverse UHN healthcare workers and patients in conversation in a bright hospital corridor"></div>
+    <div class="start-bar">
+      <div class="status">GUIDE 02 OF 18</div>
+      <button class="cta" onclick="goSlide(2)">Begin</button>
+    </div>
+  </div>
+<div class="slide-footer dark">
+  <div class="left"></div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(1 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">1 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(1 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 2: 2.2 Learning Objectives ═══════ -->
+<section class="slide" data-slide="2">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Learning Objectives</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.2 · OBJECTIVES</div>
+    <h1>What You Will Learn</h1>
+    <div class="lede">By the end of this guide, you will be able to do four things:</div>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card" tabindex="0">
+      <div class="num">01</div>
+      <div class="body">
+        <h3>Understand attitudinal barriers</h3>
+        <p>Define attitudinal barriers and explain how implicit and explicit bias affect accessibility and equity in healthcare.</p>
+      </div>
+    </div>
+    <div class="obj-card" tabindex="0">
+      <div class="num">02</div>
+      <div class="body">
+        <h3>Recognize assumptions in practice</h3>
+        <p>Identify how assumptions about ability, culture, mental health, and identity influence patient care and employee interactions at UHN.</p>
+      </div>
+    </div>
+    <div class="obj-card featured" tabindex="0">
+      <div class="num">03</div>
+      <div class="body">
+        <h3>Apply reflective practice</h3>
+        <p>Use self-reflection strategies to recognize and mitigate personal bias in everyday interactions.</p>
+      </div>
+    </div>
+    <div class="obj-card" tabindex="0">
+      <div class="num">04</div>
+      <div class="body">
+        <h3>Act with dignity beyond compliance</h3>
+        <p>Demonstrate proactive, respectful responses that move accessibility practice beyond meeting minimum standards.</p>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(2 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">2 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(2 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 3: 2.3 Why This Matters: The Stat ═══════ -->
+<section class="slide" data-slide="3">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Why This Matters</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.3 · HEALTHCARE CONTEXT</div>
+    <h1>People with disabilities are <span class="accent">3x more likely</span> to report unmet healthcare needs</h1>
+  </div>
+  <div style="padding:12px 96px 0; display:grid; grid-template-columns:1fr 1.2fr; gap:48px; align-items:center;">
+    <div>
+      <div class="stat-block" style="margin-bottom:28px;">
+        <div class="num" style="font-size:96px; line-height:1; color:var(--navy);">3×</div>
+        <div class="text"><b>Statistics Canada, 2022</b><br>Canadian Survey on Disability</div>
+      </div>
+      <p style="font-size:22px; line-height:1.5; color:var(--ink);">Often, the barrier is not a ramp or a doorway. It is an attitude.</p>
+      <div class="key-takeaway" style="margin-top:24px;">
+        <div class="lbl">KEY TAKEAWAY</div>
+        <p>Attitudinal barriers are invisible to those who hold them — and deeply felt by those who experience them.</p>
+      </div>
+    </div>
+    <div class="photo has-img" style="height:520px;">
+      <img src="media/images/g02-stats-attitudinal-01.png" alt="Statistic with supporting text: people with disabilities are 3x more likely to report unmet healthcare needs">
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(3 - 1)">&#8249;</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">3 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(3 + 1)">&#8250;</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 4: 2.4 Impact: Attitudinal Barriers ═══════ -->
+<section class="slide" data-slide="4">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>When Attitudes Become Barriers</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.4 · IMPACT</div>
+    <h1>When Attitudes Become <span class="accent">Barriers</span></h1>
+  </div>
+  <div class="why-grid">
+    <div class="photo has-img" style="height:540px;"><img src="media/images/g02-impact-attitudinal-01.png" alt="Healthcare provider and patient in a tense or disconnected interaction suggesting a communication gap"></div>
+    <div class="why-body">
+      <p>Attitudinal barriers occur when assumptions, stereotypes, or lack of awareness lead to exclusion — even without intent.</p>
+      <p>In healthcare, these barriers affect diagnosis, treatment decisions, and whether patients feel safe returning.</p>
+      <ul style="margin:16px 0; padding-left:22px; font-size:20px; line-height:1.7;">
+        <li>An employee who speaks over a patient with a cognitive disability.</li>
+        <li>A clinician who assumes a patient with a mental health history cannot make sound decisions.</li>
+        <li>A colleague who speaks to a patient's support person instead of the patient directly.</li>
+      </ul>
+      <div class="key-takeaway" style="border-left-color:var(--red); background:var(--red-bg);">
+        <div class="lbl" style="color:var(--red);">KEY TAKEAWAY</div>
+        <p>None of these require bad intent. They require awareness. And awareness is something we can build.</p>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(4 - 1)">&#8249;</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">4 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(4 + 1)">&#8250;</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 5: 2.5 Impact: Stigma and Mental Health ═══════ -->
+<section class="slide" data-slide="5">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>The Weight of Stigma</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.5 · IMPACT</div>
+    <h1>The Weight of <span style="color:var(--cobalt);">Stigma</span></h1>
+  </div>
+  <div class="why-grid">
+    <div class="photo has-img" style="height:540px;"><img src="media/images/g02-impact-stigma-01.png" alt="Person sitting alone in a waiting area, looking anxious or withdrawn"></div>
+    <div class="why-body">
+      <p>Mental health stigma in healthcare settings delays help-seeking by an average of 11 years.</p>
+      <p>For employees with disabilities, fear of disclosure can limit career growth and access to supports.</p>
+      <p>When we examine our own assumptions about mental health — our language, our reactions, our expectations — we begin to break down stigma from the inside out.</p>
+      <div class="key-takeaway" style="border-left-color:var(--cobalt); background:var(--cobalt-bg);">
+        <div class="lbl" style="color:var(--cobalt);">KEY TAKEAWAY</div>
+        <p>Stigma is one of the most powerful attitudinal barriers we know of. At UHN, this affects both patients and employees.</p>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(5 - 1)">&#8249;</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">5 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(5 + 1)">&#8250;</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 6: 2.6 Impact: Intersectionality ═══════ -->
+<section class="slide" data-slide="6">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Compounding Barriers</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.6 · IMPACT</div>
+    <h1>Compounding <span style="color:var(--navy);">Barriers</span></h1>
+  </div>
+  <div class="why-grid">
+    <div class="photo has-img" style="height:540px;"><img src="media/images/g02-impact-intersectionality-01.png" alt="Diverse group of people representing multiple identities in a healthcare setting"></div>
+    <div class="why-body">
+      <p>A person's experience of disability is shaped by race, gender, language, income, age, and culture — not disability alone.</p>
+      <p>Intersectionality means that disability intersects with multiple identity factors to shape a person's experience in ways that are unique to them.</p>
+      <div style="margin-top:18px; border:1px solid var(--neutral); border-left:4px solid var(--chartreuse); padding:18px 22px; background:var(--chartreuse-bg);">
+        <div style="font-family:var(--font-head); font-size:14px; letter-spacing:3px; color:var(--chartreuse); text-transform:uppercase; margin-bottom:8px;">INDIGENOUS CONTEXT</div>
+        <p style="font-size:18px; line-height:1.45; color:#222; margin:0;">Indigenous Peoples face compounded barriers rooted in colonial history, systemic racism, and cultural disconnection from care.</p>
+      </div>
+      <div class="key-takeaway" style="margin-top:18px;">
+        <div class="lbl">KEY TAKEAWAY</div>
+        <p>At UHN, our responses must be flexible, humble, and informed by the person in front of us — not a category or a checklist.</p>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(6 - 1)">&#8249;</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">6 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(6 + 1)">&#8250;</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 7: 2.7 Implicit vs. Explicit Bias (Tabbed) ═══════ -->
+<section class="slide" data-slide="7">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Implicit vs. Explicit Bias</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.7 · CORE CONCEPT</div>
+    <h1>Two Types of <span class="accent">Bias</span></h1>
+    <div class="lede">Bias is not a character flaw — it is a feature of how the brain processes information. Select each tab to explore.</div>
+  </div>
+  <div class="tabbed">
+    <div class="tab-bar" role="tablist" aria-label="Types of bias">
+      <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tabpanel-implicit" id="tab-implicit" style="border-bottom-color:var(--cobalt); color:var(--cobalt);">Implicit Bias</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tabpanel-explicit" id="tab-explicit" style="">Explicit Bias</button>
+    </div>
+    <div class="tab-panel active" role="tabpanel" id="tabpanel-implicit" aria-labelledby="tab-implicit">
+      <div class="tp-title" style="color:var(--cobalt);">Implicit Bias</div>
+      <p><b>Definition:</b> An unconscious attitude or stereotype that affects judgement and behaviour without awareness.</p>
+      <p><b>Healthcare example:</b> A nurse automatically speaks louder when addressing a patient using a wheelchair, assuming hearing loss.</p>
+      <p><b>Impact:</b> Patients feel patronized; trust erodes. The nurse likely means well — the harm is real regardless.</p>
+    </div>
+    <div class="tab-panel" role="tabpanel" id="tabpanel-explicit" aria-labelledby="tab-explicit">
+      <div class="tp-title" style="color:var(--red);">Explicit Bias</div>
+      <p><b>Definition:</b> A conscious attitude, belief, or stereotype that is deliberately held and acted upon.</p>
+      <p><b>Healthcare example:</b> A provider believes that patients with mental health histories are "difficult" and delays their intake.</p>
+      <p><b>Impact:</b> Direct discrimination; creates an unsafe care environment.</p>
+    </div>
+  </div>
+  <div class="summary-bar" style="margin-top:28px;">
+    <div class="lbl">KEY INSIGHT</div>
+    <p>Both types cause harm. The difference is awareness — and awareness gives us a place to start.</p>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(7 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">7 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(7 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 8: 2.8 Attitudinal Barriers Framework (Accordion) ═══════ -->
+<section class="slide" data-slide="8">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Six Attitudinal Barrier Types</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.8 · FRAMEWORK</div>
+    <h1>Six Types of <span class="accent">Attitudinal Barriers</span></h1>
+    <div class="lede">Click each item to expand. Recognizing the specific form helps you respond more effectively.</div>
+  </div>
+  <div class="accordion" role="list">
+    <div class="acc-item" role="listitem">
+      <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+        <span class="acc-num">01</span><span class="acc-title">Paternalism</span><span class="acc-arrow" aria-hidden="true">&#9662;</span>
+      </button>
+      <div class="acc-body">
+        <p>Assuming you know better than the person what they need. Often comes from a desire to help — but removes the person's autonomy.</p>
+      </div>
+    </div>
+    <div class="acc-item" role="listitem">
+      <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+        <span class="acc-num">02</span><span class="acc-title">Stereotyping</span><span class="acc-arrow" aria-hidden="true">&#9662;</span>
+      </button>
+      <div class="acc-body">
+        <p>Applying group-based assumptions to individuals. Not every person who is Deaf communicates the same way. Not every person using a wheelchair has the same functional needs.</p>
+      </div>
+    </div>
+    <div class="acc-item" role="listitem">
+      <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+        <span class="acc-num">03</span><span class="acc-title">Pity or Charity Model</span><span class="acc-arrow" aria-hidden="true">&#9662;</span>
+      </button>
+      <div class="acc-body">
+        <p>Viewing people with disabilities as objects of sympathy rather than rights-holders. Sees disability as tragedy rather than recognizing people as agents with full lives.</p>
+      </div>
+    </div>
+    <div class="acc-item" role="listitem">
+      <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+        <span class="acc-num">04</span><span class="acc-title">Spread Effect</span><span class="acc-arrow" aria-hidden="true">&#9662;</span>
+      </button>
+      <div class="acc-body">
+        <p>Assuming one disability affects all aspects of a person's functioning. A person with a visual impairment does not necessarily have cognitive or communication differences.</p>
+      </div>
+    </div>
+    <div class="acc-item" role="listitem">
+      <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+        <span class="acc-num">05</span><span class="acc-title">Othering</span><span class="acc-arrow" aria-hidden="true">&#9662;</span>
+      </button>
+      <div class="acc-body">
+        <p>Treating people with disabilities as fundamentally different rather than as peers and patients — as objects of curiosity or concern rather than as people.</p>
+      </div>
+    </div>
+    <div class="acc-item" role="listitem">
+      <button class="acc-header" aria-expanded="false" onclick="toggleAcc(this)">
+        <span class="acc-num">06</span><span class="acc-title">Invisibilization</span><span class="acc-arrow" aria-hidden="true">&#9662;</span>
+      </button>
+      <div class="acc-body">
+        <p>Failing to acknowledge non-visible disabilities or dismissing disclosures. "You don't look sick" is a form of attitudinal barrier. Each of these can be unlearned.</p>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(8 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">8 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(8 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 9: 2.9 Reflective Practice Model (Step-through) ═══════ -->
+<section class="slide" data-slide="9">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Reflective Practice Model</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.9 · FRAMEWORK — 4 STEPS</div>
+    <h1>The Reflective Practice <span class="accent">Cycle</span></h1>
+    <div class="lede">A disciplined habit of pausing to examine your own assumptions. Click each step to explore.</div>
+  </div>
+  <div class="stepper">
+    <div class="stepper-rail" style="grid-template-columns:repeat(4,1fr);" role="list" aria-label="Reflective Practice Cycle steps">
+      <div class="step active" role="listitem" aria-current="step" tabindex="0">
+        <div class="circle">1</div>
+        <div class="label">Notice</div>
+        <div class="desc">Pause and become aware</div>
+      </div>
+      <div class="step" role="listitem" tabindex="0">
+        <div class="circle">2</div>
+        <div class="label">Name</div>
+        <div class="desc">Label what you observed</div>
+      </div>
+      <div class="step" role="listitem" tabindex="0">
+        <div class="circle">3</div>
+        <div class="label">Examine</div>
+        <div class="desc">Consider the source and impact</div>
+      </div>
+      <div class="step" role="listitem" tabindex="0">
+        <div class="circle">4</div>
+        <div class="label">Act</div>
+        <div class="desc">Choose a different response</div>
+      </div>
+    </div>
+  </div>
+  <div class="step-detail">
+    <div class="marker">STEP<b>01</b></div>
+    <div class="content">
+      <h3>Notice</h3>
+      <p>Pause and become aware of your reaction, assumption, or discomfort. Did you react differently to this patient than to the last?</p>
+    </div>
+  </div>
+  <div class="summary-bar" style="margin-top:20px;">
+    <div class="lbl">SERIES TOOL</div>
+    <p>This cycle does not require perfection. It requires honesty and the willingness to grow. You will use it in every scenario that follows.</p>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(9 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">9 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(9 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 10: 2.10 Scenario 1 — Assumptions About Ability ═══════ -->
+<section class="slide" data-slide="10">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Scenario 1 — Assumptions About Ability</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.10 · SCENARIO</div>
+    <h1>Scenario 1: Assumptions About <span class="accent">Ability</span></h1>
+  </div>
+  <div class="scen-grid">
+    <div class="photo has-img" style="height:560px;">
+      <img src="media/images/g02-scenario-ability-01.png" alt="Patient using wheelchair waiting at an unattended hospital reception desk with an intake form on their armrest">
+      <div class="feedback-overlay" aria-live="polite" id="fb-s1">
+        <button class="close-btn" onclick="this.parentElement.classList.remove('show')" aria-label="Close feedback">CLOSE</button>
+        <div class="fb-content"></div>
+        <div class="debrief-section">
+          <div class="lbl">DEBRIEF</div>
+          <p>Autonomy means offering help, not assuming it is needed or wanted. Always ask. "Can I help you with anything?" is the opening. Let the person in front of you direct what happens next.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="format-badge">Branching choice · 3 options · graded</div>
+      <div class="scenario-box">
+        <div class="lbl">SCENARIO 1</div>
+        <h2>Mr. Santos at Reception</h2>
+        <p>You are walking past the reception desk on your way to another task. Mr. Santos, a patient using a manual wheelchair, has been waiting for 10 minutes. There are no staff at the desk and no sign indicating when someone will return. His intake form is on his armrest — he has not started it yet.</p>
+      </div>
+      <div class="scenario-q" style="margin-top:18px;">What do you do?</div>
+      <div class="options" role="radiogroup" data-correct="A" data-overlay="fb-s1">
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="A" data-fb="<b>Best response: A.</b> Mr. Santos feels respected. You offered help without assuming it was needed, gave him the information he asked for, and reported a systemic issue. One interaction — three accessibility principles in action.">
+          <div class="ltr">A</div>
+          <div>Introduce yourself and ask: "Is there anything I can do to help you while someone comes to the desk?" You wait until a colleague arrives or handle the intake yourself.</div>
+        </div>
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="B" data-fb="<b>Acceptable, but not best.</b> You stop and apologize, take his form, and fill it in by asking him questions as you go. The task gets done, but his autonomy is reduced. He did not ask for the form to be taken. The fix is one question: 'Would you like help with the form, or would you prefer to fill it in yourself?'">
+          <div class="ltr">B</div>
+          <div>Apologize for the wait, take his form, and start filling it in for him, asking him the questions as you go.</div>
+        </div>
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="C" data-fb="<b>Poor response.</b> You pick up the form and set it on the desk, tell him someone will be back soon, and continue on your way. Mr. Santos watches you move his form without asking. He feels dismissed. The interaction confirms a pattern he has experienced before.">
+          <div class="ltr">C</div>
+          <div>Pick up the form and set it on the desk, telling him someone will be with him soon, then continue to your task.</div>
+        </div>
+      </div>
+      <button class="submit-btn" disabled>CONFIRM CHOICE</button>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(10 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">10 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(10 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 11: 2.11 Scenario 2 — Implicit Bias in the Workplace ═══════ -->
+<section class="slide" data-slide="11">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Scenario 2 — Implicit Bias in the Workplace</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.11 · SCENARIO</div>
+    <h1>Scenario 2: Implicit Bias in the <span class="accent">Workplace</span></h1>
+  </div>
+  <div class="scen-grid">
+    <div class="photo has-img" style="height:560px;">
+      <img src="media/images/g02-scenario-bias-workplace-01.png" alt="Two healthcare professionals in a meeting room, one reviewing documents for a project assignment">
+      <div class="feedback-overlay" aria-live="polite" id="fb-s2">
+        <button class="close-btn" onclick="this.parentElement.classList.remove('show')" aria-label="Close feedback">CLOSE</button>
+        <div class="fb-content"></div>
+        <div class="debrief-section">
+          <div class="lbl">DEBRIEF</div>
+          <p>The duty to accommodate does not mean making decisions for people. It means removing barriers and having conversations. Assumptions about what someone can handle — without asking — are both a bias and a legal risk.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="format-badge">Branching choice · 3 options · graded</div>
+      <div class="scenario-box">
+        <div class="lbl">SCENARIO 2</div>
+        <h2>Assigning a Project Lead</h2>
+        <p>You are assigning the lead role on a new quality improvement project. Both applicants — Priya and Marcus — have strong, comparable performance reviews. You know that Priya disclosed a mood disorder last year and took a medical leave. Her work since returning has been excellent. You need to decide now.</p>
+      </div>
+      <div class="scenario-q" style="margin-top:18px;">What do you do?</div>
+      <div class="options" role="radiogroup" data-correct="A" data-overlay="fb-s2">
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="A" data-fb="<b>Best response: A.</b> Priya is assessed equitably. The process is fair and legally defensible. Under the OHRC, a disability history cannot be used to limit professional opportunity.">
+          <div class="ltr">A</div>
+          <div>Review both candidates' recent performance and assign based on merit. Do not factor in Priya's medical history.</div>
+        </div>
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="B" data-fb="<b>Acceptable, but not best.</b> You assign Priya to a supporting role to reduce her workload — without telling her why. This decision is made 'for' her, without her input. Paternalism in professional contexts is both a dignity issue and a legal risk.">
+          <div class="ltr">B</div>
+          <div>Assign Priya to a supporting role instead of the lead, intending to protect her from added stress without telling her why.</div>
+        </div>
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="C" data-fb="<b>Poor response.</b> This is a textbook example of how implicit bias becomes discriminatory action. The OHRC prohibits using disability status to limit opportunity. Good intent does not shield a decision from scrutiny when the basis for it is disability status.">
+          <div class="ltr">C</div>
+          <div>Assign the other candidate because you worry the workload might be too much for someone who has taken medical leave.</div>
+        </div>
+      </div>
+      <button class="submit-btn" disabled>CONFIRM CHOICE</button>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(11 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">11 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(11 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 12: 2.12 Scenario 3 — Cultural Misunderstanding ═══════ -->
+<section class="slide" data-slide="12">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Scenario 3 — Cultural Misunderstanding</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.12 · SCENARIO</div>
+    <h1>Scenario 3: Cultural <span class="accent">Misunderstanding in Care</span></h1>
+  </div>
+  <div class="scen-grid">
+    <div class="photo has-img" style="height:560px;">
+      <img src="media/images/g02-scenario-cultural-01.png" alt="Nurse conducting bedside assessment with elderly patient and family member present">
+      <div class="feedback-overlay" aria-live="polite" id="fb-s3">
+        <button class="close-btn" onclick="this.parentElement.classList.remove('show')" aria-label="Close feedback">CLOSE</button>
+        <div class="fb-content"></div>
+        <div class="debrief-section">
+          <div class="lbl">DEBRIEF</div>
+          <p>Cultural communication differences are not compliance problems. Indirect eye contact, deference to family, and non-linear communication patterns are meaningful and valid. The question to ask is: "How can I create the conditions for this person to be heard?"</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="format-badge">Branching choice · 3 options · graded</div>
+      <div class="scenario-box">
+        <div class="lbl">SCENARIO 3</div>
+        <h2>Mrs. Nguyen's Assessment</h2>
+        <p>You are conducting a pre-procedure assessment for Mrs. Nguyen. She is quiet, avoids direct eye contact, and gives short, indirect answers. Her daughter Linh is present and responds more fully when you ask questions. Mrs. Nguyen does not appear confused — she follows the conversation and nods at appropriate moments.</p>
+      </div>
+      <div class="scenario-q" style="margin-top:18px;">What do you do?</div>
+      <div class="options" role="radiogroup" data-correct="A" data-overlay="fb-s3">
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="A" data-fb="<b>Best response: A.</b> The assessment takes a few extra minutes, but it is accurate. Mrs. Nguyen eventually offers a key piece of clinical information that Linh did not know. Mrs. Nguyen feels respected.">
+          <div class="ltr">A</div>
+          <div>Continue addressing questions to Mrs. Nguyen directly, using plain language and pausing frequently. After she responds, acknowledge Linh: "Thank you — is there anything you would like to add?"</div>
+        </div>
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="B" data-fb="<b>Acceptable, but not best.</b> The assessment moves faster but Mrs. Nguyen's voice is sidelined. Some of her direct observations — about pain and concerns — are filtered through Linh's interpretation. The clinical record reflects Linh's account, not fully Mrs. Nguyen's experience.">
+          <div class="ltr">B</div>
+          <div>Begin directing most questions to Linh for efficiency, while checking in with Mrs. Nguyen occasionally.</div>
+        </div>
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="C" data-fb="<b>Poor response.</b> Mrs. Nguyen's cultural communication style has been misread as a clinical incapacity. The documentation 'unable to provide history' is inaccurate and potentially harmful — it may lead future providers to assume cognitive impairment.">
+          <div class="ltr">C</div>
+          <div>Document that the patient is "unable to provide history" and proceed with Linh as the primary informant.</div>
+        </div>
+      </div>
+      <button class="submit-btn" disabled>CONFIRM CHOICE</button>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(12 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">12 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(12 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 13: 2.13 Scenario 4 — Mental Health Handoff ═══════ -->
+<section class="slide" data-slide="13">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Scenario 4 — Mental Health Handoff</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.13 · SCENARIO</div>
+    <h1>Scenario 4: Language and Mental Health in <span class="accent">Handoff</span></h1>
+  </div>
+  <div class="scen-grid">
+    <div class="photo has-img" style="height:560px;">
+      <img src="media/images/g02-scenario-mentalhealth-01.png" alt="Two nurses conducting a shift handoff at a nursing station, reviewing a patient chart">
+      <div class="feedback-overlay" aria-live="polite" id="fb-s4">
+        <button class="close-btn" onclick="this.parentElement.classList.remove('show')" aria-label="Close feedback">CLOSE</button>
+        <div class="fb-content"></div>
+        <div class="debrief-section">
+          <div class="lbl">DEBRIEF</div>
+          <p>Diagnostic labels do not predict behaviour. Handoff language like "difficult" transfers bias, not clinical information. Each patient deserves a fresh interaction — informed by clinical facts, not by another person's attitudinal lens.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="format-badge">Branching choice · 3 options · graded</div>
+      <div class="scenario-box">
+        <div class="lbl">SCENARIO 4</div>
+        <h2>Amir's Shift Handoff</h2>
+        <p>During shift handoff, David says: "Room 4B — Mr. Thompson. He can be difficult. There's a mental health history. Just be aware." He points to the chart entry noting bipolar disorder. You have not yet met Mr. Thompson. The handoff is otherwise brief.</p>
+      </div>
+      <div class="scenario-q" style="margin-top:18px;">What do you do as Amir?</div>
+      <div class="options" role="radiogroup" data-correct="A" data-overlay="fb-s4">
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="A" data-fb="<b>Best response: A.</b> Mr. Thompson is measured and cooperative. He asks a thoughtful question about his medication schedule. Amir realizes the 'difficult' label bore no resemblance to his actual experience. He flags the handoff language issue to the charge nurse at end of shift.">
+          <div class="ltr">A</div>
+          <div>Acknowledge the handoff and note the clinical information, then go in to meet Mr. Thompson with a neutral, open manner. Let his actual behaviour — not David's description — guide your approach.</div>
+        </div>
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="B" data-fb="<b>Acceptable response.</b> You flag the language to the charge nurse before entering the room. The charge nurse confirms clinical context. Amir enters with better information, without bias. The charge nurse begins thinking about how to address handoff language with the team.">
+          <div class="ltr">B</div>
+          <div>Flag the handoff language to the charge nurse before entering the room, asking for clinical context rather than a personality label.</div>
+        </div>
+        <div class="option" role="radio" aria-checked="false" tabindex="0" data-choice="C" data-fb="<b>Poor response.</b> Mr. Thompson senses the difference. By end of shift the interaction has been tense — matching the prediction. Amir files a note that Mr. Thompson 'appeared guarded.' The self-fulfilling cycle continues for the next nurse.">
+          <div class="ltr">C</div>
+          <div>Enter the room already guarded, with less patience and a shorter interaction than you would give other patients.</div>
+        </div>
+      </div>
+      <button class="submit-btn" disabled>CONFIRM CHOICE</button>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(13 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">13 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(13 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 14: 2.14 Knowledge Check 1 ═══════ -->
+<section class="slide" data-slide="14">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Knowledge Check 1</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.14 · ASSESSMENT</div>
+    <h1>Knowledge Check <span class="accent">1</span></h1>
+    <div class="lede">Select the best answer. You have two attempts.</div>
+  </div>
+  <div class="kc-grid" style="padding:24px 96px 0;">
+    <div class="kc-question">
+      <div class="lbl">QUESTION</div>
+      <h2>Which of the following BEST describes implicit bias?</h2>
+      <div class="kc-options" role="radiogroup" data-correct="B" data-qnum="kc2-1">
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="A">
+          <div class="ltr">A</div>
+          <span>A deliberate belief that a group of people is inferior</span>
+          <span class="mark">INCORRECT</span>
+        </div>
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="B">
+          <div class="ltr">B</div>
+          <span>An unconscious attitude that shapes behaviour without awareness</span>
+          <span class="mark">CORRECT</span>
+        </div>
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="C">
+          <div class="ltr">C</div>
+          <span>A policy that intentionally excludes people with disabilities</span>
+          <span class="mark">INCORRECT</span>
+        </div>
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="D">
+          <div class="ltr">D</div>
+          <span>A formal complaint about discriminatory treatment</span>
+          <span class="mark">INCORRECT</span>
+        </div>
+      </div>
+      <button class="submit-btn" disabled>SUBMIT ANSWER</button>
+    </div>
+    <div class="kc-feedback hidden" aria-live="polite" id="kc2q1Feedback">
+      <div class="head"><div class="icon">&#10003;</div>Feedback</div>
+      <div class="body">
+        <p id="kc2q1FeedbackText"></p>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(14 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">14 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(14 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 15: 2.15 Knowledge Check 2 ═══════ -->
+<section class="slide" data-slide="15">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Knowledge Check 2</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.15 · ASSESSMENT</div>
+    <h1>Knowledge Check <span class="accent">2</span></h1>
+    <div class="lede">Scenario-based question. Select the best answer.</div>
+  </div>
+  <div class="kc-grid" style="padding:24px 96px 0;">
+    <div class="kc-question">
+      <div class="lbl">SCENARIO-BASED QUESTION</div>
+      <h2>A nurse automatically speaks more slowly and loudly to a patient using a power wheelchair, even though there is no documented hearing or cognitive concern in the chart. This is an example of:</h2>
+      <div class="kc-options" role="radiogroup" data-correct="B" data-qnum="kc2-2">
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="A">
+          <div class="ltr">A</div>
+          <span>Explicit bias — the nurse is deliberately patronizing the patient</span>
+          <span class="mark">INCORRECT</span>
+        </div>
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="B">
+          <div class="ltr">B</div>
+          <span>Spread effect — assuming one disability affects other areas of functioning</span>
+          <span class="mark">CORRECT</span>
+        </div>
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="C">
+          <div class="ltr">C</div>
+          <span>Invisibilization — dismissing the patient's non-visible disability</span>
+          <span class="mark">INCORRECT</span>
+        </div>
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="D">
+          <div class="ltr">D</div>
+          <span>Paternalism — deciding what the patient needs without asking</span>
+          <span class="mark">INCORRECT</span>
+        </div>
+      </div>
+      <button class="submit-btn" disabled>SUBMIT ANSWER</button>
+    </div>
+    <div class="kc-feedback hidden" aria-live="polite" id="kc2q2Feedback">
+      <div class="head"><div class="icon">&#10003;</div>Feedback</div>
+      <div class="body">
+        <p id="kc2q2FeedbackText"></p>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(15 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">15 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(15 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 16: 2.16 Knowledge Check 3 ═══════ -->
+<section class="slide" data-slide="16">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Knowledge Check 3</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.16 · ASSESSMENT</div>
+    <h1>Knowledge Check <span class="accent">3</span></h1>
+    <div class="lede">Legal and ethical reasoning. Select the best answer.</div>
+  </div>
+  <div class="kc-grid" style="padding:24px 96px 0;">
+    <div class="kc-question">
+      <div class="lbl">SCENARIO-BASED QUESTION</div>
+      <h2>Under the Ontario Human Rights Code, a manager who withholds a leadership opportunity from an employee because of a disclosed disability — without the employee's input — is most likely:</h2>
+      <div class="kc-options" role="radiogroup" data-correct="C" data-qnum="kc2-3">
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="A">
+          <div class="ltr">A</div>
+          <span>Acting appropriately by protecting the employee from stress</span>
+          <span class="mark">INCORRECT</span>
+        </div>
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="B">
+          <div class="ltr">B</div>
+          <span>Fulfilling the duty to accommodate</span>
+          <span class="mark">INCORRECT</span>
+        </div>
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="C">
+          <div class="ltr">C</div>
+          <span>Committing a form of paternalism that may constitute discrimination</span>
+          <span class="mark">CORRECT</span>
+        </div>
+        <div class="kc-opt" role="radio" aria-checked="false" tabindex="0" data-answer="D">
+          <div class="ltr">D</div>
+          <span>Complying with AODA requirements</span>
+          <span class="mark">INCORRECT</span>
+        </div>
+      </div>
+      <button class="submit-btn" disabled>SUBMIT ANSWER</button>
+    </div>
+    <div class="kc-feedback hidden" aria-live="polite" id="kc2q3Feedback">
+      <div class="head"><div class="icon">&#10003;</div>Feedback</div>
+      <div class="body">
+        <p id="kc2q3FeedbackText"></p>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(16 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">16 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(16 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 17: 2.17 Inclusive Practice Tips (Card Carousel) ═══════ -->
+<section class="slide" data-slide="17">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Inclusive Practice Tips</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.17 · PRACTICE</div>
+    <h1>Five Inclusive Practice <span class="accent">Tips</span></h1>
+    <div class="lede">Five practices you can start using right away.</div>
+  </div>
+  <div class="card-grid" style="grid-template-columns:repeat(5,1fr); padding-top:28px;">
+    <div class="g-card cobalt-top" tabindex="0">
+      <div class="g-head" style="background:var(--cobalt);"><div class="num">1</div><h3>Ask, Don't Assume</h3></div>
+      <div class="g-body">Before offering help, ask: "Is there anything I can do to support you?" Let the person direct what happens next.</div>
+    </div>
+    <div class="g-card red-top" tabindex="0">
+      <div class="g-head" style="background:var(--red);"><div class="num">2</div><h3>Watch Your Language</h3></div>
+      <div class="g-body">Replace "suffers from" with "has." Avoid "wheelchair-bound" or "mentally ill." Words like "uses a wheelchair" are more accurate and more respectful.</div>
+    </div>
+    <div class="g-card navy-top" tabindex="0">
+      <div class="g-head"><div class="num">3</div><h3>Address the Patient</h3></div>
+      <div class="g-body">Direct your questions and eye contact to the patient in front of you — not their companion or family member.</div>
+    </div>
+    <div class="g-card chart-top" tabindex="0">
+      <div class="g-head" style="background:var(--chartreuse);"><div class="num">4</div><h3>Examine Handoff Language</h3></div>
+      <div class="g-body">When you hear "difficult patient," ask: "Difficult how? What has been tried?" Transfer clinical information, not attitudinal framing.</div>
+    </div>
+    <div class="g-card lilac-top" tabindex="0">
+      <div class="g-head" style="background:var(--lilac);"><div class="num">5</div><h3>Notice-Name-Examine-Act</h3></div>
+      <div class="g-body">Take the reflective practice cycle with you. One pause can change an interaction entirely.</div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(17 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">17 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(17 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 18: 2.18 Reflection Prompt ═══════ -->
+<section class="slide" data-slide="18">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Reflection</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.18 · REFLECTION</div>
+    <h1>Pause and <span class="accent">Reflect</span></h1>
+  </div>
+  <div style="padding:24px 96px 0; display:grid; grid-template-columns:1.1fr 1fr; gap:48px;">
+    <div>
+      <div class="photo has-img" style="height:520px;"><img src="media/images/g02-reflection-calm-01.png" alt="Quiet hospital garden or window view — space for reflection"></div>
+      <div style="margin-top:18px; padding:14px 18px; background:var(--neutral-2); border:1px solid var(--neutral); font-size:16px; color:var(--muted); font-style:italic;">
+        This reflection is private — it is not submitted or reviewed.
+      </div>
+      <button id="submitReflectionBtn" style="margin-top:18px; background:var(--red); color:#fff; font-family:var(--font-head); font-size:18px; padding:14px 28px; border:0; letter-spacing:2px; cursor:pointer; display:inline-flex; align-items:center; gap:10px;">SUBMIT REFLECTION<span style="font-size:24px;">›</span></button>
+    </div>
+    <div>
+      <div class="scenario-box" style="border-left-color:var(--lilac);">
+        <div class="lbl" style="color:var(--lilac);">REFLECTION PROMPT</div>
+        <h2 style="font-size:26px; line-height:1.3;">Think about a recent interaction at work — with a patient, a colleague, or a family member. Was there a moment when you noticed yourself making an assumption? What did you do? What would you do differently now?</h2>
+      </div>
+      <div class="map-field" style="margin-top:24px; border-color:var(--lilac);">
+        <div class="head"><div class="badge" style="background:var(--lilac);">YOUR THOUGHTS</div></div>
+        <div class="input" contenteditable="true" style="min-height:180px;">Type your reflection here...</div>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(18 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">18 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(18 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 19: 2.19 MAP Action Planning ═══════ -->
+<section class="slide" data-slide="19">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>My Action Plan</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.19 · ACTION</div>
+    <h1>My Action Plan <span class="accent">(MAP)</span></h1>
+    <div class="lede">Three prompts — Stop, Start, Continue. Completing at least the Stop and Start fields is required to proceed.</div>
+  </div>
+  <div class="map-grid">
+    <div class="map-intro">
+      <div class="format-badge">Form layout · 3 inputs · downloadable PDF</div>
+      <div class="map-fields">
+        <div class="map-field">
+          <div class="head"><div class="badge">STOP</div><h3>One thing I will stop doing</h3></div>
+          <div class="input" contenteditable="true">e.g. I will stop making assumptions about what patients can do before asking.</div>
+        </div>
+        <div class="map-field">
+          <div class="head"><div class="badge">START</div><h3>One thing I will start doing</h3></div>
+          <div class="input" contenteditable="true">e.g. I will use the Notice-Name-Examine-Act cycle when I feel a reaction forming.</div>
+        </div>
+        <div class="map-field">
+          <div class="head"><div class="badge" style="background:var(--chartreuse);">CONT.</div><h3>One thing I will continue doing</h3></div>
+          <div class="input" contenteditable="true">e.g. I will continue asking patients directly how they prefer to be addressed. (optional)</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="key-takeaway" style="border-left-color:var(--lilac); background:var(--lilac-bg);">
+        <div class="lbl" style="color:var(--lilac);">DOWNLOAD</div>
+        <p>MAP-Template-Guide-02.pdf — download and keep your action plan.</p>
+      </div>
+      <button class="map-save-btn" style="margin-top:24px; background:var(--red); color:#fff; font-family:var(--font-head); font-size:18px; padding:14px 28px; border:0; letter-spacing:2px; cursor:pointer; display:inline-flex; align-items:center; gap:10px;">SAVE MY MAP<span style="font-size:24px;">›</span></button>
+      <div class="map-save-hint" style="margin-top:10px; font-size:14px; color:var(--muted); font-style:italic;">You can download your Action Plan after completing this course.</div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(19 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">19 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(19 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 20: 2.20 Key Takeaways ═══════ -->
+<section class="slide" data-slide="20">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Key Takeaways</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.20 · SUMMARY</div>
+    <h1>Key <span class="accent">Takeaways</span></h1>
+    <div class="lede">Four things to remember from this guide.</div>
+  </div>
+  <div class="card-grid" style="grid-template-columns:repeat(2,1fr); padding-top:32px;">
+    <div class="g-card navy-top" tabindex="0">
+      <div class="g-head"><div class="num">1</div><h3>Invisible but Deeply Felt</h3></div>
+      <div class="g-body" style="font-size:22px;">Attitudinal barriers are often invisible to those who hold them — but deeply felt by those who experience them. The most powerful barrier prevention begins with awareness.</div>
+    </div>
+    <div class="g-card cobalt-top" tabindex="0">
+      <div class="g-head" style="background:var(--cobalt);"><div class="num">2</div><h3>Bias Is Not a Character Flaw</h3></div>
+      <div class="g-body" style="font-size:22px;">Implicit bias is not a character flaw — it is a cognitive habit. The difference is whether you choose to notice, name, and adjust.</div>
+    </div>
+    <div class="g-card chart-top" tabindex="0">
+      <div class="g-head" style="background:var(--chartreuse);"><div class="num">3</div><h3>Intersectionality Matters</h3></div>
+      <div class="g-body" style="font-size:22px;">Disability intersects with race, gender, language, age, and culture. A person's experience cannot be reduced to a single category — only curiosity and willingness to ask.</div>
+    </div>
+    <div class="g-card red-top" tabindex="0">
+      <div class="g-head" style="background:var(--red);"><div class="num">4</div><h3>Progress, Not Perfection</h3></div>
+      <div class="g-body" style="font-size:22px;">Inclusive practice is not about getting it right every time. It is about honesty, curiosity, and a willingness to ask before assuming.</div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(20 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">20 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(20 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 21: 2.21 Listen and Reflect (Podcast) ═══════ -->
+<section class="slide s-podcast" data-slide="21">
+  <div class="topbar" style="background:var(--navy-deep);">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+    <div class="brand">
+      <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+      <div class="sep" aria-hidden="true"></div>
+      <div class="ctx">ACCESSIBILITY FIRST</div>
+    </div>
+    <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Listen and Reflect</b></div>
+  </div>
+  <div class="title-block" style="padding-top:108px;">
+    <div class="eyebrow" style="color:var(--lilac);">SCREEN 2.21 · PODCAST</div>
+    <h1 style="color:#fff;">Listen and <span style="color:var(--lilac);">Reflect</span></h1>
+  </div>
+  <div class="pod-grid">
+    <div class="pod-player">
+      <div class="pod-cover">
+        <div class="ep">EPISODE 02 OF 18 · PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+        <div class="show">The Invisible Barrier: Bias, Dignity, and the Patient Experience</div>
+      </div>
+      <div class="pod-controls">
+        <div class="pod-meta">
+          <audio id="podAudio" preload="metadata"><source src="media/podcast/The_Invisible_Barrier_Guide02.m4a" type="audio/mp4"></audio>
+          <button class="pod-play" id="podPlayBtn" onclick="togglePod()" aria-label="Play or pause podcast">&#9654;</button>
+          <div class="info">
+            <div class="ttl">The Invisible Barrier: Bias, Dignity, and the Patient Experience</div>
+            <div class="sub">Deep dive · Episode 02 of 18 · Full transcript available</div>
+          </div>
+        </div>
+        <div class="pod-progress" onclick="seekPod(event)" style="cursor:pointer;"><div class="fill" id="podFill"></div></div>
+        <div style="display:flex; gap:18px; align-items:center;">
+          <span id="podTime" style="font-size:14px; color:#666; font-family:var(--font-body);">0:00</span>
+          <span style="font-size:14px; color:var(--cobalt); font-family:var(--font-head); cursor:pointer;" onclick="document.getElementById('podTranscript').style.display = document.getElementById('podTranscript').style.display === 'none' ? 'block' : 'none'">TRANSCRIPT &#9660;</span>
+          <span style="font-size:14px; color:var(--muted); margin-left:auto;">SRT captions available</span>
+        </div>
+      </div>
+    </div>
+    <div class="pod-side">
+      <div class="pod-points">
+        <div class="lbl">KEY LISTENING POINTS</div>
+        <h3>What to listen for</h3>
+        <ul>
+          <li><span class="tc">0:00</span> "Have you ever walked into a room and already had a story about the person?"</li>
+          <li><span class="tc">2:00</span> Implicit vs. explicit bias — what research says</li>
+          <li><span class="tc">6:00</span> The "difficult patient" phenomenon and what it really means</li>
+          <li><span class="tc">10:00</span> The spread effect in practice — real examples</li>
+          <li><span class="tc">14:00</span> Dignity-centred care as a daily practice</li>
+        </ul>
+      </div>
+      <div class="pod-reflection">
+        <div class="lbl">REFLECTION</div>
+        <p>Think of a time when someone held a different assumption about you than the reality. How did it feel? How might that experience inform how you approach your patients?</p>
+      </div>
+    </div>
+  </div>
+  <div id="podTranscript" style="display:none; position:absolute; left:64px; right:64px; top:520px; bottom:80px; background:rgba(15,26,61,0.97); border:1px solid rgba(255,255,255,0.15); border-radius:4px; padding:28px 32px; overflow-y:auto; z-index:30;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+      <span style="font-family:var(--font-head); font-size:16px; letter-spacing:3px; color:var(--cobalt); text-transform:uppercase;">Full Transcript</span>
+      <span style="font-size:14px; color:rgba(255,255,255,0.5); cursor:pointer;" onclick="this.parentElement.parentElement.style.display='none'">&#10005; CLOSE</span>
+    </div>
+    <div id="transcriptBody" style="font-size:15px; line-height:1.7; color:rgba(255,255,255,0.85);">
+      <p><b style="color:var(--lilac);">[Transcript to be added when podcast audio is produced]</b></p>
+      <p>This podcast episode explores how bias manifests in healthcare, what dignity-centred care actually looks like, and how staff can build reflective habits that last.</p>
+    </div>
+  </div>
+<div class="slide-footer dark">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(21 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">21 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(21 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 22: 2.22 Series Progress Map ═══════ -->
+<section class="slide" data-slide="22">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Series Progress Map</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.22 · PROGRESS</div>
+    <h1>Accessibility First · A <span class="accent">Three-Stage Journey</span></h1>
+    <div class="lede">18 guides organized in three stages. You have completed 2 of 4 Foundation guides.</div>
+  </div>
+  <div class="card-grid" style="grid-template-columns:repeat(3,1fr); padding-top:32px; align-items:start;">
+    <div class="g-card red-top" tabindex="0">
+      <div class="g-head" style="background:var(--red); min-height:80px; display:flex; align-items:center;"><h3>Stage 1: Foundations</h3></div>
+      <div class="g-body">
+        <p><b>Guides 01–04</b> — Required first</p>
+        <div style="margin-top:14px; font-size:18px; line-height:2;">
+          <div>&#9679; <a href="#" style="color:var(--muted); text-decoration:none;">Guide 01</a> — Foundations (Complete)</div>
+          <div><b style="color:var(--red);">&#9679; Guide 02</b> — Perceptions &amp; Attitudes (CURRENT)</div>
+          <div style="color:var(--muted);">&#9675; Guide 03 — Vision Disabilities</div>
+          <div style="color:var(--muted);">&#9675; Guide 04 — Communication</div>
+        </div>
+      </div>
+    </div>
+    <div class="g-card cobalt-top" tabindex="0" style="position:relative;">
+      <div class="g-head" style="background:var(--cobalt); min-height:80px; display:flex; align-items:center;"><h3>Stage 2: Understanding Disability Experiences</h3></div>
+      <div class="g-body">
+        <p><b>Guides 05–09</b> — Builds on Foundations</p>
+        <div style="margin-top:14px; font-size:18px; line-height:2; color:var(--muted);">
+          <div>&#9675; Guide 05 — Physical Disabilities</div>
+          <div>&#9675; Guide 06 — Sensory Disabilities</div>
+          <div>&#9675; Guide 07 — Cognitive &amp; Intellectual</div>
+          <div>&#9675; Guide 08 — Mental Health</div>
+          <div>&#9675; Guide 09 — Invisible Disabilities</div>
+        </div>
+      </div>
+      <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(255,255,255,0.55); display:flex; align-items:center; justify-content:center; pointer-events:none;">
+        <svg width="40" height="52" viewBox="0 0 40 52" fill="none" style="opacity:0.35;" aria-hidden="true">
+          <rect x="4" y="22" width="32" height="26" rx="3" fill="#192858"/>
+          <path d="M12 22V14a8 8 0 1 1 16 0v8" stroke="#192858" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <circle cx="20" cy="36" r="3" fill="#fff"/>
+          <rect x="19" y="37" width="2" height="6" rx="1" fill="#fff"/>
+        </svg>
+      </div>
+    </div>
+    <div class="g-card chart-top" tabindex="0" style="position:relative;">
+      <div class="g-head" style="background:var(--chartreuse); min-height:80px; display:flex; align-items:center;"><h3>Stage 3: Applied Practice</h3></div>
+      <div class="g-body">
+        <p><b>Guides 10–18</b> — Unlock after Stages 1+2</p>
+        <div style="margin-top:14px; font-size:18px; line-height:2; color:var(--muted);">
+          <div>&#9675; Guide 10 — Assistive Technology</div>
+          <div>&#9675; Guide 11 — Digital Accessibility</div>
+          <div>&#9675; Guide 12 — Employment &amp; Workplace</div>
+          <div>&#9675; Guide 13 — Emergency Preparedness</div>
+          <div>&#9675; Guides 14–18 — Specialized Contexts</div>
+        </div>
+      </div>
+      <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(255,255,255,0.55); display:flex; align-items:center; justify-content:center; pointer-events:none;">
+        <svg width="40" height="52" viewBox="0 0 40 52" fill="none" style="opacity:0.35;" aria-hidden="true">
+          <rect x="4" y="22" width="32" height="26" rx="3" fill="#192858"/>
+          <path d="M12 22V14a8 8 0 1 1 16 0v8" stroke="#192858" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <circle cx="20" cy="36" r="3" fill="#fff"/>
+          <rect x="19" y="37" width="2" height="6" rx="1" fill="#fff"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(22 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">22 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(22 + 1)">›</button>
+  </div>
+</div>
+</section><!-- ═══════ SLIDE 23: 2.23 Resources and Course Completion ═══════ -->
+<section class="slide" data-slide="23">
+<div class="topbar">
+  <button class="menu-btn" onclick="openMenu()" aria-label="Open course menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+  <div class="brand">
+    <img class="logo" src="assets/uhn-logo.png" alt="UHN">
+    <div class="sep" aria-hidden="true"></div>
+    <div class="ctx">ACCESSIBILITY FIRST</div>
+  </div>
+  <div class="crumbs">Guide 02 · Perceptions &amp; Attitudes › <b>Resources &amp; Completion</b></div>
+</div>
+  <div class="title-block">
+    <div class="eyebrow">SCREEN 2.23 · COMPLETION</div>
+    <h1>Resources &amp; <span class="accent">Course Completion</span></h1>
+  </div>
+  <div style="padding:24px 96px 0; display:grid; grid-template-columns:1.1fr 1fr; gap:48px;">
+    <!-- LEFT COLUMN -->
+    <div>
+      <div id="completionStatus" style="border-left:6px solid var(--chartreuse); background:var(--chartreuse-bg); padding:22px 28px; margin-bottom:24px;">
+        <div style="font-family:var(--font-head); font-size:16px; letter-spacing:3px; color:var(--chartreuse); text-transform:uppercase; margin-bottom:8px;">COMPLETION</div>
+        <div id="completionMessage" style="font-size:22px; color:var(--ink); line-height:1.4; font-weight:bold;">Checking completion status...</div>
+      </div>
+
+      <div class="ref-list" style="margin-bottom:24px;">
+        <div class="rl">RESOURCES</div>
+        <ul>
+          <li>AODA: ontario.ca/laws/statute/05a11</li>
+          <li>OHRC Human Rights Code: ohrc.on.ca</li>
+          <li>CAMH Anti-Stigma Resources: camh.ca/en/health-info/guides-and-publications</li>
+          <li>Mental Health Commission of Canada: mentalhealthcommission.ca</li>
+          <li>UHN IDEAA Office: [internal link]</li>
+          <li>UHN Accessibility Policy: [internal link]</li>
+        </ul>
+      </div>
+
+      <div style="background:var(--navy); color:#fff; padding:22px 28px; display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+        <div>
+          <div style="font-family:var(--font-head); font-size:12px; letter-spacing:3px; color:var(--lilac); text-transform:uppercase; margin-bottom:4px;">UP NEXT</div>
+          <div style="font-family:var(--font-head); font-size:22px;">Guide 03: Vision Disabilities</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <button id="retryQuizBtn" style="font-family:var(--font-head); font-size:16px; padding:14px 24px; border:0; letter-spacing:2px; cursor:pointer; background:var(--red); color:#fff;">RETRY QUIZ</button>
+        <button id="downloadMapBtn" style="font-family:var(--font-head); font-size:16px; padding:14px 24px; border:0; letter-spacing:2px; cursor:pointer; background:var(--cobalt); color:#fff;">ACTION PLAN</button>
+        <button id="exitCourseBtn" style="font-family:var(--font-head); font-size:16px; padding:14px 24px; border:2px solid var(--navy); letter-spacing:2px; cursor:pointer; background:transparent; color:var(--navy);">EXIT COURSE</button>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Badge -->
+    <div>
+      <div id="badgeContainer" style="border:2px solid var(--navy); padding:36px; text-align:center;">
+        <div style="font-family:var(--font-head); font-size:14px; letter-spacing:4px; color:var(--muted); text-transform:uppercase; margin-bottom:24px;">BADGE EARNED</div>
+        <div style="width:200px; height:200px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; margin:0 auto; font-family:var(--font-head); font-size:20px; text-align:center; line-height:1.3; padding:20px; box-sizing:border-box;">Accessibility<br>First:<br>Perceptions<br>&amp; Attitudes</div>
+        <div style="font-family:var(--font-head); font-size:22px; color:var(--navy); margin-top:20px;">Guide 02 Complete</div>
+        <div style="font-size:16px; color:var(--muted); margin-top:6px;">Perceptions, Attitudes, and Barriers</div>
+        <button id="downloadBadgeBtn" style="font-family:var(--font-head); font-size:16px; padding:14px 32px; border:0; letter-spacing:2px; cursor:pointer; background:var(--chartreuse); color:#fff; margin-top:20px;">DOWNLOAD BADGE</button>
+      </div>
+    </div>
+  </div>
+  <div id="resultsPageContainer" style="display:none;"></div>
+<div class="slide-footer">
+  <div class="left">
+    <div class="tag">GUIDE 02</div>
+    <div class="guide-label">PERCEPTIONS, ATTITUDES, AND BARRIERS</div>
+  </div>
+  <div class="slide-nav">
+    <button class="sn-btn prev" aria-label="Previous slide" onclick="goSlide(23 - 1)">‹</button>
+    <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">23 / 23</span></div>
+    <button class="sn-btn next" aria-label="Next slide" onclick="goSlide(23 + 1)">›</button>
+  </div>
+</div>
+</section>
+
+
+
+<!-- Background Music -->
+<audio id="bgmAudio" loop preload="auto" src="media/bgm/Path_to_Wellness.mp3"></audio>
+
+<!-- Side Menu Panel -->
+<div class="side-menu-scrim" onclick="closeMenu()"></div>
+<nav class="side-menu" role="navigation" aria-label="Course navigation menu">
+  <div class="sm-head">
+    <div class="row">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="assets/uhn-logo.png" alt="UHN" style="height:36px; width:auto;">
+        <div style="width:1px; height:26px; background:rgba(255,255,255,0.25);"></div>
+        <span style="font-family:var(--font-head); font-size:11px; letter-spacing:2px; color:rgba(255,255,255,0.85);">ACCESSIBILITY FIRST</span>
+      </div>
+      <button class="sm-close" onclick="closeMenu()" aria-label="Close course menu">&#10005;</button>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="sm-eyebrow">GUIDE 02 OF 18</div>
+      <div class="sm-title">Perceptions, Attitudes, and Barriers</div>
+    </div>
+    <div class="sm-progress-row">
+      <div class="sm-progress"><div class="sm-progress-fill" style="width:0%"></div></div>
+      <span class="sm-progress-text">1 / 23</span>
+    </div>
+  </div>
+  <div class="sm-section">Course Screens</div>
+  <div class="sm-list"></div>
+  <div class="sm-foot">
+    <b>GUIDE 02 OF 18</b><br>
+    Perceptions, Attitudes, and Barriers<br>
+    University Health Network · Toronto, Ontario
+  </div>
+</nav>
+
+<!-- VO Controls & CC Bar -->
+<button class="vo-show-btn" id="voShowBtn" title="Show audio controls" aria-label="Show audio controls"></button>
+<div class="vo-controls" id="voControls">
+  <button class="vo-btn" id="voPlayBtn" title="Play / Pause voiceover" aria-label="Play or pause voiceover">
+    <svg id="voPlayIcon" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6,4 20,12 6,20"/></svg>
+    <svg id="voPauseIcon" viewBox="0 0 24 24" style="display:none" aria-hidden="true"><rect x="5" y="4" width="4" height="16"/><rect x="15" y="4" width="4" height="16"/></svg>
+  </button>
+  <div class="vo-vol-wrap">
+    <button class="vo-vol-btn" id="voVolBtn" title="Mute / Unmute" aria-label="Mute or unmute voiceover">
+      <svg id="voVolIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/><path d="M19 12c0 2.97-1.65 5.54-4 6.71v2.06c3.45-1.33 6-4.95 6-8.77s-2.55-7.44-6-8.77v2.06c2.35 1.17 4 3.74 4 6.71z"/></svg>
+      <svg id="voMuteIcon" viewBox="0 0 24 24" style="display:none" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="23" y1="9" x2="17" y2="15" stroke="#fff" stroke-width="2"/><line x1="17" y1="9" x2="23" y2="15" stroke="#fff" stroke-width="2"/></svg>
+    </button>
+    <div class="vo-vol-slider"><input type="range" id="voVolRange" min="0" max="100" value="80"></div>
+  </div>
+  <button class="vo-btn bgm-toggle muted" id="bgmToggle" title="Background Music" aria-label="Toggle background music">
+    <svg class="bgm-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    <svg class="bgm-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" opacity="0.4"/><line x1="3" y1="3" x2="21" y2="21" stroke="#fff" stroke-width="2"/></svg>
+  </button>
+  <div class="vo-progress-wrap" id="voProgressWrap">
+    <div class="vo-progress-bg"><div class="vo-progress-fill" id="voProgressFill"></div></div>
+  </div>
+  <span class="vo-time" id="voTime">0:00 / 0:00</span>
+  <button class="vo-btn" id="voCCBtn" title="Toggle closed captions" aria-label="Toggle closed captions" style="font-family:var(--font-head);font-size:10px;letter-spacing:1px;color:#fff;width:auto;padding:0 8px;">CC</button>
+  <button class="vo-hide-btn" id="voHideBtn" title="Hide controls" aria-label="Hide audio controls">&times;</button>
+</div>
+<div class="cc-bar" id="ccBar" aria-live="polite" aria-atomic="true"></div>
+<audio id="voAudio" preload="auto"></audio>
+
+<!-- Screen reader announcements -->
+<div id="sr-announce" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<script src="js/scormfunctions.js?v=3"></script>
+<script src="js/welcome-dialog.js?v=3"></script>
+<script src="js/navigation.js?v=3"></script>
+<script src="js/voiceover.js?v=3"></script>
+<script src="js/course-tracker.js?v=3"></script>
+<script src="js/bgm.js?v=3"></script>
+
+<!-- Accordion interaction -->
+<script>
+function toggleAcc(btn) {
+  var item = btn.parentElement;
+  var expanded = btn.getAttribute('aria-expanded') === 'true';
+  btn.setAttribute('aria-expanded', !expanded);
+  if (expanded) {
+    item.classList.remove('open');
+  } else {
+    item.classList.add('open');
+  }
+}
+</script>
+</body>
+</html>

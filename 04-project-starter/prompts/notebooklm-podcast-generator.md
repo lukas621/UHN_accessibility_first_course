@@ -1,5 +1,8 @@
 # Prompt: NotebookLM Podcast Source Generator
 
+> **IMPORTANT: Not every guide needs a podcast.** Before generating podcast content, check the storyboard — if Slide 20 is not a podcast slide, skip this skill entirely. Podcast alternatives include: video demo, case study gallery, interactive resource library.
+
+
 You are creating a source document optimized for Google NotebookLM to generate a podcast-style audio overview of a healthcare accessibility training course at University Health Network (UHN) in Toronto, Ontario, Canada.
 
 NotebookLM works best when given a well-structured, conversational document that reads like a feature article or long-form essay. It will turn this into a two-host podcast discussion.

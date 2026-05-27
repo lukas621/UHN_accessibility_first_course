@@ -1,6 +1,6 @@
 # Guide 01 Production Workflow — Complete Trace
 
-How one course guide went from a raw Word document to a deployed SCORM course on the LMS in ~14 hours across 2 days, almost entirely AI-assisted.
+How one course guide went from a raw Word document to a deployed SCORM course on the LMS in a few days across 2 days, almost entirely AI-assisted.
 
 ---
 
@@ -27,7 +27,7 @@ SME writes content (1-2 weeks)
 ## The AI Way (What I Did)
 
 **Cost per module:** ~$50 in API calls (ElevenLabs, OpenAI, Claude)
-**Calendar time:** ~14 hours across 2 days
+**Calendar time:** a few days across 2 days
 **People involved:** 1 (me + Claude AI)
 
 ---
@@ -255,7 +255,7 @@ Any organization signs up:
 No Storyline. No Rise. No $1,399/year licenses.
 No 4-8 week timelines. No team of 5.
 
-One person. One AI. 14 hours. Production-quality course.
+One person. One AI. days. Production-quality course.
 ```
 
 ---
@@ -264,7 +264,7 @@ One person. One AI. 14 hours. Production-quality course.
 
 | | Traditional | AI-Assisted (Now) | Course Factory OS (Future) |
 |---|---|---|---|
-| **Time per module** | 4-8 weeks | ~14 hours | ~30 minutes |
+| **Time per module** | 4-8 weeks | a few days | ~30 minutes |
 | **People needed** | 4-5 | 1 | 1 |
 | **Cost per module** | $15,000-$30,000 | ~$50 (API costs) | ~$20 (API costs) |
 | **Tools cost** | Storyline $1,399/yr + stock $300/yr | Claude $200/mo + APIs | SaaS subscription TBD |
@@ -298,24 +298,3 @@ Each skill is a structured AI prompt that takes specific inputs and produces spe
 | 17 | ppt-storyboard-export | Storyboard | 16:9 branded PPT for external review |
 | 18 | scorm-package | Course folder | Versioned zip for LMS upload |
 
----
-
-## Timeline
-
-```
-Day 1 (May 24, 2026) — 8 hours
-  00:00  Project setup, branding, first mockup
-  01:00  Mockup iterations (20+ versions)
-  02:00  Podcast generation, image fixes
-  03:00  Voiceover generation (22 files)
-  03:30  Full mockup with all interactive features
-  04:00  Security fix (API key rotation)
-
-Day 2 (May 25, 2026) — 6 hours
-  08:00  SCORM v3 course build (refactor from monolithic HTML)
-  10:00  Bug fixes and QA
-  11:00  Folder reorganization, skill codification
-  11:30  SCORM packaging (v3 → v4 → v5)
-  12:00  LMS upload and deployment verified
-  12:30  README, Notion update, GitHub push
-```

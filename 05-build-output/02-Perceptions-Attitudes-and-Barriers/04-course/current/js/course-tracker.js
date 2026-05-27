@@ -1,19 +1,19 @@
 /* ═══════════════════════════════════════════════════════════════
-   Course Completion & Variable Tracking System
-   - Persists progress in localStorage (key: guide01_progress)
+   Course Completion & Variable Tracking System — Guide 02
+   - Persists progress in localStorage (key: guide02_progress)
    - Tracks visited slides, quiz score, MAP completion, time
    - Shows resume modal, progress indicator, results page
    ═══════════════════════════════════════════════════════════════ */
 (function() {
   'use strict';
 
-  var STORAGE_KEY = 'guide01_progress';
-  var MAP_STORAGE_KEY = 'guide01_map_responses';
+  var STORAGE_KEY = 'guide02_progress';
+  var MAP_STORAGE_KEY = 'guide02_map_responses';
   var allSlides = document.querySelectorAll('.slide[data-slide]');
   var totalSlides = allSlides.length;
-  var MAP_SLIDE = 18;
+  var MAP_SLIDE = 19;
   var LAST_SLIDE = 23;
-  var QUIZ_TOTAL = 3; // 3 KC questions: kc1-1, kc1-2, kc2-1
+  var QUIZ_TOTAL = 3; // 3 KC questions: kc2-1, kc2-2, kc2-3
   var PASS_THRESHOLD = 2; // 80% of 3 = 2.4, so 2/3 passes
 
   // ── 1. Global courseData object (merge, don't overwrite) ──
@@ -259,9 +259,9 @@
       '<p class="cert-presents">This certifies that</p>' +
       '<div class="cert-name-row"><input type="text" class="cert-learner-name" placeholder="Enter your full name" spellcheck="false"></div>' +
       '<p class="cert-presents">has successfully completed</p>' +
-      '<h3 class="cert-course-title">Accessibility First Series \u2014 Guide 01</h3>' +
-      '<p class="cert-course-sub">Foundations of Disability, Inclusion &amp; Accessible Design</p>' +
-      '<div class="cert-badge">Accessibility<br>First:<br>Foundations</div>' +
+      '<h3 class="cert-course-title">Accessibility First Series \u2014 Guide 02</h3>' +
+      '<p class="cert-course-sub">Perceptions, Attitudes, and Barriers</p>' +
+      '<div class="cert-badge">Accessibility<br>First:<br>Perceptions<br>&amp; Attitudes</div>' +
       '<div class="cert-stats">' +
         '<div class="cert-stat"><span class="val cert-score">0/3</span><span class="lbl">Quiz Score</span></div>' +
         '<div class="cert-stat"><span class="val cert-time">0m 0s</span><span class="lbl">Time Spent</span></div>' +
@@ -301,7 +301,7 @@
     completionOverlay.querySelector('.cert-date').textContent = 'Completed: ' + dateStr;
     // Pre-fill learner name from welcome dialog
     try {
-      var user = JSON.parse(localStorage.getItem('guide01_user') || '{}');
+      var user = JSON.parse(localStorage.getItem('guide02_user') || '{}');
       if (user.name && nameInput) nameInput.value = user.name;
       if (user.name && sigLearner) sigLearner.textContent = user.name;
     } catch(e) {}
@@ -324,11 +324,13 @@
       if (isComplete) {
         statusEl.style.borderLeftColor = 'var(--chartreuse)';
         statusEl.style.background = 'var(--chartreuse-bg)';
-        msgEl.innerHTML = "You've completed Guide 01. You've earned the <b>Accessibility First: Foundations</b> badge.<br><span style='font-size:18px; font-weight:normal; color:#444;'>Knowledge Check: " + d.quizScore + "/" + d.quizTotal + " correct</span>";
+        msgEl.innerHTML = "You've completed Guide 02. You've earned the <b>Accessibility First: Perceptions &amp; Attitudes</b> badge.";
       } else {
         statusEl.style.borderLeftColor = 'var(--red)';
         statusEl.style.background = 'var(--red-bg)';
-        msgEl.innerHTML = "Course incomplete.<br><span style='font-size:18px; font-weight:normal;'>Knowledge Check: " + d.quizScore + "/" + d.quizTotal + " correct (need " + PASS_THRESHOLD + "/" + d.quizTotal + " to pass)</span>";
+        var remaining = [];
+        if (!quizOk) remaining.push('Pass the quiz (' + d.quizScore + '/' + d.quizTotal + ')');
+        msgEl.innerHTML = 'Course incomplete. ' + remaining.join(', ');
       }
     }
 
@@ -391,21 +393,6 @@
       });
     }
 
-    // RESTART COURSE — clears all progress and reloads
-    var restartBtn = document.getElementById('restartCourseBtn');
-    if (restartBtn) {
-      restartBtn.addEventListener('click', function() {
-        localStorage.removeItem('guide01_progress');
-        localStorage.removeItem('courseVisitedSlides');
-        localStorage.removeItem('courseSubmissions');
-        localStorage.removeItem('guide01_map_responses');
-        localStorage.removeItem('guide01_reflection');
-        localStorage.removeItem('guide01_user');
-        if (window.SCORM && window.SCORM.syncToLMS) window.SCORM.syncToLMS();
-        window.location.reload();
-      });
-    }
-
     // MAP save button (on slide 18) — wire immediately since it's in static HTML
     var mapSaveBtn = document.querySelector('.map-save-btn');
     if (mapSaveBtn) {
@@ -436,49 +423,48 @@
 
   // ── Retry Quiz ──
   function retryQuiz() {
-    // Reset KC answers only — scenarios are non-graded, leave them intact
+    // Reset quiz answers in tracker
     quizAnswers = {};
     window.courseData.quizScore = 0;
     window.courseData.quizPassed = false;
+
+    // If course was completed but we're retrying, reset completion
+    // (they might score lower this time)
     window.courseData.courseCompleted = false;
     window.courseData.completionDate = null;
 
-    // Delete only KC submission keys, keep scenario keys
-    var subs = window.courseData.submissions || {};
-    for (var key in subs) {
-      if (key.indexOf('kc-') === 0) delete subs[key];
+    // Call the navigation.js reset function which:
+    // - Removes disabled-choice class and restores pointer-events on ALL options
+    // - Removes attempt-hint elements
+    // - Re-initializes submission state objects so closures pick up fresh state
+    // - Resets locked state, submit buttons, and feedback panels/overlays
+    if (window.resetQuizUI) {
+      window.resetQuizUI();
     }
-
-    // Reset KC UI only (not scenarios)
-    document.querySelectorAll('.kc-options[data-qnum]').forEach(function(kc) {
-      kc.classList.remove('locked');
-      var qnum = kc.getAttribute('data-qnum');
-      window.courseData.submissions['kc-' + qnum] = { attempts: 0, disabledChoices: [] };
-      kc.querySelectorAll('.kc-opt').forEach(function(o) {
-        o.classList.remove('correct', 'incorrect', 'selected', 'submitted', 'disabled-choice');
-        o.setAttribute('aria-checked', 'false');
-        o.style.pointerEvents = '';
-        o.style.opacity = '';
-      });
-      var btn = kc.parentElement.querySelector('.submit-btn');
-      if (btn) { btn.disabled = true; btn.classList.remove('ready', 'submitted'); btn.textContent = 'SUBMIT ANSWER'; }
-    });
-
-    // Hide KC feedback panels
-    document.querySelectorAll('.kc-feedback').forEach(function(fb) { fb.classList.add('hidden'); fb.style.visibility = ''; fb.style.opacity = ''; });
-    document.querySelectorAll('.kc-options .attempt-hint').forEach(function(h) { h.remove(); });
-
-    // Reset quiz-q navigation
-    document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
-    document.querySelectorAll('.quiz-q[data-q="1"]').forEach(function(q) { q.classList.add('active'); });
-    document.querySelectorAll('[data-quiz-next]').forEach(function(btn) { btn.style.display = 'none'; });
-    document.querySelectorAll('[data-fb-correct]').forEach(function(el) { el.classList.remove('show', 'correct-fb'); });
-    document.querySelectorAll('[data-fb-wrong]').forEach(function(el) { el.classList.remove('show', 'incorrect-fb'); });
 
     saveProgress();
 
-    // Navigate to first KC (slide 13), not first scenario
-    window.goSlide(13);
+    // Reset quiz-q to first question
+    document.querySelectorAll('.quiz-q').forEach(function(q) {
+      q.classList.remove('active');
+    });
+    document.querySelectorAll('.quiz-q[data-q="1"]').forEach(function(q) {
+      q.classList.add('active');
+    });
+    // Hide quiz next buttons
+    document.querySelectorAll('[data-quiz-next]').forEach(function(btn) {
+      btn.style.display = 'none';
+    });
+    // Also reset correct/incorrect feedback in quiz-q
+    document.querySelectorAll('[data-fb-correct]').forEach(function(el) {
+      el.classList.remove('show', 'correct-fb');
+    });
+    document.querySelectorAll('[data-fb-wrong]').forEach(function(el) {
+      el.classList.remove('show', 'incorrect-fb');
+    });
+
+    // Navigate to slide 14 (first knowledge check)
+    window.goSlide(14);
   }
 
   // ── MAP Download ──
@@ -490,7 +476,7 @@
   function openBadgeDownload() {
     var learnerName = '';
     try {
-      var user = JSON.parse(localStorage.getItem('guide01_user') || '{}');
+      var user = JSON.parse(localStorage.getItem('guide02_user') || '{}');
       learnerName = user.name || 'Learner';
     } catch(e) { learnerName = 'Learner'; }
 
@@ -499,7 +485,7 @@
       completionDate = new Date(window.courseData.completionDate).toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' });
     }
 
-    var badgeHtml = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Badge - Guide 01</title>' +
+    var badgeHtml = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Badge - Guide 02</title>' +
       '<style>' +
         '@page { size:5in 7in; margin:0; }' +
         '* { margin:0; padding:0; box-sizing:border-box; }' +
@@ -522,9 +508,9 @@
         '<div class="badge-header"><div class="logo">UHN</div><div class="series">Accessibility First Series</div></div>' +
         '<div class="accent-line"></div>' +
         '<div class="badge-body">' +
-          '<div class="badge-circle">Accessibility<br>First:<br>Foundations</div>' +
-          '<div class="badge-title">Guide 01 Complete</div>' +
-          '<div class="badge-sub">Foundations of Disability, Inclusion &amp; Accessible Design</div>' +
+          '<div class="badge-circle">Accessibility<br>First:<br>Perceptions<br>&amp; Attitudes</div>' +
+          '<div class="badge-title">Guide 02 Complete</div>' +
+          '<div class="badge-sub">Perceptions, Attitudes, and Barriers</div>' +
           '<div class="badge-name">' + escapeHtml(learnerName) + '</div>' +
           '<div class="badge-date">' + completionDate + '</div>' +
         '</div>' +

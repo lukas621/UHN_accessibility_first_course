@@ -75,6 +75,10 @@ Interaction: {{interaction_type}}
 ================================================================
 ```
 
+## Flexible Slide Count
+
+Slide count varies per guide (18-23 slides). Generate VO scripts only for slides that exist in the storyboard. Some guides may not have a podcast slide or decision tree slide — do not generate VO for non-existent slides.
+
 ## Screen-Type Specific Guidance
 
 ### Welcome Screen

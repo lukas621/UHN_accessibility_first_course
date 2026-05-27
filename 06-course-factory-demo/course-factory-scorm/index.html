@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>Course Factory Demo — Coffee Brewing Safety</title>
+<style>
+:root {
+  --navy: #192858;
+  --navy-deep: #0F1A3D;
+  --red: #C0233B;
+  --red-bg: #FDF2F3;
+  --cobalt: #245BAA;
+  --cobalt-bg: #EAF1FA;
+  --lilac: #C48ABD;
+  --lilac-bg: #F7EDF5;
+  --chartreuse: #74AE54;
+  --chartreuse-bg: #EEF6E7;
+  --neutral: #E4E4E4;
+  --neutral-2: #F4F4F4;
+  --ink: #111111;
+  --muted: #5A5A5A;
+  --font-head: "Arial Black", "Arial Bold", Arial, sans-serif;
+  --font-body: Arial, Helvetica, sans-serif;
+}
+html, body { margin:0; padding:0; background:#000; font-family:var(--font-body); color:var(--ink); overflow:hidden; width:100vw; height:100vh; }
+
+/* ── Slide canvas ── */
+.slide {
+  width:1920px; height:1080px; background:#fff;
+  position:fixed; top:0; left:0;
+  transform-origin:top left;
+  overflow:hidden; font-size:28px; line-height:1.5;
+  visibility:hidden; opacity:0; pointer-events:none;
+  z-index:1; will-change:transform;
+}
+.slide.active { visibility:visible; opacity:1; pointer-events:auto; z-index:10; }
+
+/* ── Topbar ── */
+.topbar {
+  position:absolute; top:0; left:0; right:0; height:84px;
+  background:var(--navy); color:#fff;
+  display:flex; align-items:center;
+  padding:0 24px; z-index:10;
+}
+.topbar .menu-btn {
+  height:40px; padding:0 14px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#fff;
+  cursor:pointer; display:flex; align-items:center; gap:8px; margin-right:18px;
+  font-family:var(--font-head); font-size:12px; letter-spacing:2px; text-transform:uppercase;
+  position:relative; z-index:2;
+}
+.topbar .menu-btn:hover { background:rgba(255,255,255,0.16); }
+.topbar .menu-btn svg { width:18px; height:18px; stroke:#fff; flex-shrink:0; }
+.topbar .brand {
+  position:absolute; left:0; right:0; top:0; bottom:0;
+  display:flex; align-items:center; justify-content:center; gap:18px;
+  font-family:var(--font-head); font-size:20px; letter-spacing:3px; text-transform:uppercase;
+  pointer-events:none;
+}
+.topbar .brand .icon { font-size:28px; pointer-events:auto; }
+.topbar .brand .sep { width:1px; height:32px; background:rgba(255,255,255,0.25); flex-shrink:0; pointer-events:auto; }
+.topbar .brand .ctx { font-family:var(--font-head); font-size:20px; letter-spacing:3px; color:rgba(255,255,255,0.85); pointer-events:auto; }
+.topbar .crumbs { margin-left:auto; position:relative; z-index:2; font-size:18px; color:rgba(255,255,255,0.75); letter-spacing:1px; }
+.topbar .crumbs b { color:#fff; }
+
+/* ── Side Menu ── */
+.side-menu {
+  position:fixed; top:0; left:0; bottom:0; width:340px;
+  background:#fff; color:var(--ink); z-index:9999;
+  transform:translateX(-100%); transition:transform 0.28s cubic-bezier(0.2,0.7,0.2,1);
+  display:flex; flex-direction:column;
+}
+body.nav-open .side-menu { transform:none; }
+.side-menu .sm-head {
+  background:var(--navy); color:#fff; padding:22px 22px 18px;
+  display:flex; flex-direction:column; gap:12px;
+}
+.side-menu .sm-head .row { display:flex; align-items:center; justify-content:space-between; }
+.side-menu .sm-close { background:transparent; border:0; color:#fff; font-size:26px; cursor:pointer; }
+.side-menu .sm-eyebrow { font-family:var(--font-head); font-size:11px; letter-spacing:3px; color:var(--lilac); text-transform:uppercase; }
+.side-menu .sm-title { font-family:var(--font-head); font-size:22px; color:#fff; }
+.side-menu .sm-progress-row { display:flex; align-items:center; gap:12px; margin-top:4px; }
+.side-menu .sm-progress { flex:1; height:6px; background:rgba(255,255,255,0.15); border-radius:3px; overflow:hidden; }
+.side-menu .sm-progress-fill { height:100%; background:var(--chartreuse); width:0%; transition:width 0.3s; }
+.side-menu .sm-progress-text { font-family:var(--font-head); font-size:12px; letter-spacing:2px; color:rgba(255,255,255,0.7); }
+.side-menu .sm-list { overflow-y:auto; flex:1; padding:8px 0 22px; }
+.side-menu .sm-item {
+  display:flex; align-items:center; gap:14px; padding:14px 22px; cursor:pointer;
+  border:0; background:transparent; width:100%; text-align:left;
+  border-left:4px solid transparent; font-family:var(--font-body); transition:background 0.12s;
+}
+.side-menu .sm-item:hover { background:var(--neutral-2); }
+.side-menu .sm-item .sm-num {
+  font-family:var(--font-head); font-size:14px; width:32px; height:32px;
+  border:2px solid var(--neutral); color:var(--muted); display:grid; place-items:center; flex-shrink:0;
+}
+.side-menu .sm-item .sm-name { font-size:14px; color:#222; flex:1; }
+.side-menu .sm-item .sm-status { font-family:var(--font-head); font-size:9px; letter-spacing:1.5px; color:var(--muted); text-transform:uppercase; }
+.side-menu .sm-item.active { background:var(--cobalt-bg); border-left-color:var(--cobalt); }
+.side-menu .sm-item.active .sm-num { background:var(--cobalt); border-color:var(--cobalt); color:#fff; }
+.side-menu .sm-item.active .sm-name { color:var(--navy); font-weight:bold; }
+.side-menu .sm-item.visited .sm-num { background:var(--chartreuse); border-color:var(--chartreuse); color:#fff; }
+.side-menu .sm-item.visited .sm-status { color:var(--chartreuse); }
+.side-menu-scrim { position:fixed; inset:0; background:rgba(15,26,61,0.5); opacity:0; pointer-events:none; z-index:9997; transition:opacity 0.28s; }
+body.nav-open .side-menu-scrim { opacity:1; pointer-events:auto; }
+
+/* ── Title slide ── */
+.s-title {
+  background:var(--navy); color:#fff; padding:48px 64px 80px;
+  display:grid; grid-template-columns:1fr 1fr; gap:48px;
+  height:1080px; box-sizing:border-box; position:relative;
+}
+.s-title .left { display:flex; flex-direction:column; justify-content:space-between; }
+.s-title .brandline {
+  display:flex; align-items:center; gap:28px;
+  font-family:var(--font-head); font-size:26px; letter-spacing:4px; text-transform:uppercase;
+}
+.s-title .brandline .brand-icon { font-size:72px; }
+.s-title .guide-num {
+  font-family:var(--font-head); font-size:24px; letter-spacing:6px;
+  color:var(--lilac); text-transform:uppercase;
+}
+.s-title h1 {
+  font-family:var(--font-head); font-size:64px; line-height:1.0; margin:0 0 16px; letter-spacing:-1px;
+}
+.s-title .sub { font-size:22px; color:rgba(255,255,255,0.75); max-width:660px; line-height:1.4; }
+.s-title .meta-row {
+  display:flex; justify-content:space-between; padding-top:16px; border-top:1px solid rgba(255,255,255,0.2);
+}
+.s-title .meta { font-size:24px; color:rgba(255,255,255,0.6); letter-spacing:1px; }
+.s-title .meta b { display:block; color:#fff; font-family:var(--font-head); font-size:24px; margin-top:6px; }
+.s-title .right { display:flex; flex-direction:column; justify-content:space-between; gap:32px; }
+.hero-photo {
+  flex:1; border-radius:4px; overflow:hidden; border:1px solid rgba(255,255,255,0.2);
+  background:linear-gradient(135deg, #3d2c1a 0%, #6b4226 40%, #8b5e3c 100%);
+  display:flex; align-items:center; justify-content:center; position:relative;
+}
+.hero-photo .placeholder-icon { font-size:200px; opacity:0.3; }
+.start-bar {
+  display:flex; align-items:center; justify-content:space-between;
+  background:#fff; color:var(--navy); padding:22px 28px;
+}
+.start-bar .status { font-size:18px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
+.start-bar .cta {
+  background:var(--red); color:#fff; font-family:var(--font-head);
+  font-size:24px; padding:18px 32px; letter-spacing:2px;
+  display:inline-flex; align-items:center; gap:14px; cursor:pointer; border:0;
+}
+.start-bar .cta::after { content:"\203A"; font-size:32px; }
+
+/* ── Title block ── */
+.title-block { padding:108px 96px 0; }
+.title-block .eyebrow {
+  font-family:var(--font-head); font-size:18px; letter-spacing:4px;
+  text-transform:uppercase; color:var(--red); margin-bottom:14px;
+}
+.title-block h1 {
+  font-family:var(--font-head); font-size:56px; line-height:1.05;
+  color:var(--navy); margin:0 0 14px;
+}
+.title-block h1 .accent { color:var(--red); }
+.title-block .lede { font-size:24px; color:#333; max-width:1100px; line-height:1.4; }
+
+/* ── Objective cards ── */
+.obj-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:28px; padding:56px 96px 0; }
+.obj-card {
+  border:1px solid var(--neutral); border-top:4px solid var(--navy);
+  padding:32px 36px; display:flex; gap:24px; background:#fff; cursor:pointer; transition:all 0.2s;
+}
+.obj-card:hover { box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+.obj-card .num { font-family:var(--font-head); font-size:56px; color:var(--navy); line-height:0.9; min-width:80px; }
+.obj-card .body h3 { font-family:var(--font-head); font-size:26px; color:var(--navy); margin:0 0 10px; }
+.obj-card .body p { font-size:22px; color:#333; margin:0; line-height:1.45; }
+.obj-card.featured { border-top-color:var(--red); }
+.obj-card.featured .num { color:var(--red); }
+
+/* ── Text + Image ── */
+.why-grid { display:grid; grid-template-columns:1.1fr 1fr; gap:48px; padding:40px 96px 0; }
+.why-grid .photo {
+  height:540px; border:1px solid #dcdcdc; overflow:hidden; position:relative;
+  background:linear-gradient(135deg, #f5e6d3 0%, #e8d5c0 100%);
+  display:flex; align-items:center; justify-content:center;
+}
+.why-grid .photo .placeholder-icon { font-size:160px; opacity:0.3; }
+.why-body p { font-size:22px; line-height:1.5; color:#222; margin:0 0 14px; }
+.key-takeaway {
+  margin-top:20px; border-left:6px solid var(--red); background:var(--red-bg); padding:20px 24px;
+}
+.key-takeaway .lbl { font-family:var(--font-head); font-size:16px; letter-spacing:3px; color:var(--red); text-transform:uppercase; margin-bottom:8px; }
+.key-takeaway p { font-size:22px; color:var(--ink); line-height:1.4; margin:0; font-weight:bold; }
+
+/* ── Click-to-Reveal cards ── */
+.card-grid { display:grid; gap:24px; padding:48px 96px 0; }
+.card-grid.g2x2 { grid-template-columns:repeat(2,1fr); }
+.g-card {
+  border:1px solid var(--neutral); background:#fff; cursor:pointer; transition:all 0.2s;
+}
+.g-card:hover { box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+.g-card .g-head {
+  background:var(--navy); color:#fff; padding:22px 28px;
+  display:flex; align-items:center; gap:16px;
+}
+.g-card .g-head .num {
+  width:40px; height:40px; border:2px solid rgba(255,255,255,0.5);
+  display:grid; place-items:center; font-family:var(--font-head); font-size:20px; flex-shrink:0;
+}
+.g-card .g-head h3 { font-family:var(--font-head); font-size:24px; margin:0; letter-spacing:1px; }
+.g-card .g-body { padding:24px 28px; flex:1; font-size:20px; line-height:1.5; color:#222; }
+.g-card .g-body ul { list-style:none; padding:0; margin:12px 0 0; }
+.g-card .g-body ul li { padding:6px 0 6px 18px; position:relative; font-size:18px; }
+.g-card .g-body ul li::before { content:""; position:absolute; left:0; top:14px; width:8px; height:2px; background:var(--red); }
+.g-card .g-detail {
+  display:none; font-size:17px; color:var(--muted); padding:12px 28px 20px;
+  border-top:1px dashed var(--neutral); line-height:1.5;
+}
+.g-card.expanded { box-shadow:0 4px 24px rgba(0,0,0,0.1); transform:scale(1.02); z-index:5; position:relative; }
+.g-card.expanded .g-detail { display:block; }
+.g-card.red-top { border-top:4px solid var(--red); }
+.g-card.cobalt-top { border-top:4px solid var(--cobalt); }
+.g-card.lilac-top { border-top:4px solid var(--lilac); }
+.g-card.chart-top { border-top:4px solid var(--chartreuse); }
+
+/* ── Knowledge Check / MCQ ── */
+.kc-grid { padding:24px 96px 0; display:grid; grid-template-columns:1.3fr 1fr; gap:40px; }
+.kc-question .lbl { font-family:var(--font-head); font-size:16px; letter-spacing:3px; color:var(--cobalt); text-transform:uppercase; margin-bottom:10px; }
+.kc-question h2 { font-family:var(--font-head); font-size:30px; color:var(--navy); line-height:1.2; margin:0 0 18px; }
+.kc-options { display:flex; flex-direction:column; gap:10px; }
+.kc-opt {
+  border:1px solid var(--neutral); background:#fff; padding:16px 22px;
+  display:flex; align-items:center; gap:18px; font-size:20px; color:#222;
+  cursor:pointer; transition:all 0.15s;
+}
+.kc-opt:hover { border-color:var(--cobalt); background:rgba(234,241,250,0.3); }
+.kc-opt .ltr {
+  width:40px; height:40px; border:2px solid var(--neutral); color:var(--navy);
+  display:grid; place-items:center; font-family:var(--font-head); font-size:18px; flex-shrink:0;
+}
+.kc-opt.selected { border-color:var(--cobalt); background:var(--cobalt-bg); }
+.kc-opt.selected .ltr { background:var(--cobalt); color:#fff; border-color:var(--cobalt); }
+.kc-opt.correct { border-color:var(--chartreuse); background:var(--chartreuse-bg); }
+.kc-opt.correct .ltr { background:var(--chartreuse); color:#fff; border-color:var(--chartreuse); }
+.kc-opt.incorrect { border-color:var(--red); background:var(--red-bg); }
+.kc-opt.incorrect .ltr { background:var(--red); color:#fff; border-color:var(--red); }
+.kc-opt .mark { margin-left:auto; font-family:var(--font-head); font-size:14px; letter-spacing:2px; padding:4px 10px; color:#fff; display:none; }
+.kc-opt.correct .mark { display:inline-block; background:var(--chartreuse); }
+.kc-opt.incorrect .mark { display:inline-block; background:var(--red); }
+.kc-feedback { border:1px solid var(--neutral); background:#fff; display:flex; flex-direction:column; visibility:hidden; opacity:0; transition:opacity 0.3s; }
+.kc-feedback.visible { visibility:visible; opacity:1; }
+.kc-feedback .head {
+  padding:18px 26px; font-family:var(--font-head); font-size:20px; letter-spacing:1px;
+  display:flex; align-items:center; gap:14px; color:#fff;
+}
+.kc-feedback .head .icon {
+  width:32px; height:32px; border-radius:50%; background:#fff; display:grid; place-items:center;
+  font-family:var(--font-head); font-size:20px;
+}
+.kc-feedback .body { padding:22px 26px; font-size:18px; line-height:1.5; color:#222; flex:1; }
+.kc-feedback .body p { margin:0 0 14px; }
+
+.submit-btn {
+  padding:14px 32px; font-family:var(--font-head); font-size:16px; letter-spacing:2px;
+  text-transform:uppercase; border:none; cursor:pointer; transition:all 0.15s; margin-top:14px;
+}
+.submit-btn:disabled { background:var(--neutral); color:var(--muted); cursor:not-allowed; }
+.submit-btn.ready { background:var(--cobalt); color:#fff; }
+.submit-btn.ready:hover { background:var(--navy); }
+.submit-btn.submitted { background:var(--navy); color:#fff; pointer-events:none; }
+.kc-options.locked .kc-opt { pointer-events:none; }
+.kc-options.locked .kc-opt:not(.selected):not(.correct):not(.incorrect) { opacity:0.55; }
+
+/* ── Summary cards ── */
+.summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; padding:48px 96px 0; }
+.summary-card {
+  border:1px solid var(--neutral); background:#fff; padding:32px 28px;
+  display:flex; flex-direction:column; gap:12px;
+}
+.summary-card .s-icon { font-size:48px; }
+.summary-card h3 { font-family:var(--font-head); font-size:22px; color:var(--navy); margin:0; }
+.summary-card p { font-size:18px; color:#333; margin:0; line-height:1.45; }
+.summary-card.red-top { border-top:4px solid var(--red); }
+.summary-card.cobalt-top { border-top:4px solid var(--cobalt); }
+.summary-card.chart-top { border-top:4px solid var(--chartreuse); }
+
+/* ── Footer / slide-nav ── */
+.slide-footer {
+  position:absolute; left:64px; right:64px; bottom:24px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:18px; color:#8A8A8A; letter-spacing:1px; text-transform:uppercase; z-index:20;
+}
+.slide-footer .left { display:flex; gap:18px; align-items:center; }
+.slide-footer .tag {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-head); font-size:14px; color:var(--navy); letter-spacing:2px;
+}
+.slide-footer .tag::before { content:""; width:8px; height:8px; background:var(--red); display:inline-block; }
+.slide-nav { display:flex; gap:0; }
+.slide-nav .sn-btn {
+  width:48px; height:48px; background:#fff; border:2px solid var(--navy); color:var(--navy);
+  cursor:pointer; display:grid; place-items:center; font-size:20px; transition:background 0.12s, color 0.12s;
+}
+.slide-nav .sn-btn+.sn-btn { border-left:0; }
+.slide-nav .sn-btn:hover { background:var(--navy); color:#fff; }
+.slide-nav .sn-btn.next { background:var(--navy); color:#fff; }
+.slide-nav .sn-btn.next:hover { background:var(--red); border-color:var(--red); }
+.slide-nav .sn-label {
+  padding:0 18px; background:#fff; border:2px solid var(--navy); border-left:0; border-right:0;
+  display:flex; flex-direction:column; justify-content:center; min-width:96px;
+}
+.slide-nav .sn-label .sn-lbl-k { font-family:var(--font-head); font-size:9px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
+.slide-nav .sn-label .sn-lbl-v { font-family:var(--font-head); font-size:14px; color:var(--navy); letter-spacing:1px; margin-top:1px; }
+
+.slide-footer.dark .tag { color:#fff; }
+.slide-footer.dark .tag::before { background:var(--lilac); }
+.slide-footer.dark .sn-btn { background:transparent; border-color:rgba(255,255,255,0.3); color:#fff; }
+.slide-footer.dark .sn-btn.next { background:rgba(255,255,255,0.15); }
+.slide-footer.dark .sn-btn:hover { background:rgba(255,255,255,0.2); }
+.slide-footer.dark .sn-label { background:transparent; border-color:rgba(255,255,255,0.3); }
+.slide-footer.dark .sn-label .sn-lbl-k { color:rgba(255,255,255,0.5); }
+.slide-footer.dark .sn-label .sn-lbl-v { color:#fff; }
+
+/* ── Demo badge ── */
+.demo-badge {
+  position:fixed; top:16px; right:16px; z-index:99999;
+  background:var(--red); color:#fff; font-family:var(--font-head);
+  font-size:11px; letter-spacing:3px; padding:8px 18px;
+  text-transform:uppercase; box-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+
+/* ── Welcome overlay ── */
+.welcome-overlay {
+  position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center;
+  background:rgba(15,26,61,0.92);
+}
+.welcome-overlay.hidden { display:none; }
+.welcome-card {
+  background:#fff; color:var(--navy); padding:56px 64px; max-width:560px; width:92%;
+  text-align:center; box-shadow:0 16px 64px rgba(0,0,0,0.4); border-top:6px solid var(--red);
+}
+.welcome-card .welcome-icon { font-size:64px; margin-bottom:12px; }
+.welcome-card .welcome-eyebrow {
+  font-family:var(--font-head); font-size:12px; letter-spacing:4px; color:var(--muted);
+  text-transform:uppercase; margin-bottom:8px;
+}
+.welcome-card h2 { font-family:var(--font-head); font-size:32px; color:var(--navy); margin:0 0 6px; }
+.welcome-card h2 .accent { color:var(--red); }
+.welcome-card .welcome-sub { font-size:16px; color:var(--muted); margin:0 0 28px; line-height:1.5; }
+.welcome-card .welcome-fields { display:flex; flex-direction:column; gap:14px; text-align:left; margin-bottom:24px; }
+.welcome-card .welcome-field label {
+  font-family:var(--font-head); font-size:12px; letter-spacing:2px; color:var(--muted);
+  text-transform:uppercase; display:block; margin-bottom:6px;
+}
+.welcome-card .welcome-field input {
+  width:100%; box-sizing:border-box; padding:14px 16px; border:2px solid var(--neutral);
+  font-family:var(--font-body); font-size:16px; color:var(--navy); background:#fff; outline:none;
+}
+.welcome-card .welcome-field input:focus { border-color:var(--cobalt); }
+.welcome-start-btn {
+  background:var(--red); color:#fff; font-family:var(--font-head);
+  font-size:18px; padding:16px 48px; border:0; cursor:pointer; letter-spacing:3px;
+  text-transform:uppercase; transition:background 0.15s;
+}
+.welcome-start-btn:hover { background:#a01e32; }
+
+/* ── Hint toast ── */
+.hint-toast {
+  position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
+  background:var(--cobalt); color:#fff; padding:12px 28px; font-size:16px;
+  font-family:var(--font-head); letter-spacing:1px; z-index:99990;
+  opacity:0; pointer-events:none; transition:opacity 0.3s;
+}
+.hint-toast.visible { opacity:1; }
+
+/* ── Audio Controls Bar ── */
+.audio-controls {
+  position:fixed; bottom:10px; left:50%; transform:translateX(-50%);
+  display:flex; align-items:center; gap:4px; z-index:9990;
+  background:rgba(25,40,88,0.92); border-radius:5px; overflow:hidden;
+  box-shadow:0 2px 12px rgba(0,0,0,0.3); padding:0 4px;
+  transition:transform 0.3s cubic-bezier(0.2,0.7,0.2,1), opacity 0.3s;
+}
+.audio-controls.hidden {
+  transform:translateX(-50%) translateY(calc(100% + 14px));
+  opacity:0; pointer-events:none;
+}
+.ac-btn {
+  width:32px; height:32px; background:transparent; border:none; color:#fff;
+  cursor:pointer; display:grid; place-items:center; font-size:13px;
+  transition:background 0.15s; flex-shrink:0;
+}
+.ac-btn:hover { background:rgba(255,255,255,0.12); }
+.ac-btn.active { background:var(--red); }
+.ac-btn svg { width:14px; height:14px; fill:#fff; }
+.ac-vol-wrap { display:flex; align-items:center; gap:0; position:relative; }
+.ac-vol-slider { width:0; overflow:hidden; transition:width 0.2s; display:flex; align-items:center; }
+.ac-vol-wrap:hover .ac-vol-slider { width:60px; }
+.ac-vol-slider input[type=range] {
+  -webkit-appearance:none; appearance:none; width:52px; height:3px;
+  background:rgba(255,255,255,0.2); border-radius:2px; outline:none; margin:0 4px;
+}
+.ac-vol-slider input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:10px; height:10px; border-radius:50%;
+  background:#fff; cursor:pointer;
+}
+.ac-label {
+  font-family:var(--font-body); font-size:10px; color:rgba(255,255,255,0.6);
+  padding:0 8px; white-space:nowrap; letter-spacing:0.5px;
+}
+.ac-hide {
+  width:24px; height:32px; background:transparent; border:none; color:rgba(255,255,255,0.4);
+  cursor:pointer; display:grid; place-items:center; font-size:16px; flex-shrink:0;
+  transition:color 0.15s; margin-left:2px;
+}
+.ac-hide:hover { color:#fff; }
+.ac-show {
+  position:fixed; bottom:6px; left:50%; transform:translateX(-50%);
+  width:36px; height:14px; z-index:9989; cursor:pointer; border:none;
+  background:rgba(25,40,88,0.7); border-radius:3px 3px 0 0;
+  display:none; align-items:center; justify-content:center;
+}
+.ac-show::after { content:''; width:18px; height:2px; background:rgba(255,255,255,0.5); border-radius:1px; }
+.ac-show:hover { background:rgba(25,40,88,0.95); }
+.ac-show.visible { display:flex; }
+
+/* ── Results slide ── */
+.s-results { background:var(--navy-deep); color:#fff; }
+.results-card {
+  margin:32px auto 0; max-width:960px; background:#fff; color:var(--navy);
+  padding:48px 56px; border-top:6px solid var(--chartreuse); text-align:center;
+  box-shadow:0 8px 32px rgba(0,0,0,0.2);
+}
+.results-card .r-icon { font-size:72px; margin-bottom:8px; }
+.results-card h2 { font-family:var(--font-head); font-size:36px; color:var(--navy); margin:0 0 8px; }
+.results-card .r-name { font-size:20px; color:var(--muted); margin-bottom:24px; }
+.results-stats {
+  display:flex; gap:32px; justify-content:center; padding:24px 0; margin:0 0 24px;
+  border-top:1px solid var(--neutral); border-bottom:1px solid var(--neutral);
+}
+.results-stats .r-stat { text-align:center; min-width:120px; }
+.results-stats .r-stat .val { font-family:var(--font-head); font-size:36px; display:block; }
+.results-stats .r-stat .val.green { color:var(--chartreuse); }
+.results-stats .r-stat .val.blue { color:var(--cobalt); }
+.results-stats .r-stat .val.red { color:var(--red); }
+.results-stats .r-stat .lbl { font-size:12px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-top:4px; }
+.results-checklist { text-align:left; max-width:480px; margin:0 auto 28px; }
+.results-checklist .rc-item {
+  display:flex; align-items:center; gap:14px; padding:12px 0;
+  border-bottom:1px solid var(--neutral); font-size:18px;
+}
+.results-checklist .rc-item:last-child { border-bottom:0; }
+.rc-icon {
+  width:28px; height:28px; border-radius:50%; display:grid; place-items:center;
+  font-size:14px; flex-shrink:0; color:#fff;
+}
+.rc-icon.done { background:var(--chartreuse); }
+.rc-icon.pending { background:var(--neutral); color:var(--muted); }
+.results-badge {
+  border:3px solid var(--navy); border-radius:50%;
+  width:100px; height:100px; display:flex; align-items:center; justify-content:center;
+  margin:0 auto 20px; background:var(--navy); color:#fff;
+  font-family:var(--font-head); font-size:11px; text-align:center; line-height:1.3; padding:12px;
+}
+.results-btns { display:flex; gap:14px; justify-content:center; margin-top:24px; }
+.results-btns button {
+  font-family:var(--font-head); font-size:14px; padding:14px 28px; border:0;
+  cursor:pointer; letter-spacing:2px; text-transform:uppercase; transition:all 0.15s;
+}
+.btn-restart { background:var(--navy); color:#fff; }
+.btn-restart:hover { background:var(--red); }
+.btn-exit { background:var(--red); color:#fff; }
+.btn-exit:hover { background:#a01e32; }
+</style>
+</head>
+<body>
+
+<!-- ══ DEMO BADGE ══ -->
+<div class="demo-badge">COURSE FACTORY DEMO</div>
+
+<!-- ══ WELCOME DIALOG ══ -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-card">
+    <div class="welcome-icon">&#9749;</div>
+    <div class="welcome-eyebrow">COURSE FACTORY</div>
+    <h2>Coffee Brewing <span class="accent">Safety</span></h2>
+    <p class="welcome-sub">A 7-slide interactive demo course built with Course Factory. No Storyline needed.</p>
+    <div class="welcome-fields">
+      <div class="welcome-field">
+        <label for="welcomeName">Your Name</label>
+        <input type="text" id="welcomeName" placeholder="Enter your name to begin">
+      </div>
+    </div>
+    <button class="welcome-start-btn" id="welcomeStartBtn">BEGIN DEMO</button>
+  </div>
+</div>
+
+<!-- ══ SIDE MENU ══ -->
+<div class="side-menu-scrim" onclick="closeMenu()"></div>
+<nav class="side-menu" id="sideMenu">
+  <div class="sm-head">
+    <div class="row">
+      <span class="sm-eyebrow">COURSE FACTORY DEMO</span>
+      <button class="sm-close" onclick="closeMenu()">&times;</button>
+    </div>
+    <div class="sm-title">Coffee Brewing Safety</div>
+    <div class="sm-progress-row">
+      <div class="sm-progress"><div class="sm-progress-fill" id="menuProgress"></div></div>
+      <span class="sm-progress-text" id="menuProgressText">0%</span>
+    </div>
+  </div>
+  <div class="sm-list" id="menuList">
+    <button class="sm-item active" onclick="goSlide(1);closeMenu()">
+      <span class="sm-num">1</span><span class="sm-name">Welcome</span><span class="sm-status"></span>
+    </button>
+    <button class="sm-item" onclick="goSlide(2);closeMenu()">
+      <span class="sm-num">2</span><span class="sm-name">Learning Objectives</span><span class="sm-status"></span>
+    </button>
+    <button class="sm-item" onclick="goSlide(3);closeMenu()">
+      <span class="sm-num">3</span><span class="sm-name">Why Brewing Safety Matters</span><span class="sm-status"></span>
+    </button>
+    <button class="sm-item" onclick="goSlide(4);closeMenu()">
+      <span class="sm-num">4</span><span class="sm-name">Key Hazards</span><span class="sm-status"></span>
+    </button>
+    <button class="sm-item" onclick="goSlide(5);closeMenu()">
+      <span class="sm-num">5</span><span class="sm-name">Knowledge Check</span><span class="sm-status"></span>
+    </button>
+    <button class="sm-item" onclick="goSlide(6);closeMenu()">
+      <span class="sm-num">6</span><span class="sm-name">Summary</span><span class="sm-status"></span>
+    </button>
+    <button class="sm-item" onclick="goSlide(7);closeMenu()">
+      <span class="sm-num">7</span><span class="sm-name">Results</span><span class="sm-status"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════ SLIDE 1: Title ═══════ -->
+<section class="slide s-title active" data-slide="1">
+  <div class="left">
+    <div class="brandline">
+      <span class="brand-icon">&#9749;</span>
+      <span>COURSE FACTORY</span>
+    </div>
+    <div>
+      <div class="guide-num" style="margin-bottom:32px;">DEMO COURSE &middot; SAFETY TRAINING</div>
+      <h1 style="margin-bottom:28px;">
+        Coffee Brewing <span style="color:var(--lilac)">Safety</span>
+      </h1>
+      <div class="sub">In this 5-minute demo, you'll learn the fundamentals of safe coffee brewing operations. This is a sample course built entirely with Course Factory &mdash; no Articulate Storyline required.</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta">Duration<b>5 min</b></div>
+      <div class="meta">Audience<b>All Baristas</b></div>
+      <div class="meta">Format<b>Interactive</b></div>
+    </div>
+  </div>
+  <div class="right">
+    <div class="hero-photo"><span class="placeholder-icon">&#9749;</span></div>
+    <div class="start-bar">
+      <div class="status">DEMO COURSE</div>
+      <button class="cta" onclick="goSlide(2)">Begin</button>
+    </div>
+  </div>
+  <div class="slide-footer dark">
+    <div class="left"><span class="tag">COURSE FACTORY</span></div>
+    <div class="slide-nav">
+      <button class="sn-btn prev" onclick="goSlide(0)">&lsaquo;</button>
+      <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">1 / 7</span></div>
+      <button class="sn-btn next" onclick="goSlide(2)">&rsaquo;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SLIDE 2: Objectives ═══════ -->
+<section class="slide" data-slide="2">
+  <div class="topbar">
+    <button class="menu-btn" onclick="openMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+    <div class="brand">
+      <span class="icon">&#9749;</span>
+      <div class="sep"></div>
+      <div class="ctx">COURSE FACTORY</div>
+    </div>
+    <div class="crumbs">Coffee Brewing Safety &rsaquo; <b>Learning Objectives</b></div>
+  </div>
+  <div class="title-block">
+    <div class="eyebrow">SLIDE 2 &middot; OBJECTIVES</div>
+    <h1>What You Will <span class="accent">Learn</span></h1>
+    <div class="lede">By the end of this course, you'll be able to do four things:</div>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card featured">
+      <div class="num">01</div>
+      <div class="body">
+        <h3>Identify brewing hazards</h3>
+        <p>Recognize thermal, electrical, and chemical risks in a coffee brewing environment.</p>
+      </div>
+    </div>
+    <div class="obj-card">
+      <div class="num">02</div>
+      <div class="body">
+        <h3>Apply safe handling procedures</h3>
+        <p>Follow correct procedures for handling hot water, steam wands, and brewing equipment.</p>
+      </div>
+    </div>
+    <div class="obj-card">
+      <div class="num">03</div>
+      <div class="body">
+        <h3>Respond to common incidents</h3>
+        <p>Know what to do if a burn, spill, or equipment malfunction occurs during service.</p>
+      </div>
+    </div>
+    <div class="obj-card">
+      <div class="num">04</div>
+      <div class="body">
+        <h3>Maintain a clean workspace</h3>
+        <p>Understand how workspace hygiene prevents accidents and protects food safety.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="left"><span class="tag">COFFEE BREWING SAFETY</span></div>
+    <div class="slide-nav">
+      <button class="sn-btn prev" onclick="goSlide(1)">&lsaquo;</button>
+      <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">2 / 7</span></div>
+      <button class="sn-btn next" onclick="goSlide(3)">&rsaquo;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SLIDE 3: Text + Image ═══════ -->
+<section class="slide" data-slide="3">
+  <div class="topbar">
+    <button class="menu-btn" onclick="openMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+    <div class="brand">
+      <span class="icon">&#9749;</span>
+      <div class="sep"></div>
+      <div class="ctx">COURSE FACTORY</div>
+    </div>
+    <div class="crumbs">Coffee Brewing Safety &rsaquo; <b>Why It Matters</b></div>
+  </div>
+  <div class="title-block" style="padding-bottom:0;">
+    <div class="eyebrow">SLIDE 3 &middot; CONTEXT</div>
+    <h1>Why Brewing Safety <span class="accent">Matters</span></h1>
+  </div>
+  <div class="why-grid">
+    <div class="photo">
+      <span class="placeholder-icon">&#127861;</span>
+    </div>
+    <div class="why-body">
+      <p>Every year, thousands of food service workers are injured by burns, scalds, and slip-and-fall incidents. Coffee brewing environments involve temperatures exceeding <b>200&deg;F (93&deg;C)</b>, pressurized steam, and wet surfaces.</p>
+      <p>Most injuries are preventable. A 2023 industry study found that <b>78% of barista injuries</b> occurred when standard safety procedures were not followed.</p>
+      <p>Understanding the hazards in your workspace isn't just about compliance &mdash; it's about protecting yourself and your coworkers every single shift.</p>
+      <div class="key-takeaway">
+        <div class="lbl">KEY TAKEAWAY</div>
+        <p>The majority of brewing injuries are preventable through consistent application of safety procedures.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="left"><span class="tag">COFFEE BREWING SAFETY</span></div>
+    <div class="slide-nav">
+      <button class="sn-btn prev" onclick="goSlide(2)">&lsaquo;</button>
+      <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">3 / 7</span></div>
+      <button class="sn-btn next" onclick="goSlide(4)">&rsaquo;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SLIDE 4: Click-to-Reveal ═══════ -->
+<section class="slide" data-slide="4">
+  <div class="topbar">
+    <button class="menu-btn" onclick="openMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+    <div class="brand">
+      <span class="icon">&#9749;</span>
+      <div class="sep"></div>
+      <div class="ctx">COURSE FACTORY</div>
+    </div>
+    <div class="crumbs">Coffee Brewing Safety &rsaquo; <b>Key Hazards</b></div>
+  </div>
+  <div class="title-block" style="padding-bottom:0;">
+    <div class="eyebrow">SLIDE 4 &middot; INTERACTIVE</div>
+    <h1>Four Key <span class="accent">Hazards</span></h1>
+    <div class="lede">Click each card to reveal details. All four must be explored before continuing.</div>
+  </div>
+  <div class="card-grid g2x2">
+    <div class="g-card red-top" onclick="this.classList.toggle('expanded');checkCardsRevealed()">
+      <div class="g-head">
+        <span class="num">01</span>
+        <h3>&#128293; Thermal Burns</h3>
+      </div>
+      <div class="g-body">Hot water, steam wands, and heated surfaces can cause severe burns.</div>
+      <div class="g-detail">
+        <b>Prevention:</b> Always use insulated handles. Never reach across active burners. Keep steam wand pointed away from your body. Announce "hot behind" when carrying heated containers.
+      </div>
+    </div>
+    <div class="g-card cobalt-top" onclick="this.classList.toggle('expanded');checkCardsRevealed()">
+      <div class="g-head">
+        <span class="num">02</span>
+        <h3>&#9889; Electrical Hazards</h3>
+      </div>
+      <div class="g-body">Wet hands + electrical equipment = serious risk of shock.</div>
+      <div class="g-detail">
+        <b>Prevention:</b> Dry hands before touching switches or plugs. Keep cords away from water. Report frayed cords immediately. Never use equipment with damaged wiring.
+      </div>
+    </div>
+    <div class="g-card lilac-top" onclick="this.classList.toggle('expanded');checkCardsRevealed()">
+      <div class="g-head">
+        <span class="num">03</span>
+        <h3>&#128167; Slips &amp; Spills</h3>
+      </div>
+      <div class="g-body">Wet floors from spilled water, milk, or cleaning create fall hazards.</div>
+      <div class="g-detail">
+        <b>Prevention:</b> Clean spills immediately. Use "wet floor" signs. Wear non-slip footwear. Keep walkways clear of cords and equipment.
+      </div>
+    </div>
+    <div class="g-card chart-top" onclick="this.classList.toggle('expanded');checkCardsRevealed()">
+      <div class="g-head">
+        <span class="num">04</span>
+        <h3>&#129514; Chemical Exposure</h3>
+      </div>
+      <div class="g-body">Cleaning agents and descaling solutions require careful handling.</div>
+      <div class="g-detail">
+        <b>Prevention:</b> Read all labels before use. Wear gloves when handling chemicals. Never mix cleaning products. Store chemicals away from food prep areas.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="left"><span class="tag">COFFEE BREWING SAFETY</span></div>
+    <div class="slide-nav">
+      <button class="sn-btn prev" onclick="goSlide(3)">&lsaquo;</button>
+      <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">4 / 7</span></div>
+      <button class="sn-btn next" onclick="goSlide(5)">&rsaquo;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SLIDE 5: MCQ Knowledge Check ═══════ -->
+<section class="slide" data-slide="5">
+  <div class="topbar">
+    <button class="menu-btn" onclick="openMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+    <div class="brand">
+      <span class="icon">&#9749;</span>
+      <div class="sep"></div>
+      <div class="ctx">COURSE FACTORY</div>
+    </div>
+    <div class="crumbs">Coffee Brewing Safety &rsaquo; <b>Knowledge Check</b></div>
+  </div>
+  <div class="title-block" style="padding-bottom:0;">
+    <div class="eyebrow">SLIDE 5 &middot; KNOWLEDGE CHECK</div>
+    <h1>Test Your <span class="accent">Understanding</span></h1>
+  </div>
+  <div class="kc-grid">
+    <div class="kc-question">
+      <div class="lbl">QUESTION 1 OF 1</div>
+      <h2>A coworker spills hot water on the counter and it drips onto the floor. What should you do first?</h2>
+      <div class="kc-options" id="kcOptions" data-correct="C">
+        <div class="kc-opt" data-answer="A" tabindex="0" role="radio" aria-checked="false">
+          <span class="ltr">A</span>
+          <span>Continue working and clean it up when you get a chance</span>
+          <span class="mark"></span>
+        </div>
+        <div class="kc-opt" data-answer="B" tabindex="0" role="radio" aria-checked="false">
+          <span class="ltr">B</span>
+          <span>Tell your manager about the spill</span>
+          <span class="mark"></span>
+        </div>
+        <div class="kc-opt" data-answer="C" tabindex="0" role="radio" aria-checked="false">
+          <span class="ltr">C</span>
+          <span>Warn nearby coworkers, then clean the spill immediately</span>
+          <span class="mark"></span>
+        </div>
+        <div class="kc-opt" data-answer="D" tabindex="0" role="radio" aria-checked="false">
+          <span class="ltr">D</span>
+          <span>Place a wet floor sign and move on to the next order</span>
+          <span class="mark"></span>
+        </div>
+      </div>
+      <button class="submit-btn" id="kcSubmit" disabled>SUBMIT ANSWER</button>
+      <div class="hint-msg" id="hintMsg" style="margin-top:10px; font-size:16px; color:var(--red); font-family:var(--font-head); letter-spacing:1px; display:none;"></div>
+    </div>
+    <div class="kc-feedback" id="kcFeedback">
+      <div class="head" id="kcFeedbackHead" style="background:var(--chartreuse);">
+        <span class="icon" id="kcFeedbackIcon" style="color:var(--chartreuse);">&#10003;</span>
+        <span id="kcFeedbackTitle">Correct!</span>
+      </div>
+      <div class="body">
+        <p id="kcFeedbackText"><b>C is correct.</b> The priority is safety: warn others who might step in the spill, then clean it immediately. Leaving it even briefly creates a slip hazard.</p>
+        <p><b>Why not the others?</b></p>
+        <p><b>A</b> &mdash; Delaying creates an active hazard. Spills should be addressed immediately.</p>
+        <p><b>B</b> &mdash; Reporting is good, but the spill needs immediate action. You can inform your manager after securing the area.</p>
+        <p><b>D</b> &mdash; A sign helps but doesn't remove the hazard. The spill still needs to be cleaned promptly.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="left"><span class="tag">COFFEE BREWING SAFETY</span></div>
+    <div class="slide-nav">
+      <button class="sn-btn prev" onclick="goSlide(4)">&lsaquo;</button>
+      <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">5 / 7</span></div>
+      <button class="sn-btn next" id="kcNextBtn" onclick="goSlide(6)">&rsaquo;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SLIDE 6: Summary ═══════ -->
+<section class="slide" data-slide="6">
+  <div class="topbar">
+    <button class="menu-btn" onclick="openMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+    <div class="brand">
+      <span class="icon">&#9749;</span>
+      <div class="sep"></div>
+      <div class="ctx">COURSE FACTORY</div>
+    </div>
+    <div class="crumbs">Coffee Brewing Safety &rsaquo; <b>Summary</b></div>
+  </div>
+  <div class="title-block" style="padding-bottom:0;">
+    <div class="eyebrow">SLIDE 6 &middot; SUMMARY</div>
+    <h1>Key <span class="accent">Takeaways</span></h1>
+    <div class="lede">Here's what you learned in this course:</div>
+  </div>
+  <div class="summary-grid">
+    <div class="summary-card red-top">
+      <div class="s-icon">&#128293;</div>
+      <h3>Hazard Awareness</h3>
+      <p>You can now identify thermal, electrical, slip, and chemical hazards in a coffee brewing environment.</p>
+    </div>
+    <div class="summary-card cobalt-top">
+      <div class="s-icon">&#128736;</div>
+      <h3>Safe Procedures</h3>
+      <p>You know the correct procedures for handling hot liquids, electrical equipment, and cleaning chemicals.</p>
+    </div>
+    <div class="summary-card chart-top">
+      <div class="s-icon">&#9889;</div>
+      <h3>Incident Response</h3>
+      <p>When a spill or incident occurs, you know to act immediately: warn others, then address the hazard.</p>
+    </div>
+  </div>
+  <div style="padding:36px 96px 0; text-align:center;">
+    <div style="border:2px solid var(--chartreuse); background:var(--chartreuse-bg); padding:28px 40px; display:inline-block;">
+      <div style="font-family:var(--font-head); font-size:14px; letter-spacing:3px; color:var(--chartreuse); text-transform:uppercase; margin-bottom:8px;">BUILT WITH</div>
+      <div style="font-family:var(--font-head); font-size:28px; color:var(--navy);">&#9749; Course Factory</div>
+      <div style="font-size:18px; color:var(--muted); margin-top:8px;">No Storyline. No Windows required. Just interactive SCORM.</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="left"><span class="tag">COFFEE BREWING SAFETY</span></div>
+    <div class="slide-nav">
+      <button class="sn-btn prev" onclick="goSlide(5)">&lsaquo;</button>
+      <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">6 / 7</span></div>
+      <button class="sn-btn next" onclick="goSlide(7)">&rsaquo;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SLIDE 7: Results ═══════ -->
+<section class="slide s-results" data-slide="7">
+  <div class="topbar">
+    <button class="menu-btn" onclick="openMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>MENU</button>
+    <div class="brand">
+      <span class="icon">&#9749;</span>
+      <div class="sep"></div>
+      <div class="ctx">COURSE FACTORY</div>
+    </div>
+    <div class="crumbs">Coffee Brewing Safety &rsaquo; <b>Results</b></div>
+  </div>
+  <div class="results-card">
+    <div class="r-icon">&#127942;</div>
+    <h2>Course Complete!</h2>
+    <div class="r-name" id="resultsName">Great job!</div>
+    <div class="results-stats">
+      <div class="r-stat"><span class="val green" id="rScore">&#10003;</span><span class="lbl">Quiz</span></div>
+      <div class="r-stat"><span class="val blue" id="rSlides">7/7</span><span class="lbl">Slides</span></div>
+      <div class="r-stat"><span class="val blue" id="rTime">0:00</span><span class="lbl">Time</span></div>
+      <div class="r-stat"><span class="val green" id="rStatus">COMPLETE</span><span class="lbl">Status</span></div>
+    </div>
+    <div class="results-checklist">
+      <div class="rc-item"><span class="rc-icon done">&#10003;</span> Viewed all slides</div>
+      <div class="rc-item"><span class="rc-icon" id="rcQuiz">&#10003;</span> Passed knowledge check</div>
+      <div class="rc-item"><span class="rc-icon done">&#10003;</span> Explored interactive content</div>
+    </div>
+    <div style="border:2px solid var(--neutral); padding:20px 28px; margin:20px 0; background:var(--neutral-2); text-align:left;">
+      <div style="font-family:var(--font-head); font-size:12px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:8px;">ABOUT THIS DEMO</div>
+      <div style="font-size:16px; color:#333; line-height:1.5;">This is a simplified demo with placeholder images. Production courses include professional photography, voiceover narration, and additional interaction types. Content shown is generic &mdash; real courses are built from your organization's source material.</div>
+    </div>
+    <div style="border:2px solid var(--chartreuse); background:var(--chartreuse-bg); padding:16px 24px; display:inline-block; margin-bottom:20px;">
+      <span style="font-family:var(--font-head); font-size:18px; color:var(--navy);">&#9749; Built with Course Factory</span>
+    </div>
+    <div class="results-btns">
+      <button class="btn-restart" onclick="location.reload()">RESTART DEMO</button>
+      <button class="btn-exit" onclick="exitCourse()">EXIT COURSE</button>
+    </div>
+  </div>
+  <div class="slide-footer dark">
+    <div class="left"><span class="tag">COFFEE BREWING SAFETY</span></div>
+    <div class="slide-nav">
+      <button class="sn-btn prev" onclick="goSlide(6)">&lsaquo;</button>
+      <div class="sn-label"><span class="sn-lbl-k">SLIDE</span><span class="sn-lbl-v">7 / 7</span></div>
+      <button class="sn-btn next" style="opacity:0.3;cursor:default;">&rsaquo;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AUDIO CONTROLS ══ -->
+<button class="ac-show" id="acShow" title="Show audio controls"></button>
+<div class="audio-controls" id="audioControls">
+  <button class="ac-btn" id="bgmToggle" title="Background Music">
+    <svg id="bgmOn" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    <svg id="bgmOff" viewBox="0 0 24 24" style="display:none"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" opacity="0.4"/><line x1="3" y1="3" x2="21" y2="21" stroke="#fff" stroke-width="2"/></svg>
+  </button>
+  <div class="ac-vol-wrap">
+    <button class="ac-btn" id="acVolBtn" title="Volume">
+      <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+    </button>
+    <div class="ac-vol-slider"><input type="range" id="acVolRange" min="0" max="100" value="30"></div>
+  </div>
+  <span class="ac-label">BGM</span>
+  <button class="ac-hide" id="acHide" title="Hide controls">&times;</button>
+</div>
+
+<!-- ══ HINT TOAST ══ -->
+<div class="hint-toast" id="hintToast"></div>
+
+<script>
+/* ══ SCORM 1.2 API Wrapper ══ */
+(function() {
+  var api = null, initialized = false;
+  function findAPI(win) {
+    var attempts = 0;
+    while (!win.API && win.parent && win.parent !== win && attempts < 10) { win = win.parent; attempts++; }
+    return win.API || null;
+  }
+  function getAPI() {
+    if (api) return api;
+    api = findAPI(window);
+    if (!api && window.opener) api = findAPI(window.opener);
+    return api;
+  }
+  function init() {
+    var a = getAPI();
+    if (!a) { console.log('SCORM API not found — standalone mode'); return false; }
+    var r = a.LMSInitialize('');
+    initialized = (r === 'true' || r === true);
+    if (initialized) console.log('SCORM initialized');
+    return initialized;
+  }
+  function sv(k, v) { var a = getAPI(); if (!a || !initialized) return; a.LMSSetValue(k, String(v)); }
+  function gv(k) { var a = getAPI(); if (!a || !initialized) return ''; return a.LMSGetValue(k); }
+  function cm() { var a = getAPI(); if (!a || !initialized) return; a.LMSCommit(''); }
+  function fin() { var a = getAPI(); if (!a || !initialized) return; a.LMSFinish(''); initialized = false; }
+
+  function sync(courseState) {
+    if (!initialized || !courseState) return;
+    sv('cmi.core.lesson_location', String(courseState.current));
+    sv('cmi.core.lesson_status', courseState.completed ? 'completed' : 'incomplete');
+    if (courseState.quizTotal > 0) {
+      var pct = Math.round((courseState.quizScore / courseState.quizTotal) * 100);
+      sv('cmi.core.score.raw', String(pct));
+      sv('cmi.core.score.min', '0');
+      sv('cmi.core.score.max', '100');
+    }
+    var t = courseState.timeSpent || 0;
+    var h = Math.floor(t/3600), m = Math.floor((t%3600)/60), s = t%60;
+    sv('cmi.core.session_time', String(h).padStart(4,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'));
+    try {
+      sv('cmi.suspend_data', JSON.stringify({
+        visited: courseState.visited,
+        kcAttempts: courseState.kcAttempts,
+        kcLocked: courseState.kcLocked,
+        timeSpent: courseState.timeSpent
+      }));
+    } catch(e) {}
+    cm();
+  }
+
+  function restore() {
+    if (!initialized) return null;
+    var raw = gv('cmi.suspend_data');
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch(e) { return null; }
+  }
+
+  window.SCORM = { init: init, sync: sync, restore: restore, terminate: fin, isInit: function() { return initialized; } };
+  window.addEventListener('load', function() { init(); });
+  window.addEventListener('beforeunload', function() {
+    if (window._getSCORMState) sync(window._getSCORMState());
+    fin();
+  });
+  setInterval(function() { if (window._getSCORMState) sync(window._getSCORMState()); }, 30000);
+})();
+
+/* ── State ── */
+var current = 1;
+var total = 7;
+var visited = [1];
+var kcAttempts = 0;
+var kcLocked = false;
+var startTime = Date.now();
+var learnerName = '';
+
+/* ── Welcome ── */
+document.getElementById('welcomeStartBtn').addEventListener('click', function() {
+  var name = document.getElementById('welcomeName').value.trim();
+  if (!name) { document.getElementById('welcomeName').style.borderColor = 'var(--red)'; return; }
+  learnerName = name;
+  document.getElementById('welcomeOverlay').classList.add('hidden');
+  startBgm();
+});
+
+/* ── Navigation ── */
+function goSlide(n) {
+  if (n < 1 || n > total) return;
+  // Must visit previous slide first
+  if (visited.indexOf(n - 1) === -1 && n > 1) return;
+  // Block if KC not complete on slide 5
+  if (current === 5 && n > 5 && !kcLocked) {
+    showHint('Please complete the knowledge check before continuing.');
+    return;
+  }
+
+  document.querySelectorAll('.slide').forEach(function(s) { s.classList.remove('active'); });
+  current = n;
+  var target = document.querySelector('[data-slide="' + n + '"]');
+  if (target) target.classList.add('active');
+  if (visited.indexOf(n) === -1) visited.push(n);
+  updateMenu();
+  resize();
+  if (n === 7) updateResults();
+}
+window.goSlide = goSlide;
+
+function resize() {
+  var vw = window.innerWidth, vh = window.innerHeight;
+  var scale = Math.min(vw / 1920, vh / 1080);
+  var ox = (vw - 1920 * scale) / 2, oy = (vh - 1080 * scale) / 2;
+  document.querySelectorAll('.slide').forEach(function(s) {
+    s.style.transform = 'translate(' + ox + 'px,' + oy + 'px) scale(' + scale + ')';
+  });
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* ── Keyboard nav ── */
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('welcomeOverlay').classList.contains('hidden')) return;
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goSlide(current + 1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goSlide(current - 1); }
+  if (e.key === 'Escape' && document.body.classList.contains('nav-open')) { closeMenu(); }
+});
+
+/* ── Menu ── */
+function openMenu() { document.body.classList.add('nav-open'); }
+function closeMenu() { document.body.classList.remove('nav-open'); }
+window.openMenu = openMenu;
+window.closeMenu = closeMenu;
+
+function updateMenu() {
+  var items = document.querySelectorAll('.sm-item');
+  items.forEach(function(item, i) {
+    var n = i + 1;
+    item.classList.remove('active', 'visited');
+    if (n === current) item.classList.add('active');
+    else if (visited.indexOf(n) !== -1) item.classList.add('visited');
+    var status = item.querySelector('.sm-status');
+    if (n === current) status.textContent = 'CURRENT';
+    else if (visited.indexOf(n) !== -1) status.textContent = 'VISITED';
+    else status.textContent = '';
+  });
+  var pct = Math.round((visited.length / total) * 100);
+  document.getElementById('menuProgress').style.width = pct + '%';
+  document.getElementById('menuProgressText').textContent = pct + '%';
+}
+
+/* ── Click-to-Reveal tracking ── */
+function checkCardsRevealed() {
+  // Just for visual delight, no blocking
+}
+window.checkCardsRevealed = checkCardsRevealed;
+
+/* ── Knowledge Check ── */
+var kcOptions = document.getElementById('kcOptions');
+var kcSubmit = document.getElementById('kcSubmit');
+var selectedAnswer = null;
+var correctAnswer = 'C';
+
+kcOptions.querySelectorAll('.kc-opt').forEach(function(opt) {
+  opt.addEventListener('click', function() {
+    if (kcLocked) return;
+    kcOptions.querySelectorAll('.kc-opt').forEach(function(o) {
+      if (!o.classList.contains('disabled-choice')) {
+        o.classList.remove('selected');
+        o.setAttribute('aria-checked', 'false');
+      }
+    });
+    opt.classList.add('selected');
+    opt.setAttribute('aria-checked', 'true');
+    selectedAnswer = opt.getAttribute('data-answer');
+    kcSubmit.disabled = false;
+    kcSubmit.classList.add('ready');
+  });
+});
+
+kcSubmit.addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (!selectedAnswer || kcLocked) return;
+  kcAttempts++;
+
+  if (selectedAnswer === correctAnswer) {
+    // Correct
+    kcOptions.querySelectorAll('.kc-opt').forEach(function(o) { o.classList.remove('selected'); });
+    var chosen = kcOptions.querySelector('[data-answer="' + selectedAnswer + '"]');
+    chosen.classList.add('correct');
+    chosen.querySelector('.mark').textContent = 'CORRECT';
+    kcOptions.classList.add('locked');
+    kcLocked = true;
+    kcSubmit.classList.remove('ready');
+    kcSubmit.classList.add('submitted');
+    kcSubmit.textContent = 'CORRECT \u2713';
+    kcSubmit.disabled = true;
+    showFeedback(true);
+  } else if (kcAttempts >= 2) {
+    // Second wrong attempt — reveal correct
+    var chosen = kcOptions.querySelector('[data-answer="' + selectedAnswer + '"]');
+    chosen.classList.add('incorrect');
+    chosen.querySelector('.mark').textContent = 'INCORRECT';
+    var correct = kcOptions.querySelector('[data-answer="' + correctAnswer + '"]');
+    correct.classList.add('correct');
+    correct.querySelector('.mark').textContent = 'CORRECT';
+    kcOptions.classList.add('locked');
+    kcLocked = true;
+    kcSubmit.classList.remove('ready');
+    kcSubmit.classList.add('submitted');
+    kcSubmit.textContent = 'SUBMITTED \u2713';
+    kcSubmit.disabled = true;
+    showFeedback(false);
+  } else {
+    // First wrong attempt — hint and disable choice
+    var chosen = kcOptions.querySelector('[data-answer="' + selectedAnswer + '"]');
+    chosen.classList.add('disabled-choice', 'incorrect');
+    chosen.querySelector('.mark').textContent = 'INCORRECT';
+    chosen.style.pointerEvents = 'none';
+    chosen.style.opacity = '0.5';
+    selectedAnswer = null;
+    kcSubmit.disabled = true;
+    kcSubmit.classList.remove('ready');
+    document.getElementById('hintMsg').textContent = 'Not quite. You have 1 attempt remaining. Try again.';
+    document.getElementById('hintMsg').style.display = 'block';
+  }
+});
+
+function showFeedback(isCorrect) {
+  var fb = document.getElementById('kcFeedback');
+  var head = document.getElementById('kcFeedbackHead');
+  var icon = document.getElementById('kcFeedbackIcon');
+  var title = document.getElementById('kcFeedbackTitle');
+  document.getElementById('hintMsg').style.display = 'none';
+
+  if (isCorrect) {
+    head.style.background = 'var(--chartreuse)';
+    icon.style.color = 'var(--chartreuse)';
+    icon.textContent = '\u2713';
+    title.textContent = 'Correct!';
+  } else {
+    head.style.background = 'var(--red)';
+    icon.style.color = 'var(--red)';
+    icon.textContent = '\u2717';
+    title.textContent = 'Not quite';
+  }
+  fb.classList.add('visible');
+}
+
+/* ── Results page ── */
+function updateResults() {
+  var elapsed = Math.floor((Date.now() - startTime) / 1000);
+  var mins = Math.floor(elapsed / 60);
+  var secs = elapsed % 60;
+  document.getElementById('rTime').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  document.getElementById('rSlides').textContent = visited.length + '/' + total;
+  if (learnerName) {
+    document.getElementById('resultsName').textContent = 'Great job, ' + learnerName + '!';
+  }
+  var quizPassed = kcLocked && kcAttempts <= 1;
+  var rcQuiz = document.getElementById('rcQuiz');
+  if (kcLocked) {
+    rcQuiz.classList.add('done');
+    rcQuiz.textContent = '\u2713';
+    document.getElementById('rScore').textContent = quizPassed ? '1/1' : '0/1';
+    document.getElementById('rScore').className = 'val ' + (quizPassed ? 'green' : 'red');
+  } else {
+    rcQuiz.classList.add('pending');
+    rcQuiz.textContent = '\u2013';
+    document.getElementById('rScore').textContent = '0/1';
+    document.getElementById('rScore').className = 'val red';
+    document.getElementById('rStatus').textContent = 'INCOMPLETE';
+    document.getElementById('rStatus').className = 'val red';
+  }
+}
+
+/* ── Exit ── */
+function exitCourse() {
+  stopBgm();
+  document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0F1A3D;color:#fff;font-family:Arial Black,Arial,sans-serif;text-align:center;"><div><div style="font-size:72px;margin-bottom:16px;">&#9749;</div><h1 style="font-size:36px;margin:0 0 12px;">Thank You!</h1><p style="font-size:18px;color:rgba(255,255,255,0.7);margin:0 0 32px;font-family:Arial,sans-serif;">This course was built with Course Factory.<br>No Storyline. No Windows. Just SCORM.</p><button onclick="location.reload()" style="background:#C0233B;color:#fff;border:0;padding:16px 32px;font-family:Arial Black,Arial,sans-serif;font-size:16px;letter-spacing:2px;cursor:pointer;">RESTART</button></div></div>';
+}
+window.exitCourse = exitCourse;
+
+/* ── BGM (Web Audio API) ── */
+var bgmCtx, bgmGain, bgmPlaying = false, bgmOscs = [];
+
+function startBgm() {
+  if (bgmPlaying) return;
+  try {
+    bgmCtx = new (window.AudioContext || window.webkitAudioContext)();
+    bgmGain = bgmCtx.createGain();
+    bgmGain.gain.value = 0.15;
+    bgmGain.connect(bgmCtx.destination);
+
+    var chords = [
+      [261.6, 329.6, 392.0],
+      [293.7, 370.0, 440.0],
+      [246.9, 311.1, 370.0],
+      [261.6, 329.6, 392.0],
+    ];
+    var noteIdx = 0;
+
+    function playChord() {
+      bgmOscs.forEach(function(o) {
+        try {
+          o.g.gain.linearRampToValueAtTime(0, bgmCtx.currentTime + 1);
+          o.osc.stop(bgmCtx.currentTime + 1.2);
+        } catch(e) {}
+      });
+      bgmOscs = [];
+      var chord = chords[noteIdx % chords.length];
+      chord.forEach(function(freq) {
+        var osc = bgmCtx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        var g = bgmCtx.createGain();
+        g.gain.value = 0;
+        g.gain.linearRampToValueAtTime(0.08, bgmCtx.currentTime + 1.5);
+        g.gain.linearRampToValueAtTime(0.06, bgmCtx.currentTime + 3);
+        osc.connect(g); g.connect(bgmGain);
+        osc.start();
+        bgmOscs.push({osc: osc, g: g});
+      });
+      var shimmer = bgmCtx.createOscillator();
+      shimmer.type = 'sine';
+      shimmer.frequency.value = chord[2] * 2;
+      var sg = bgmCtx.createGain();
+      sg.gain.value = 0;
+      sg.gain.linearRampToValueAtTime(0.02, bgmCtx.currentTime + 2);
+      sg.gain.linearRampToValueAtTime(0.01, bgmCtx.currentTime + 3.5);
+      shimmer.connect(sg); sg.connect(bgmGain);
+      shimmer.start();
+      bgmOscs.push({osc: shimmer, g: sg});
+      noteIdx++;
+    }
+
+    playChord();
+    window._bgmInterval = setInterval(playChord, 4000);
+    bgmPlaying = true;
+    document.getElementById('bgmOff').style.display = 'none';
+    document.getElementById('bgmOn').style.display = 'block';
+  } catch(e) { /* Web Audio not supported */ }
+}
+
+function stopBgm() {
+  if (!bgmPlaying) return;
+  bgmPlaying = false;
+  clearInterval(window._bgmInterval);
+  bgmOscs.forEach(function(o) { try { o.osc.stop(); } catch(e) {} });
+  bgmOscs = [];
+  if (bgmCtx) { try { bgmCtx.close(); } catch(e) {} }
+  document.getElementById('bgmOff').style.display = 'block';
+  document.getElementById('bgmOn').style.display = 'none';
+}
+
+document.getElementById('bgmToggle').addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (bgmPlaying) stopBgm(); else startBgm();
+});
+
+document.getElementById('acVolRange').addEventListener('input', function() {
+  if (bgmGain) bgmGain.gain.value = this.value / 100 * 0.5;
+});
+
+document.getElementById('acHide').addEventListener('click', function() {
+  document.getElementById('audioControls').classList.add('hidden');
+  document.getElementById('acShow').classList.add('visible');
+});
+
+document.getElementById('acShow').addEventListener('click', function() {
+  document.getElementById('audioControls').classList.remove('hidden');
+  document.getElementById('acShow').classList.remove('visible');
+});
+
+/* ── SCORM state bridge ── */
+window._getSCORMState = function() {
+  var elapsed = Math.floor((Date.now() - startTime) / 1000);
+  return {
+    current: current,
+    visited: visited,
+    completed: visited.length >= total && kcLocked,
+    quizScore: (kcLocked && kcAttempts <= 1) ? 1 : 0,
+    quizTotal: 1,
+    kcAttempts: kcAttempts,
+    kcLocked: kcLocked,
+    timeSpent: elapsed
+  };
+};
+
+/* ── SCORM restore on load ── */
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    if (window.SCORM && window.SCORM.isInit()) {
+      var saved = window.SCORM.restore();
+      if (saved) {
+        if (saved.visited) visited = saved.visited;
+        if (saved.kcAttempts) kcAttempts = saved.kcAttempts;
+        if (saved.kcLocked) kcLocked = saved.kcLocked;
+        if (saved.timeSpent) startTime = Date.now() - (saved.timeSpent * 1000);
+        updateMenu();
+      }
+    }
+  }, 500);
+});
+
+/* ── Hint toast ── */
+function showHint(msg) {
+  var toast = document.getElementById('hintToast');
+  toast.textContent = msg;
+  toast.classList.add('visible');
+  setTimeout(function() { toast.classList.remove('visible'); }, 2500);
+}
+</script>
+</body>
+</html>

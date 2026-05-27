@@ -34,6 +34,10 @@ Guide 01 is the master template. The built course lives at:
 All guides share the same CSS (`css/course.css`) and base JS architecture. The template files live at:
 `05-build-output/Guide-XX-Title/04-course/template/`
 
+## Flexible Slide Count
+
+Slide count varies per guide (18-23). The template supports flexible slide counts. Check the storyboard for which slides exist before building. Not all guides have podcast, decision tree, or 4 impact screens.
+
 ## Step-by-Step Process
 
 ### Step 1: Copy template to current
